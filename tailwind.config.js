@@ -2,7 +2,12 @@
 module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        cressida : ["CressidaSwashC", "sans-serif"],
+        serif: ["Nunito", "sans-serif"],
+      }
+    },
   },
   plugins: [],
 }
