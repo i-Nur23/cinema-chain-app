@@ -7,12 +7,14 @@ import {
   createBrowserRouter, createRoutesFromElements, Route, Router, RouterProvider,
 } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
+import {FilmShedulue} from "./views/Film";
 
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<VisitorApp/>}>
           <Route index element={<Home/>}/>
+          <Route path="films/:id" element={<FilmShedulue/>}/>
         </Route>
     )
 )

@@ -4,7 +4,7 @@ import imdb_logo from '../../assets/images/imdb_logo.png'
 
 export const TodayFilmsCard = ({film}) => {
   return(
-    <Link to='#' className='rounded-lg bg-gray-100 hover:shadow hover:drop-shadow-2xl p-4 ease-in-out duration-300'>
+    <Link to={`films/${film.id}`} className='rounded-lg bg-gray-100 hover:shadow hover:drop-shadow-2xl p-4 ease-in-out duration-300'>
       <div className='flex justify-start gap-10'>
         <img src={film.poster} className='object-fill h-80 w-56 rounded-xl'/>
         <div>

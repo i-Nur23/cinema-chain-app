@@ -1,11 +1,27 @@
+import {useState} from "react";
+import './navbar.css'
+
 export const Navbar = () => {
+
+
+  const cities = ['Москва', 'Казань', 'Екатеринбург', 'Иннополис']
+
+  const [city, setCity] = useState(cities[0]);
+
   return (
     <div className='container px-20'>
       <div className='flex justify-between py-4'>
-        <a className=' my-auto'>
-          <p className="font-cressida text-5xl">Драйв</p>
-        </a>
-        <div className="flex justify-between gap-20">
+        <div className='flex justify-start gap-8 w-1/4'>
+          <a className=' my-auto'>
+            <p className="font-cressida text-5xl">Драйв</p>
+          </a>
+          <select className='focus:outline-none'>
+            {cities.map(city => (
+              <option value={city}>{city}</option>
+            ))}
+          </select>
+        </div>
+        <div className="flex justify-between gap-20 w-1/2">
           <a href="#" className='my-auto text-xl p-4 hover:text-cyan-700 ease-in-out duration-150'>
             Афиша
           </a>
@@ -23,9 +39,11 @@ export const Navbar = () => {
           </a>
         </div>
 
-        <a className='my-auto text-xl p-4 rounded hover:bg-cyan-700 hover:text-white ease-in-out duration-300' href="#">
-          <p>Вход</p>
-        </a>
+        <div className='w-1/4 flex justify-end'>
+          <a className='my-auto text-xl p-4 rounded hover:bg-cyan-700 hover:text-white ease-in-out duration-300' href="#">
+            <p>Вход</p>
+          </a>
+        </div>
 
 
       </div>

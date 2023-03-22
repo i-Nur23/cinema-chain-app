@@ -1,3 +1,4 @@
 import {TodayFilmsCard} from "./TodayFilmsCard";
+import {SessionCard} from "./SessionCard";
 
-export {TodayFilmsCard}
+export {TodayFilmsCard , SessionCard}
