@@ -1,5 +1,6 @@
 import {useState} from "react";
 import './navbar.css'
+import {Link} from "react-router-dom";
 
 export const Navbar = () => {
 
@@ -40,9 +41,11 @@ export const Navbar = () => {
         </div>
 
         <div className='w-1/4 flex justify-end'>
-          <a className='my-auto text-xl p-4 rounded hover:bg-cyan-700 hover:text-white ease-in-out duration-300' href="#">
+          <Link to="authorization" className='my-auto text-xl p-4 rounded hover:bg-cyan-700 hover:text-white ease-in-out duration-300'>
             <p>Вход</p>
-          </a>
+          </Link>
+          {/*<a className='my-auto text-xl p-4 rounded hover:bg-cyan-700 hover:text-white ease-in-out duration-300' href="authorization">
+          </a>*/}
         </div>
 
 
