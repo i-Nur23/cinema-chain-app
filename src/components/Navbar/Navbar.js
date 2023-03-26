@@ -13,9 +13,9 @@ export const Navbar = () => {
     <div className='container px-20'>
       <div className='flex justify-between py-4'>
         <div className='flex justify-start gap-8 w-1/4'>
-          <a className=' my-auto'>
+          <Link to='' className=' my-auto'>
             <p className="font-cressida text-5xl">Драйв</p>
-          </a>
+          </Link>
           <select className='focus:outline-none'>
             {cities.map(city => (
               <option value={city}>{city}</option>
