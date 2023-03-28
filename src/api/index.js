@@ -1,3 +1,4 @@
 import {FilmsAPI} from "./FilmsAPI";
+import {OfficesAPI} from "./OfficesAPI";
 
-export {FilmsAPI}
+export {FilmsAPI, OfficesAPI}

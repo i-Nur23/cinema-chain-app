@@ -6,11 +6,19 @@ import cheburashka from "../../assets/images/cheburashka.jpg";
 import inception from "../../assets/images/inception.jpg";
 import oppenhaimer from "../../assets/images/oppenhaimer.jpg";
 import {FilmSessions} from "../../components/Lists";
+import {useEffect, useState} from "react";
+import {useSelector} from "react-redux";
+import {FilmsAPI} from "../../api";
 
-export  const FilmShedulue = () => {
-  let {id} = useParams()
+export  const FilmShedulue = (props) => {
+  const {id} = useParams();
+  const city = useSelector(state => state.city)
 
-  var films = [
+  const [film, setFilm] = useState();
+  const [table, setTable] = useState();
+  const [loaded, setLoaded] = useState(false)
+
+  /*var films = [
     {
       id: 1,
       name: 'Драйв',
@@ -92,23 +100,126 @@ export  const FilmShedulue = () => {
     }
   ]
 
-  var film = films.find(x => x.id == id)
+  var film = films.find(x => x.id == id)*/
 
-  return (
-    <div className='container px-20 my-10'>
+  useEffect(() => {
+    (
+      async () => {
+        var data = await FilmsAPI.getFilmInfo(id,city);
+        console.log(data)
+
+        setFilm(data);
+        setTable(data.sessionSchedule);
+        setLoaded(true);
+      }
+    )()
+  },[id, city])
+
+
+  let content = loaded ?  <div className='container px-20 my-10'>
+    <div className='flex justify-between gap-10'>
+      <img src={inception} alt={film.name} className='object-cover h-96 rounded-lg'/>
+      <div className='flex flex-col gap-5'>
+        <p className='text-2xl'><strong>{film.name}</strong></p>
+        <p className='text-xl'>{film.description}</p>
+        <div className='flex flex-col gap-3'>
+          <div className='inline-flex gap-2 text-gray-400'>
+            {
+              film.genres.map((genre, index) => (
+                <p>{genre.description + `${index == film.genres.length - 1 ? '' : ','}`}</p>
+              ))
+            }
+          </div>
+          <div className='inline-flex gap-2'>
+            <p className='text-gray-400'>Режиссёр: </p>
+            {
+              film.filmDirectors.map((dir, index) => (
+                <p>{dir.name + `${index == film.filmDirectors.length - 1 ? '' : ','}`}</p>
+              ))
+            }
+          </div>
+          <div className='inline-flex gap-2'>
+            <p className='text-gray-400'>Актёры: </p>
+            {
+              film.actors.map( (actor, index) => (
+                <p>{actor.name + `${index == film.actors.length - 1 ? '' : ','}`}</p>
+              ))
+            }
+          </div>
+          <div className='inline-flex gap-2'>
+            <p className='text-gray-400'>Год: </p>
+            <p>{film.releaseYear}</p>
+          </div>
+          <div className='inline-flex gap-2'>
+            <p className='text-gray-400'>Продолжительность: </p>
+            <p>{`${Math.floor(film.length / 60)} ч ${film.length % 60 == 0 ? '' : `${film.length % 60} мин`}`}</p>
+          </div>
+          <div className='inline-flex gap-2'>
+            <p className='text-gray-400'>Кинопоиск: </p>
+            <p>{film.ratingOnKinopoisk}</p>
+            <p className='text-gray-400'>IMDB: </p>
+            <p>{film.ratingOnImdb}</p>
+            <p className='text-gray-400'>Наш рейтинг: </p>
+            <p>{film.rating}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <FilmSessions table={table}/>
+
+  </div>: null
+
+
+  return ( content
+    /*<div className='container px-20 my-10'>
       <div className='flex justify-between gap-10'>
-        <img src={film.poster} alt={film.name} className='object-cover h-96 rounded-lg'/>
+        <img src={inception} alt={film.name} className='object-cover h-96 rounded-lg'/>
         <div className='flex flex-col gap-5'>
           <p className='text-2xl'><strong>{film.name}</strong></p>
           <p className='text-xl'>{film.description}</p>
           <div className='inline-flex gap-2'>
+            {
+              film.genres.map(genre => (
+                <p>{genre.description}</p>
+              ))
+            }
+          </div>
+          <div className='inline-flex gap-2'>
             <p className='text-gray-400'>Режиссёр: </p>
-            <p>{film.director}</p>
+            {
+              film.filmDirectors.map(dir => (
+                <p>{dir.name}</p>
+              ))
+            }
+          </div>
+          <div className='inline-flex gap-2'>
+            <p className='text-gray-400'>Актёры: </p>
+            {
+              film.actors.map(actor => (
+                <p>{actor.name}</p>
+              ))
+            }
+          </div>
+          <div className='inline-flex gap-2'>
+            <p className='text-gray-400'>Год: </p>
+            <p>{film.releaseYear}</p>
+          </div>
+          <div className='inline-flex gap-2'>
+            <p className='text-gray-400'>Продолжительность: </p>
+            <p>{`${Math.floor(film.length / 60)} ч ${film.length % 60 == 0 ? '' : `${film.length % 60} мин`}`}</p>
+          </div>
+          <div className='inline-flex gap-2'>
+            <p className='text-gray-400'>Кинопоиск: </p>
+            <p>{film.ratingOnKinopoisk}</p>
+            <p className='text-gray-400'>IMDB: </p>
+            <p>{film.ratingOnImdb}</p>
+            <p className='text-gray-400'>Наш рейтинг: </p>
+            <p>{film.rating}</p>
           </div>
         </div>
       </div>
-      <FilmSessions/>
+      <FilmSessions table={table}/>
 
-    </div>
+    </div>*/
   )
 }

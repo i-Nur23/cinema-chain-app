@@ -9,6 +9,9 @@ import {
 import reportWebVitals from './reportWebVitals';
 import {FilmShedulue} from "./views/Film";
 import {VisitorAuthorization} from "./views/VisitorAuthorization";
+import {Provider} from "react-redux";
+import {persistor, store} from "./store/store";
+import {PersistGate} from "redux-persist/integration/react";
 
 
 const router = createBrowserRouter(
@@ -25,9 +28,11 @@ const router = createBrowserRouter(
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router}/>
-  </React.StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <RouterProvider router={router}/>
+    </PersistGate>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

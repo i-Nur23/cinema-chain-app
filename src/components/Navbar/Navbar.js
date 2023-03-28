@@ -1,13 +1,38 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import './navbar.css'
 import {Link} from "react-router-dom";
+import {OfficesAPI} from "../../api";
+import {useDispatch, useSelector} from "react-redux";
+import {setCity} from "../../store/slicers/CitySlicer";
 
 export const Navbar = () => {
 
 
-  const cities = ['Москва', 'Казань', 'Екатеринбург', 'Иннополис']
+  /*const cities = ['Москва', 'Казань', 'Екатеринбург', 'Иннополис']*/
 
-  const [city, setCity] = useState(cities[0]);
+  const city = useSelector(state => state.city)
+
+  /*onst [selectedCity, selectCity] = useState(city)*/
+  const [cities, setCities] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (
+      async () => {
+        var response = await OfficesAPI.getCities();
+        console.log(response.cities)
+        setCities(response.cities);
+
+
+      }
+    )()
+  }, [])
+
+  const changeCity = e => {
+    var city = e.target.value;
+    /*selectCity(city)*/
+    dispatch(setCity(city))
+  }
 
   return (
     <div className='container px-20'>
@@ -16,7 +41,10 @@ export const Navbar = () => {
           <Link to='' className=' my-auto'>
             <p className="font-cressida text-5xl">Драйв</p>
           </Link>
-          <select className='focus:outline-none focus:ring-0 border-0'>
+          <select
+            className='focus:outline-none focus:ring-0 border-0'
+            onChange={e => changeCity(e)}
+            value={city}>
             {cities.map(city => (
               <option value={city}>{city}</option>
             ))}

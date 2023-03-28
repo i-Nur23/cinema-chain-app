@@ -10,4 +10,12 @@ export class FilmsAPI extends MainAPIBase{
 
     return response.data;
   }
+
+  static getFilmInfo = async (id, city) => {
+    var url = `${this.baseURL}/Films/GetFilmByIdAndCity?id=${id}&city=${city}`
+
+    var response = await axios.get(url);
+
+    return response.data;
+  }
 }
