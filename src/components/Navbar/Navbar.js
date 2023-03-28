@@ -16,7 +16,7 @@ export const Navbar = () => {
           <Link to='' className=' my-auto'>
             <p className="font-cressida text-5xl">Драйв</p>
           </Link>
-          <select className='focus:outline-none'>
+          <select className='focus:outline-none focus:ring-0 border-0'>
             {cities.map(city => (
               <option value={city}>{city}</option>
             ))}

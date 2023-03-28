@@ -5,10 +5,15 @@ import dune from '../../assets/images/dune.jpg'
 import cheburashka from '../../assets/images/cheburashka.jpg'
 import inception from '../../assets/images/inception.jpg'
 import oppenhaimer from '../../assets/images/oppenhaimer.jpg'
+import {useEffect, useState} from "react";
+import {FilmsAPI} from "../../api";
 
 export const Home = () => {
 
-  var films = [
+
+  const [films, setFilms] = useState([])
+
+  /*var films = [
     {
       id: 1,
       name: 'Драйв',
@@ -50,9 +55,15 @@ export const Home = () => {
       imdb : 7.7,
       poster : oppenhaimer
     },
+  ]*/
 
-
-  ]
+  useEffect( () => {
+    ( async () => {
+        var data = await FilmsAPI.getFilmsToStartPage();
+        setFilms(data.filmList);
+    }
+    )()
+  }, [])
 
   return(
     <div className='container px-20 my-6'>

@@ -55,31 +55,33 @@ export const TicketChoiceDialog = ({isOpen, close}) => {
 
   const PlacesRow = ({row}) => {
 
-    console.log('places ' + places);
-
     return (
     <div className='flex justify-between gap-4'>
-      {
-        Array.from(Array(placesInRow).keys()).map(place => {
+      <p className='text-gray-400'>{row + 1}</p>
+      <div className='flex justify-between gap-4'>
+        {
+          Array.from(Array(placesInRow).keys()).map(place => {
 
-          return (
-          <HallPlace
-            row={row}
-            place={place}
-            checked={ places == undefined ? false : places[row][place]}
-            setChoice={(x,y) => placeChoice(x,y)}
-            color={ row > 1 && row < rows - 2 && place > 2 && place < placesInRow - 3 ? 'cyan' : 'red'}
-          />
+              return (
+                <HallPlace
+                  row={row}
+                  place={place}
+                  checked={ places == undefined ? false : places[row][place]}
+                  setChoice={(x,y) => placeChoice(x,y)}
+                  color={ row > 1 && row < rows - 2 && place > 2 && place < placesInRow - 3 ? 'cyan' : 'red'}
+                />
+              )
+            }
           )
         }
-        )
-      }
+      </div>
+      <p className='text-gray-400'>{row + 1}</p>
     </div>
   )}
 
 
   return(
-    <Dialog as="div" className="relative z-50 w-full" onClose={close}>
+    <Dialog as="div" className="relative z-30 w-full" onClose={close}>
       <Transition.Child
         as={Fragment}
         enter="ease-out duration-300"
@@ -110,10 +112,16 @@ export const TicketChoiceDialog = ({isOpen, close}) => {
               >
               </Dialog.Title>
               <div className="grid grid-cols-4 gap-2">
-                <div className='col-span-3 flex flex-col gap-4'>
-                  {
-                    Array.from(Array(rows).keys()).map(row => { return <PlacesRow row={row}/>})
-                  }
+                <div className='col-span-3 flex flex-col gap-4 p-4'>
+                  <div>
+                    <hr className='border border-2'/>
+                    <center className='text-gray-400'>Экран</center>
+                  </div>
+                  <div className='flex flex-col gap-4'>
+                    {
+                      Array.from(Array(rows).keys()).map(row => { return <PlacesRow row={row}/>})
+                    }
+                  </div>
                 </div>
                 <div className='flex justify-between'>
                   <ul className='overflow-auto'>{
