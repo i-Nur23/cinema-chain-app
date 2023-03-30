@@ -12,7 +12,7 @@ export const SessionCard = ({seance}) => {
   }, [seance])
 
   let content = !session ? null :
-    <div>
+    <div key={seance.id}>
       <div className='relative'>
         <button
           className='border border-gray-200 rounded-lg py-1 px-9 hover:border-gray-700 hover:shadow hover:drop-shadow-2xl ease-in-out duration-200'
@@ -28,7 +28,7 @@ export const SessionCard = ({seance}) => {
 
       <Transition.Root appear show={isOpen} as={Fragment}>
         <div>
-          <TicketChoiceDialog close={() => setOpen(false)}/>
+          <TicketChoiceDialog close={() => setOpen(false)} basePrice={session.basicCost}/>
         </div>
       </Transition.Root>
     </div>
