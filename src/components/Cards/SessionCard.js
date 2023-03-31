@@ -7,7 +7,6 @@ export const SessionCard = ({seance}) => {
   const [session, setSession] = useState(null)
 
   useEffect(() => {
-    console.log(seance)
     setSession(seance);
   }, [seance])
 
@@ -28,7 +27,7 @@ export const SessionCard = ({seance}) => {
 
       <Transition.Root appear show={isOpen} as={Fragment}>
         <div>
-          <TicketChoiceDialog close={() => setOpen(false)} basePrice={session.basicCost}/>
+          <TicketChoiceDialog close={() => setOpen(false)} basePrice={session.basicCost} id={session.id}/>
         </div>
       </Transition.Root>
     </div>
