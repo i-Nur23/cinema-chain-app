@@ -8,8 +8,6 @@ import {setCity} from "../../store/slicers/CitySlicer";
 export const Navbar = () => {
 
 
-  /*const cities = ['Москва', 'Казань', 'Екатеринбург', 'Иннополис']*/
-
   const city = useSelector(state => state.city)
 
   /*onst [selectedCity, selectCity] = useState(city)*/
@@ -59,9 +57,9 @@ export const Navbar = () => {
             Сеть
           </a>
 
-          <a href="#" className='my-auto p-4 text-xl hover:text-cyan-700 ease-in-out duration-150'>
-            Акции
-          </a>
+          <Link to="cityoffices" className='my-auto p-4 text-xl hover:text-cyan-700 ease-in-out duration-150'>
+            Кинотеатры
+          </Link>
 
           <a href="#" className='my-auto p-4 text-xl hover:text-cyan-700 ease-in-out duration-150'>
             Новости
@@ -72,8 +70,6 @@ export const Navbar = () => {
           <Link to="authorization" className='my-auto text-xl p-4 rounded hover:bg-cyan-700 hover:text-white ease-in-out duration-300'>
             <p>Вход</p>
           </Link>
-          {/*<a className='my-auto text-xl p-4 rounded hover:bg-cyan-700 hover:text-white ease-in-out duration-300' href="authorization">
-          </a>*/}
         </div>
 
 

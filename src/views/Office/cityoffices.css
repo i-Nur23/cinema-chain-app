@@ -1,0 +1,6 @@
+.to-table:hover svg{
+    visibility: visible;
+    width: 1rem;
+    transition: ease-in-out;
+    transition-duration: 100ms;
+}
