@@ -1,13 +1,20 @@
-import {Fragment, useEffect, useState} from "react";
+import {Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {DisabledHallPlace, HallPlace} from "../Checkboxes";
 import {SeanceAPI} from "../../api/SeanceAPI";
 
 export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
 
+  const ref = useRef();
+  const listRef = useRef();
+  const ticketsPRef = useRef();
 
-  const [rows, setRows] = useState(12);
-  const [placesInRow, setPlacesInRow] = useState(20);
+  let content = null;
+
+  const [rows, setRows] = useState();
+  const [placesInRow, setPlacesInRow] = useState();
+  const [hallNumber, setHallNumber] = useState();
+  const [film, setFilm] = useState();
 
   const [chosenTickets, setChosenTickets] = useState([]);
 
@@ -15,11 +22,18 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
   const [price, setPrice] = useState(0);
 
   const [bookedPlaces, setBookedPlaces] = useState([]);
+  const [style, setStyle] = useState();
+  const [listStyle, setListStyle] = useState();
 
   useEffect(() => {
     (
       async () => {
-        var data = await SeanceAPI.getBookedPlacesForSeance(id);
+        var data = await SeanceAPI.getSeanceInfo(id);
+
+        setHallNumber(data.cinemaHallName);
+        setRows(data.numOfRow);
+        setPlacesInRow(data.numOfPlacesInRow);
+        setFilm(data.filmName);
 
         var arrOfBookedPlace = data.places.map(x => [x.rowNumber, x.placeNumber]);
 
@@ -27,22 +41,37 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
 
         var hall = [];
 
-        for (let i = 0; i < rows; i++){
+        for (let i = 0; i < data.numOfRow; i++){
           var row = [];
 
-          for (let j = 0; j < placesInRow; j++){
+          for (let j = 0; j < data.numOfPlacesInRow; j++){
             row.push(false)
           }
 
           hall.push(row);
         }
-
         setPlaces(hall);
 
         setChosenTickets([])
+
       }
     )()
-  }, [])
+  }, [isOpen])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (ref.current) {
+        var height = ref.current.clientHeight;
+        var pHeight = ticketsPRef.current.clientHeight;
+        var diff = height - pHeight;
+        setStyle({maxHeight: `${height}px`})
+        setListStyle({maxHeight: `${diff}px`})
+      }
+    },1000)
+
+    return () => clearTimeout(timer)
+
+  },[])
 
   const placeChoice = (row, place) => {
     // Включение и выключение из массива выбранных мест
@@ -83,8 +112,6 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
   }
 
   const PlacesRow = ({row}) => {
-    console.log(bookedPlaces)
-
     return (
     <div className='flex justify-between gap-4'>
       <p className='text-gray-400'>{row + 1}</p>
@@ -92,11 +119,11 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
         {
           Array.from(Array(placesInRow).keys()).map(place => {
 
-              return ( bookedPlaces.findIndex(x => x[0] == row && x[1] == place) == -1 ?
+              return ( bookedPlaces.findIndex(x => x[0] - 1 == row && x[1] - 1 == place) == -1 ?
                   <HallPlace
                     row={row}
                     place={place}
-                    checked={ places == undefined ? false : places[row][place]}
+                    checked={ places == undefined || places.length == 0 ? false : places[row][place]}
                     setChoice={(x,y) => placeChoice(x,y)}
                     color={ row > 1 && row < rows - 2 && place > 2 && place < placesInRow - 3 ? 'cyan' : 'blue'}
                   />
@@ -111,8 +138,8 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
     </div>
   )}
 
-  let content = !places ?  null :
-    <Dialog as="div" className="relative z-30 w-full" onClose={close}>
+  content = !places ?  null :
+    <Dialog as="div" className="relative z-30 w-full max-h-screen" onClose={close}>
     <Transition.Child
       as={Fragment}
       enter="ease-out duration-300"
@@ -136,11 +163,12 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-95"
         ><div>
-          <Dialog.Panel className="w-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+          <Dialog.Panel className="w-full max-h-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
             <Dialog.Title
               as="h3"
-              className="text-lg font-medium leading-6 text-gray-900 text-center"
+              className="text-xl font-medium leading-6 text-gray-900 text-center mb-4"
             >
+              <strong>{film}</strong>, Зал №{hallNumber}
             </Dialog.Title>
             <div className="grid grid-cols-4 gap-2">
               <div className='col-span-3 flex flex-col gap-4 p-4'>
@@ -180,12 +208,12 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
                   </div>
                 </div>
               </div>
-              <div className='flex justify-between flex-col py-4 divide-y'>
-                <div className='max-h-96'>
-                  <p className='text-center text-lg mb-3'>
+              <div className='flex flex-col py-4 divide-y resize-none'>
+                <div className='flex-auto overflow-hidden' ref={ref} style={style}>
+                  <p className='text-center text-lg mb-3' ref={ticketsPRef}>
                     Выбранные места
                   </p>
-                  <ul className='max-h-full overflow-y-auto'>{
+                  <ul className='overflow-auto ' ref = {listRef} style={listStyle}>{
                     chosenTickets.map(place => (
                       <li className=' px-2 py-4'>
                         <div className='flex justify-between'>
@@ -216,8 +244,5 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
     </div>
   </Dialog>
 
-
-  return(
-    content
-  )
+  return( content )
 }

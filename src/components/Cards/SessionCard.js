@@ -14,7 +14,7 @@ export const SessionCard = ({seance}) => {
     <div key={seance.id}>
       <div className='relative'>
         <button
-          className='border border-gray-200 rounded-lg py-1 px-9 hover:border-gray-700 hover:shadow hover:drop-shadow-2xl ease-in-out duration-200'
+          className='border border-gray-200 rounded-lg py-1 px-10 hover:border-gray-700 hover:shadow hover:drop-shadow-2xl ease-in-out duration-200'
           onClick={() => setOpen(true)}
         >
           <p>{`${session.seanceStartTime.substring(0,2)}:${session.seanceStartTime.substring(3,5)}`}</p>
