@@ -41,7 +41,10 @@ export const Navbar = () => {
           </Link>
           <select
             className='focus:outline-none focus:ring-0 border-0'
-            onChange={e => changeCity(e)}
+            onChange={e =>{
+              changeCity(e);
+              window.location.reload();
+            }}
             value={city}>
             {cities.map(city => (
               <option value={city}>{city}</option>
