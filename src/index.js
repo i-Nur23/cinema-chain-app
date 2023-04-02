@@ -13,10 +13,12 @@ import {Provider} from "react-redux";
 import {persistor, store} from "./store/store";
 import {PersistGate} from "redux-persist/integration/react";
 import {CityOffices, OfficesFilms} from "./views/Office";
+import {StaffAuthorization} from "./views/Staff";
 
 
 const router = createBrowserRouter(
     createRoutesFromElements(
+      <Route>
         <Route path="/" element={<VisitorApp/>}>
           <Route index element={<Home/>}/>
           <Route path="films/:id" element={<FilmShedulue/>}/>
@@ -26,6 +28,10 @@ const router = createBrowserRouter(
             <Route path=":id" element={<OfficesFilms/>}/>
           </Route>
         </Route>
+        <Route path="staff">
+          <Route index element={<StaffAuthorization/>}/>
+        </Route>
+      </Route>
     )
 )
 

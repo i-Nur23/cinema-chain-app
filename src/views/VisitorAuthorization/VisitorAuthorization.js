@@ -12,7 +12,20 @@ export const VisitorAuthorization = () => {
 
   return(
     <div className='flex justify-center'>
-      {isLogin ? <LoginForm onTypeChange={changeType}/> : <VisitorRegForm onTypeChange={changeType}/>}
+      {isLogin ?
+        <div className='m-auto w-4/12'>
+          <LoginForm/>
+          <div className="flex justify-between">
+            <p>
+              Ещё нет учетной записи?
+            </p>
+            <button className="underline" onClick={changeType}>
+              Зарегестрироваться
+            </button>
+          </div>
+        </div>
+        :
+        <VisitorRegForm onTypeChange={changeType}/>}
     </div>
   )
 }
