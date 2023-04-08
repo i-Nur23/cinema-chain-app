@@ -28,7 +28,7 @@ export const CityOffices = () => {
                 <strong>{office.name}</strong>
                 <p className='text-gray-400'>{office.adress}</p>
               </div>
-              <Link to={`${office.id}`} className='my-auto flex gap-2 hover:gap-4 ease-in-out duration-200 border-b-2 border-transparent hover:border-black to-table'>
+              <Link to={`${office.id}`} state={{theater : office.name, city : city}} className='my-auto flex gap-2 hover:gap-4 ease-in-out duration-200 border-b-2 border-transparent hover:border-black to-table'>
                 Расписание
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
                      className="w-0 h-4 my-auto invisible hover:visible hover:w-4">

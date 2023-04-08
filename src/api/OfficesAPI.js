@@ -17,4 +17,12 @@ export class OfficesAPI extends MainAPIBase {
 
     return response.data;
   }
+
+  static getOfficeSeances = async (id) => {
+    var url = `${this.baseURL}/BranchOffices/GetBranchOfficeShedule/${id}`
+
+    var response = await  axios.get(url);
+
+    return response.data;
+  }
 }
