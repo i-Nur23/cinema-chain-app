@@ -58,9 +58,9 @@ export const Navbar = () => {
             Афиша
           </a>
 
-          <a href="#" className='my-auto p-4 text-xl hover:text-cyan-700 ease-in-out duration-150'>
+          <Link to="chain" className='my-auto p-4 text-xl hover:text-cyan-700 ease-in-out duration-150'>
             Сеть
-          </a>
+          </Link>
 
           <Link to="cityoffices" className='my-auto p-4 text-xl hover:text-cyan-700 ease-in-out duration-150'>
             Кинотеатры

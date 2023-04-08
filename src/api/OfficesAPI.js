@@ -25,4 +25,12 @@ export class OfficesAPI extends MainAPIBase {
 
     return response.data;
   }
+
+  static getAllOffices = async () => {
+    var url = `${this.baseURL}/BranchOffices/GetOfficesList`
+
+    var response = await  axios.get(url);
+
+    return response.data;
+  }
 }

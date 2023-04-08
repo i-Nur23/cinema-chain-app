@@ -16,6 +16,7 @@ import {CityOffices, OfficesFilms} from "./views/Office";
 import {MainPage, StaffAuthorization} from "./views/Staff";
 import 'flowbite'
 import {Test} from "./views/Test";
+import {Chain} from "./views/Chain";
 
 
 const router = createBrowserRouter(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
         <Route path="/" element={<VisitorApp/>}>
           <Route index element={<Home/>}/>
           <Route path='test' element={<Test/>}/>
+          <Route path='chain' element={<Chain/>}/>
           <Route path="films/:id" element={<FilmShedulue/>}/>
           <Route path="authorization" element={<VisitorAuthorization/>} />
           <Route path="cityoffices">
