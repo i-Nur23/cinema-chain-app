@@ -6,7 +6,7 @@ import './cityoffices.css'
 
 export const CityOffices = () => {
   const [offices, setOffices] = useState(null);
-  const city = useSelector(state => state.city);
+  const city = useSelector(state => state.city.name);
 
   useEffect(() => {
     (

@@ -13,7 +13,9 @@ import {Provider} from "react-redux";
 import {persistor, store} from "./store/store";
 import {PersistGate} from "redux-persist/integration/react";
 import {CityOffices, OfficesFilms} from "./views/Office";
-import {StaffAuthorization} from "./views/Staff";
+import {MainPage, StaffAuthorization} from "./views/Staff";
+import 'flowbite'
+import {Test} from "./views/Test";
 
 
 const router = createBrowserRouter(
@@ -21,6 +23,7 @@ const router = createBrowserRouter(
       <Route>
         <Route path="/" element={<VisitorApp/>}>
           <Route index element={<Home/>}/>
+          <Route path='test' element={<Test/>}/>
           <Route path="films/:id" element={<FilmShedulue/>}/>
           <Route path="authorization" element={<VisitorAuthorization/>} />
           <Route path="cityoffices">
@@ -30,6 +33,7 @@ const router = createBrowserRouter(
         </Route>
         <Route path="staff">
           <Route index element={<StaffAuthorization/>}/>
+          <Route path='main' element={<MainPage/>}/>
         </Route>
       </Route>
     )

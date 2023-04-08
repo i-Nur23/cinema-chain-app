@@ -12,7 +12,7 @@ import {FilmsAPI} from "../../api";
 
 export  const FilmShedulue = (props) => {
   const {id} = useParams();
-  const city = useSelector(state => state.city)
+  const city = useSelector(state => state.city.name)
 
   const [film, setFilm] = useState();
   const [table, setTable] = useState();

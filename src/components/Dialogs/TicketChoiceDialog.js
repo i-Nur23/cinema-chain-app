@@ -126,6 +126,7 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
                     checked={ places == undefined || places.length == 0 ? false : places[row][place]}
                     setChoice={(x,y) => placeChoice(x,y)}
                     color={ row > 1 && row < rows - 2 && place > 2 && place < placesInRow - 3 ? 'cyan' : 'blue'}
+                    index={row * placesInRow + place}
                   />
                   :
                   <DisabledHallPlace place={place}/>

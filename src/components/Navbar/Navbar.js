@@ -8,7 +8,7 @@ import {setCity} from "../../store/slicers/CitySlicer";
 export const Navbar = () => {
 
 
-  const city = useSelector(state => state.city)
+  const city = useSelector(state => state.city.name)
 
   /*onst [selectedCity, selectCity] = useState(city)*/
   const [cities, setCities] = useState([]);
@@ -17,8 +17,9 @@ export const Navbar = () => {
   useEffect(() => {
     (
       async () => {
+        console.log(city);
         var response = await OfficesAPI.getCities();
-        console.log(response.cities)
+        console.log(response.cities);
         setCities(response.cities);
 
 
@@ -29,6 +30,7 @@ export const Navbar = () => {
   const changeCity = e => {
     var city = e.target.value;
     /*selectCity(city)*/
+    console.log(city)
     dispatch(setCity(city))
   }
 
@@ -74,8 +76,6 @@ export const Navbar = () => {
             <p>Вход</p>
           </Link>
         </div>
-
-
       </div>
       <hr/>
     </div>
