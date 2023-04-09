@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import './navbar.css'
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {OfficesAPI} from "../../api";
 import {useDispatch, useSelector} from "react-redux";
 import {setCity} from "../../store/slicers/CitySlicer";
@@ -14,7 +14,7 @@ export const Navbar = () => {
   const [cities, setCities] = useState([]);
   const dispatch = useDispatch();
 
-  let token = localStorage.getItem('token');
+  let token = useSelector(state => state.auth.token);
 
   useEffect(() => {
     (
@@ -23,8 +23,6 @@ export const Navbar = () => {
         var response = await OfficesAPI.getCities();
         console.log(response.cities);
         setCities(response.cities);
-
-
       }
     )()
   }, [token])

@@ -2,12 +2,15 @@ import {Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState} fro
 import {Dialog, Transition} from "@headlessui/react";
 import {DisabledHallPlace, HallPlace} from "../Checkboxes";
 import {SeanceAPI} from "../../api/SeanceAPI";
+import {BookingAPI} from "../../api/BookingAPI";
+import {useNavigate} from "react-router-dom";
 
 export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
 
   const ref = useRef();
   const listRef = useRef();
   const ticketsPRef = useRef();
+  const navigate = useNavigate();
 
   let content = null;
 
@@ -20,6 +23,7 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
 
   const [places, setPlaces] = useState(null);
   const [price, setPrice] = useState(0);
+  const [message, setMessage] = useState('');
 
   const [bookedPlaces, setBookedPlaces] = useState([]);
   const [style, setStyle] = useState();
@@ -83,7 +87,8 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
         setPrice(price - basePrice)
       }
     } else {
-      setChosenTickets([...chosenTickets, [row, place]])
+      setChosenTickets([...chosenTickets, [row, place,
+        row > 1 && row < rows - 2 && place > 2 && place < placesInRow - 3 ? Math.round ( basePrice * 1.2 / 10 ) * 10 : basePrice]])
       if (row > 1 && row < rows - 2 && place > 2 && place < placesInRow - 3){
         setPrice(price + Math.round ( basePrice * 1.2 / 10 ) * 10)
       } else {
@@ -124,7 +129,10 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
                     row={row}
                     place={place}
                     checked={ places == undefined || places.length == 0 ? false : places[row][place]}
-                    setChoice={(x,y) => placeChoice(x,y)}
+                    setChoice={(x,y) => {
+                      placeChoice(x,y);
+                      setMessage('')
+                    }}
                     color={ row > 1 && row < rows - 2 && place > 2 && place < placesInRow - 3 ? 'cyan' : 'blue'}
                     index={row * placesInRow + place}
                   />
@@ -138,6 +146,25 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
       <p className='text-gray-400'>{row + 1}</p>
     </div>
   )}
+
+  const handleBooking = async () => {
+    if (chosenTickets.length == 0){
+      setMessage('Выберите места');
+      return;
+    }
+
+    var res = await BookingAPI.bookPlaces(id, chosenTickets);
+
+    if (res.status == 401){
+      navigate('/authorization');
+      return;
+    }
+
+
+
+
+  }
+
 
   content = !places ?  null :
     <Dialog as="div" className="relative z-30 w-full max-h-screen" onClose={close}>
@@ -232,9 +259,15 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
                 </div>
                 <div>
                   <p className='my-4'>Общая сумма: {price} руб</p>
-                  <button className='h-12 w-full bg-gray-100 hover:bg-gray-300 rounded-lg ease-in-out duration-50'>
-                    Далее
+                  <button
+                    className='h-12 w-full bg-gray-100 hover:bg-gray-300 rounded-lg ease-in-out duration-50'
+                    onClick={handleBooking}
+                  >
+                    Оплатить
                   </button>
+                  <p className='text-sm text-red-500'>
+                    {message}
+                  </p>
                 </div>
               </div>
             </div>
