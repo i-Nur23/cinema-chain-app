@@ -17,7 +17,6 @@ export const MapWithMarker = ({lat, lng, ind, upInd}) => {
               center: [lat, lng],
               zoom: 13,
               key: process.env.REACT_APP_MAP_API_KEY,
-              styleState : [{'border-radius' : '0.5em'}]
             });
 
             let marker = new mapgl.Marker(map, {

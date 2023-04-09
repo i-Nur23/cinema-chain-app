@@ -31,7 +31,8 @@ export const LoginForm = () => {
       if (!data.isSuccess){
         setMessage(data.description);
       } else {
-        dispatch(setToken(data.token));
+        //dispatch(setToken(data.token));
+        localStorage.setItem('token', data.token)
         navigate("/");
       }
     }

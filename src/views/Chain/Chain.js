@@ -35,8 +35,10 @@ export const Chain = () => {
                         <p>Электронная почта: {th.email}</p>
                         <p>Время работы: {th.workTime}</p>
                       </div>
-                      <div className='h-72 w-2/5'>
-                        <MapWithMarker lat={th.latitude} lng={th.longitude} ind={index} upInd={upInd}/>
+                      <div className='h-72 w-2/5 bg-white'>
+                        <div className='bg-white top-0 left-0 h-full w-full'>
+                            <MapWithMarker lat={th.latitude} lng={th.longitude} ind={index} upInd={upInd}/>
+                        </div>
                       </div>
                     </li>
                   ))
