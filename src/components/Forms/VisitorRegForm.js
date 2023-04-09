@@ -5,7 +5,7 @@ import {setToken} from "../../store/slicers/AuthSlicer";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
-export  const  VisitorRegForm = ({onTypeChange}) => {
+export  const  VisitorRegForm = ({onTypeChange, after}) => {
   const [message, setMessage] = useState(' ')
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
@@ -35,7 +35,7 @@ export  const  VisitorRegForm = ({onTypeChange}) => {
         setMessage(data.description);
       } else {
         dispatch(setToken(data.token));
-        navigate("/");
+        navigate(after);
       }
     }
   }

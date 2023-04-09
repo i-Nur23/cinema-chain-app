@@ -11,6 +11,14 @@ const VisitorApp = () => {
     importTE();
   }, []);*/
 
+  /*window.addEventListener('phx:page-loading-stop', (event) => {
+    // trigger flowbite events
+    window.document.dispatchEvent(new Event("DOMContentLoaded", {
+      bubbles: true,
+      cancelable: true
+    }));
+  });*/
+
 
   return (
     <div className='flex flex-col min-h-screen justify-between bg'>

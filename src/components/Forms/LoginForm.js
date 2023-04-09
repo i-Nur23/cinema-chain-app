@@ -1,11 +1,11 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {DefaultInput, PasswordInput} from "../Inputs";
 import {AuthAPI} from "../../api/AuthAPI";
 import {useDispatch} from "react-redux";
 import {setToken} from "../../store/slicers/AuthSlicer";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
-export const LoginForm = () => {
+export const LoginForm = ({after}) => {
   const [message, setMessage] = useState(' ')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -13,6 +13,7 @@ export const LoginForm = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const HandleReg = async () => {
     var inputs = document.querySelectorAll('input');
@@ -31,14 +32,20 @@ export const LoginForm = () => {
       if (!data.isSuccess){
         setMessage(data.description);
       } else {
-        //dispatch(setToken(data.token));
-        localStorage.setItem('token', data.token)
-        navigate("/");
+        dispatch(setToken(data.token));
+        navigate(after);
       }
     }
   }
 
+  useEffect(() => {
+    if (location.state){
+      setMessage(location.state.reason);
+    }
+  },[])
+
   const valueChanged = (ind) => {
+    setMessage('');
     setInvalidArray(invalidArray.map((isVal, innerIndex) => {
       if (innerIndex == ind) {
         return false;

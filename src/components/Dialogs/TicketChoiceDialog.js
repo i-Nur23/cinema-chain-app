@@ -4,6 +4,7 @@ import {DisabledHallPlace, HallPlace} from "../Checkboxes";
 import {SeanceAPI} from "../../api/SeanceAPI";
 import {BookingAPI} from "../../api/BookingAPI";
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
 
@@ -11,6 +12,7 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
   const listRef = useRef();
   const ticketsPRef = useRef();
   const navigate = useNavigate();
+  const token = useSelector(state => state.auth.token);
 
   let content = null;
 
@@ -153,14 +155,37 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
       return;
     }
 
-    var res = await BookingAPI.bookPlaces(id, chosenTickets);
+    var res = BookingAPI.bookPlaces(id, chosenTickets, token)
+      .then(res => {
+        if (res.status){
+          console.log('status is ok')
+          navigate('/user/bookings')
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        if (err.response.status == 401){
+          navigate('/authorization', {
+            state : {
+              reason : 'Войдите перед тем как забронировать билеты',
+              after : '/user/bookings'
+            }
+          });
+        } else {
+          console.log(err)
+        }
+      })
 
-    if (res.status == 401){
-      navigate('/authorization');
+
+    /*if (res.status == 401){
+      navigate('/authorization', {
+        state : {
+          reason : 'Войдите перед тем как забронировать билеты',
+          after : '/'
+        }
+      });
       return;
-    }
-
-
+    }*/
 
 
   }

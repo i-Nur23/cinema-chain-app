@@ -1,11 +1,16 @@
-import {useEffect, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import './navbar.css'
 import {Link, useLocation} from "react-router-dom";
 import {OfficesAPI} from "../../api";
 import {useDispatch, useSelector} from "react-redux";
 import {setCity} from "../../store/slicers/CitySlicer";
+import {deleteToken} from "../../store/slicers/AuthSlicer";
+import {Menu, Transition} from "@headlessui/react";
 
 export const Navbar = () => {
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+  }
 
 
   const city = useSelector(state => state.city.name)
@@ -74,39 +79,76 @@ export const Navbar = () => {
         <div className='w-1/4 flex justify-end'>
           {
             token == '' ?
-            <Link to="authorization" className='my-auto text-xl p-4 rounded hover:bg-cyan-700 hover:text-white ease-in-out duration-300'>
-              <p>Вход</p>
-            </Link>
-              :
-              <div className='my-auto'>
-                <button id="dropdownDefaultButton"
-                        data-dropdown-toggle="dropdown"
-                        className="inline-flex items-center text-xl"
-                        type="button">Dropdown button
-                  <svg className="w-4 h-4 ml-2" aria-hidden="true" fill="none"
-                                                           stroke="currentColor" viewBox="0 0 24 24"
-                                                           xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </button>
-                <div id="dropdown"
-                     className="text-sm z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                  <ul className="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                    <li>
-                      <a href="#"
-                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Профиль</a>
-                    </li>
-                    <li>
-                      <a href="#"
-                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Мои билеты</a>
-                    </li>
-                  </ul>
-                    <div>
-                      <a href="#"
-                         className="block text-red-600 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Выход</a>
+              <Link to="authorization" className='my-auto text-xl p-4 rounded hover:bg-cyan-700 hover:text-white ease-in-out duration-300'>
+                <p>Вход</p>
+              </Link>
+            :
+              <Menu as="div" className="relative my-auto">
+                <Menu.Button className="pt-2">
+                  <div className="flex content-center">
+                    <p className='text-xl'>Фамилия Имя</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor" className="w-5 h-5 m-auto">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+                    </svg>
+                  </div>
+                </Menu.Button>
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <Menu.Items className="absolute right-0 z-10 mt-2 divide-y divide-gray-200 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div className="py-1">
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link
+                            to="user\profile"
+                            className={classNames(
+                              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                              'block px-4 py-2 text-sm'
+                            )}
+                          >
+                            Мой профиль
+                          </Link>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link
+                            to="user\bookings"
+                            className={classNames(
+                              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                              'block px-4 py-2 text-sm'
+                            )}
+                          >
+                            Мои билеты
+                          </Link>
+                        )}
+                      </Menu.Item>
                     </div>
-                </div>
-              </div>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button
+                          type="submit"
+                          className={classNames(
+                            active ? 'bg-gray-100' : '',
+                            'text-red-700 block w-full px-4 py-2 text-left text-sm'
+                          )}
+                          onClick={() => dispatch(deleteToken())}
+                        >
+                          Выйти
+                        </button>
+                      )}
+                    </Menu.Item>
+                  </Menu.Items>
+                </Transition>
+              </Menu>
+
           }
         </div>
       </div>

@@ -14,9 +14,11 @@ import {persistor, store} from "./store/store";
 import {PersistGate} from "redux-persist/integration/react";
 import {CityOffices, OfficesFilms} from "./views/Office";
 import {MainPage, StaffAuthorization} from "./views/Staff";
-import 'flowbite'
+/*import 'flowbite/dist/flowbite.css'*/
 import {Test} from "./views/Test";
 import {Chain} from "./views/Chain";
+import {UserBookings} from "./views/User";
+import {UserProfile} from "./views/User/UserProfile";
 
 
 const router = createBrowserRouter(
@@ -37,6 +39,10 @@ const router = createBrowserRouter(
           <Route index element={<StaffAuthorization/>}/>
           <Route path='main' element={<MainPage/>}/>
         </Route>
+        <Route path="user">
+          <Route path='bookings' element={<UserBookings/>}/>
+          <Route path='profile' element={<UserProfile/>}/>
+        </Route>
       </Route>
     )
 )
@@ -47,7 +53,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router}>
+      </RouterProvider>
     </PersistGate>
   </Provider>
 );
