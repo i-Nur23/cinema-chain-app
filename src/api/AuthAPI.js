@@ -26,7 +26,7 @@ export class AuthAPI{
     body.append("lastName", surname);
     body.append("nickName", login);
 
-    var url = `${MainAPIBase.baseURL}/Auth/Login`;
+    var url = `${MainAPIBase.baseURL}/Auth/Registrate`;
 
     var response = await axios.post(url, body, {
       headers : {
