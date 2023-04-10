@@ -168,7 +168,9 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
           navigate('/authorization', {
             state : {
               reason : 'Войдите перед тем как забронировать билеты',
-              after : '/user/bookings'
+              after : '/user/bookings',
+              tickets : chosenTickets,
+              seanceId : id,
             }
           });
         } else {
@@ -186,8 +188,6 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
       });
       return;
     }*/
-
-
   }
 
 

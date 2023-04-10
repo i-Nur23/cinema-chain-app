@@ -1,3 +1,7 @@
 #cont {
    height: 100%
 }
+
+.cont > div {
+   border-radius: 0.3em;
+}

@@ -1,5 +1,5 @@
 export class MainAPIBase {
-  static baseURL = 'https://localhost:7174/api'
+  static baseURL = 'https://localhost:7174/KinoDriveWebApi'
 
   static config = {
     headers:{

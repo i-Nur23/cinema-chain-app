@@ -3,7 +3,7 @@ import {load} from "@2gis/mapgl";
 
 const MapWrapper = React.memo(
   ({ind, upInd}) => {
-    return <div id={`map-container-${upInd}-${ind}`} style={{ width: '100%', height: '100%'}}></div>;
+    return <div id={`map-container-${upInd}-${ind}`} style={{ width: '100%', height: '100%'}} className='cont'></div>;
   },
   () => true,
 );

@@ -5,7 +5,7 @@ import {setToken} from "../../store/slicers/AuthSlicer";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
-export  const  VisitorRegForm = ({onTypeChange, after}) => {
+export  const  VisitorRegForm = ({onTypeChange, after, action}) => {
   const [message, setMessage] = useState(' ')
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
@@ -30,11 +30,12 @@ export  const  VisitorRegForm = ({onTypeChange, after}) => {
     })
     setInvalidArray(newArray);
     if (ok){
-      var data = await AuthAPI.LogIn(email, password);
+      var data = await AuthAPI.Register(name, surname, email, nick, password);
       if (!data.isSuccess){
         setMessage(data.description);
       } else {
         dispatch(setToken(data.token));
+        await action(data.token);
         navigate(after);
       }
     }

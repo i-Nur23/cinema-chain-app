@@ -5,7 +5,7 @@ import {useDispatch} from "react-redux";
 import {setToken} from "../../store/slicers/AuthSlicer";
 import {useLocation, useNavigate} from "react-router-dom";
 
-export const LoginForm = ({after}) => {
+export const LoginForm = ({after, action}) => {
   const [message, setMessage] = useState(' ')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -33,6 +33,7 @@ export const LoginForm = ({after}) => {
         setMessage(data.description);
       } else {
         dispatch(setToken(data.token));
+        await action(data.token);
         navigate(after);
       }
     }

@@ -1,8 +1,7 @@
 export const UserBookings = () => {
 
-
   return(
-    <div>
+    <div className='container px-20'>
       Тут будут билеты.
     </div>
   )

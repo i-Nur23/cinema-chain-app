@@ -34,14 +34,14 @@ const router = createBrowserRouter(
             <Route path="" element={<CityOffices/>}/>
             <Route path=":id" element={<OfficesFilms/>}/>
           </Route>
+          <Route path="user">
+            <Route path='bookings' element={<UserBookings/>}/>
+            <Route path='profile' element={<UserProfile/>}/>
+          </Route>
         </Route>
         <Route path="staff">
           <Route index element={<StaffAuthorization/>}/>
           <Route path='main' element={<MainPage/>}/>
-        </Route>
-        <Route path="user">
-          <Route path='bookings' element={<UserBookings/>}/>
-          <Route path='profile' element={<UserProfile/>}/>
         </Route>
       </Route>
     )
