@@ -11,11 +11,8 @@ export const UserBookings = () => {
   const [futureBookings, setFutureBookings] = useState([])
 
   useEffect(() => {
-    (
-      async () => {
-        UserAPI.getAllBookings(token)
+      UserAPI.getAllBookings(token)
           .then(res => {
-            console.log(res.request)
             setPastBookings(res.data.past);
             setFutureBookings(res.data.future);
           })
@@ -23,8 +20,6 @@ export const UserBookings = () => {
             console.log(err)
             navigate('/authorization')
           })
-      }
-    )()
   },[])
 
   return(
@@ -33,20 +28,37 @@ export const UserBookings = () => {
         <p className='text-gray-600 text-xl'>Билетов пока нет</p>
       :
         <div>
-          <center className='text-xl'>Ваши билеты</center>
+          <center className='text-xl mt-8'>Ваши билеты</center>
           <ul>
             {
               futureBookings.map(b => (
                 <li className='p-3 border-b flex justify-between'>
                   <div>
-                    <p>{b.filmName}</p>
-                    <p className='text-gray'>{b.branchOfficeName}, {b.branchOfficeAdress}</p>
-                    <p className='text-gray'>
-                      Зал № {b.cinemaHallName}, {b.seanceStartTime.substring(8,10)}.{b.seanceStartTime.substring(5,7)}.{b.seanceStartTime.substring(0,4)}
+                    <p className='font-semibold text-lg'>{b.filmName}</p>
+                    <p className='text-gray-500'>{b.branchOfficeName}, {b.branchOfficeAdress}</p>
+                    <p className='text-gray-500'>
+                      Зал № {b.cinemaHallName}, &nbsp;{b.seanceStartTime.substring(8,10)}.{b.seanceStartTime.substring(5,7)}.{b.seanceStartTime.substring(0,4)}, &nbsp;
                       {b.seanceStartTime.substring(11,13)}:{b.seanceStartTime.substring(14,16)}
                     </p>
                   </div>
-                  <p>Ряд: {b.rowNumber} Место: {b.placeNumber}, {b.ticketCost} руб</p>
+                  <p className='my-auto'>Ряд: {b.rowNumber} Место: {b.placeNumber}, Цена: {b.ticketCost} руб</p>
+                </li>
+              ))
+            }
+          </ul>
+          <ul>
+            {
+              pastBookings.map(b => (
+                <li className='p-3 border-b flex justify-between text-gray-500'>
+                  <div>
+                    <p className='font-semibold text-lg'>{b.filmName}</p>
+                    <p className='text-gray-500'>{b.branchOfficeName}, {b.branchOfficeAdress}</p>
+                    <p className='text-gray-500'>
+                      Зал № {b.cinemaHallName}, &nbsp;{b.seanceStartTime.substring(8,10)}.{b.seanceStartTime.substring(5,7)}.{b.seanceStartTime.substring(0,4)}, &nbsp;
+                      {b.seanceStartTime.substring(11,13)}:{b.seanceStartTime.substring(14,16)}
+                    </p>
+                  </div>
+                  <p className='my-auto'>Ряд: {b.rowNumber} Место: {b.placeNumber}, Цена: {b.ticketCost} руб</p>
                 </li>
               ))
             }

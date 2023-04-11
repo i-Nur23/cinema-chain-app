@@ -5,7 +5,9 @@ export class UserAPI extends MainAPIBase{
   static getAllBookings = async (token) => {
     var url = `${this.baseURL}/UserCabinet/GetBookingTickets`
 
-    var response = await axios.get(url, {header : {
+    console.log(token);
+
+    var response = await axios.get(url, {headers : {
         'Authorization' : `Bearer ${token}`
       }})
 
