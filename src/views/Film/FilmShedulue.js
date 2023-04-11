@@ -5,6 +5,7 @@ import dune from "../../assets/images/dune.jpg";
 import cheburashka from "../../assets/images/cheburashka.jpg";
 import inception from "../../assets/images/inception.jpg";
 import oppenhaimer from "../../assets/images/oppenhaimer.jpg";
+import placeholder from "../../assets/images/placeholder.jpg"
 import {FilmSessions} from "../../components/Lists";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
@@ -32,7 +33,7 @@ export  const FilmShedulue = (props) => {
 
   let content = loaded ?  <div className='container px-20 my-10'>
     <div className='flex justify-start gap-10'>
-      <img src={inception} alt={film.name} className='object-cover h-96 rounded-lg'/>
+      <img src={film.poster ?? placeholder} alt={film.name} className='object-cover h-96 rounded-lg'/>
       <div className='flex flex-col gap-5'>
         <p className='text-2xl'><strong>{film.name}</strong></p>
         <p className='text-xl'>{film.description}</p>

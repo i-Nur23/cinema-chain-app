@@ -28,7 +28,7 @@ export class DateHandler{
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
 
-    let currentDate = `${('0' + day).slice(-2)}.${('0' + month).slice(-2)}.${year}`;
+    let currentDate = `${('0' + month).slice(-2)}/${('0' + day).slice(-2)}/${year}`;
     return currentDate
   }
 }
