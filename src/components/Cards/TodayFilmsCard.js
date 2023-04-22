@@ -10,6 +10,7 @@ export const TodayFilmsCard = ({film}) => {
         <img src={film.poster ?? placeholder} className='object-fill h-80 w-56 rounded-xl'/>
         <div>
           <p className='text-xl'><strong>{film.name}</strong></p>
+          <p>{film.ageRestriction}+</p>
           <div className='flex justify-start my-10 gap-5'>
             <img src={kp_logo} alt='ds' className='object-cover h-10 w-10 rounded-lg'/>
             <p className='my-auto text-lg text-gray-400'>{film.ratingOnKinopoisk}</p>

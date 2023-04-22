@@ -26,6 +26,7 @@ export  const FilmShedulue = (props) => {
         setFilm(data.info);
         setTable(data.sessionSchedule);
         setLoaded(true);
+        console.log(data.info.imagesUrls.map(url => {return {src : url, width : 320, height : 200}}))
       }
     )()
   },[id, city])
@@ -33,9 +34,9 @@ export  const FilmShedulue = (props) => {
 
   let content = loaded ?  <div className='container px-20 my-10'>
     <div className='flex justify-start gap-10'>
-      <img src={film.poster ?? placeholder} alt={film.name} className='object-cover h-96 rounded-lg'/>
+      <img src={film.poster ?? placeholder} alt={film.name} className='rounded-lg h-96 object-cover'/>
       <div className='flex flex-col gap-5'>
-        <p className='text-2xl'><strong>{film.name}</strong></p>
+        <p className='text-2xl'><strong>{film.name}</strong>, {film.ageRestriction}+</p>
         <p className='text-xl'>{film.description}</p>
         <div className='flex flex-col gap-3'>
           <div className='inline-flex gap-2 text-gray-400'>
@@ -80,6 +81,16 @@ export  const FilmShedulue = (props) => {
         </div>
       </div>
     </div>
+    <iframe
+      src={film.urlForTrailer}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      title="trailer"
+    >
+    </iframe>
+    {/*<iframe width="560" height="315" src="https://www.youtube.com/embed/qEVUtrk8_B4" title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen></iframe>*/}
     <FilmSessions table={table}/>
 
   </div>: null
