@@ -1,11 +1,12 @@
 import {useState} from "react";
 
-export const DefaultInput = ({value, placeholder ,setValue, isInvalid, onChange}) => {
+export const DefaultInput = ({value, placeholder ,setValue, isInvalid, onChange, disabled=false}) => {
 
   return(
     <div>
       <input
         type="text"
+        disabled={disabled}
         value={value}
         className="w-full p-2 border border-gray-300 focus:border-gray-400 rounded-lg focus:ring focus:ring-gray-100 focus:outline-none invalid:border-red-700 focus:invalid:border-red-700"
         placeholder={placeholder}
