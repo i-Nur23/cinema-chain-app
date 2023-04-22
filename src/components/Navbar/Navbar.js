@@ -19,7 +19,10 @@ export const Navbar = () => {
   const [cities, setCities] = useState([]);
   const dispatch = useDispatch();
 
-  let token = useSelector(state => state.auth.token);
+  const token = useSelector(state => state.auth.token);
+  const nickname = useSelector(state => state.auth.nickname);
+
+
 
   useEffect(() => {
     (
@@ -86,7 +89,7 @@ export const Navbar = () => {
               <Menu as="div" className="relative my-auto">
                 <Menu.Button className="pt-2">
                   <div className="flex content-center">
-                    <p className='text-xl'>Фамилия Имя</p>
+                    <p className='text-xl'>{nickname}</p>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor" className="w-5 h-5 m-auto">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>

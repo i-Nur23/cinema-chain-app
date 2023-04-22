@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  token : ''
+  token : '',
+  nickname : ''
 }
 
 export const authSlice = createSlice({
@@ -9,10 +10,12 @@ export const authSlice = createSlice({
   initialState,
   reducers:{
     setToken : (state, action) => {
-      state.token = action.payload;
+      state.token = action.payload.token;
+      state.nickname = action.payload.nickname;
     },
     deleteToken : (state, action) => {
       state.token = '';
+      state.nickname = '';
     }
   }
 })

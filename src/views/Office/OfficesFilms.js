@@ -48,7 +48,7 @@ export const OfficesFilms = (props) => {
           films.map(film => (
             <li className='flex justify-between p-4 border-b'>
               <div className='flex gap-3'>
-                <img src={dune} className='object-fill h-44 rounded-xl'/>
+                <img src={film.film.posterURL} className='object-fill h-44 rounded-xl'/>
                 <div>
                   <p className='font-semibold text-lg'>{film.film.name}</p>
                   <p className='text-gray-400'>{film.film.ageRestriction}+</p>

@@ -29,7 +29,7 @@ export const Chain = () => {
                 {
                   city.theatres.map((th, index) => (
                     <li className='py-4 border-b flex justify-between'>
-                      <div className='text-lg flex flex-col gap-2'>
+                      <div className='text-lg flex flex-col gap-2 w-3/5'>
                         <p>{th.name}, г. {city.city}, {th.adress}</p>
                         <p>{th.description}</p>
                         <p>Телефон: {th.mobilePhone}</p>
