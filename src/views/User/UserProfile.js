@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {AuthAPI} from "../../api/AuthAPI";
 import {DefaultInput} from "../../components/Inputs";
 import {setToken} from "../../store/slicers/AuthSlicer";
@@ -11,7 +11,7 @@ export const UserProfile = () => {
   const [name, setName] = useState('')
   const [surname, setSurname] = useState('')
   const [nick, setNick] = useState('')
-  const [invalidArray, setInvalidArray] = useState([false, false, false, false, false]);
+  const [invalidArray, setInvalidArray] = useState([false, false, false, false]);
   const [diasbled, setDisabled] = useState(true);
 
   const dispatch = useDispatch();
@@ -77,10 +77,6 @@ export const UserProfile = () => {
     }))
   }
 
-  function toPasswordChange() {
-
-  }
-
   return (
     <div className='container mx-auto w-4/12 p-6 flex flex-col gap-6 rounded mt-10'>
       <p className='text-2xl text-center'>Профиль</p>
@@ -121,9 +117,9 @@ export const UserProfile = () => {
         </p>
       </div>
       <div className="flex justify-end">
-        <button className="underline" onClick={toPasswordChange}>
+        <Link to='password' className="underline" >
           Смена пароля
-        </button>
+        </Link>
       </div>
     </div>
   )

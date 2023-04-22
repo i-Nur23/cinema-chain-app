@@ -17,8 +17,7 @@ import {MainPage, StaffAuthorization} from "./views/Staff";
 /*import 'flowbite/dist/flowbite.css'*/
 import {Test} from "./views/Test";
 import {Chain} from "./views/Chain";
-import {UserBookings} from "./views/User";
-import {UserProfile} from "./views/User/UserProfile";
+import {UserBookings, UserProfile, PasswordChange} from "./views/User";
 
 
 const router = createBrowserRouter(
@@ -36,7 +35,10 @@ const router = createBrowserRouter(
           </Route>
           <Route path="user">
             <Route path='bookings' element={<UserBookings/>}/>
-            <Route path='profile' element={<UserProfile/>}/>
+            <Route path='profile'>
+              <Route index element={<UserProfile/>}/>
+              <Route path='password' element={<PasswordChange/>}/>
+            </Route>
           </Route>
         </Route>
         <Route path="staff">
