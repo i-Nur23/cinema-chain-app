@@ -7,7 +7,7 @@ import {
   createBrowserRouter, createRoutesFromElements, Route, Router, RouterProvider,
 } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
-import {FilmShedulue} from "./views/Film";
+import {FIlmInfo, FilmShedulue} from "./views/Film";
 import {VisitorAuthorization} from "./views/VisitorAuthorization";
 import {Provider} from "react-redux";
 import {persistor, store} from "./store/store";
@@ -27,7 +27,10 @@ const router = createBrowserRouter(
           <Route index element={<Home/>}/>
           <Route path='test' element={<Test/>}/>
           <Route path='chain' element={<Chain/>}/>
-          <Route path="films/:id" element={<FilmShedulue/>}/>
+          <Route path="films">
+            <Route path=":id" element={<FilmShedulue/>}/>
+            <Route path=":id/info" element={<FIlmInfo/>}/>
+          </Route>
           <Route path="authorization" element={<VisitorAuthorization/>} />
           <Route path="cityoffices">
             <Route path="" element={<CityOffices/>}/>

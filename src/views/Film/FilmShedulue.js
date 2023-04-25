@@ -1,10 +1,4 @@
-import {useParams} from "react-router-dom";
-import drive from "../../assets/images/drive.jpg";
-import revolver from "../../assets/images/revolver.jpg";
-import dune from "../../assets/images/dune.jpg";
-import cheburashka from "../../assets/images/cheburashka.jpg";
-import inception from "../../assets/images/inception.jpg";
-import oppenhaimer from "../../assets/images/oppenhaimer.jpg";
+import {Link, useParams} from "react-router-dom";
 import placeholder from "../../assets/images/placeholder.jpg"
 import {FilmSessions} from "../../components/Lists";
 import {useEffect, useState} from "react";
@@ -37,7 +31,6 @@ export  const FilmShedulue = (props) => {
       <img src={film.poster ?? placeholder} alt={film.name} className='rounded-lg h-96 object-cover'/>
       <div className='flex flex-col gap-5'>
         <p className='text-2xl'><strong>{film.name}</strong>, {film.ageRestriction}+</p>
-        <p className='text-xl'>{film.description}</p>
         <div className='flex flex-col gap-3'>
           <div className='inline-flex gap-2 text-gray-400'>
             {
@@ -47,50 +40,15 @@ export  const FilmShedulue = (props) => {
             }
           </div>
           <div className='inline-flex gap-2'>
-            <p className='text-gray-400'>Режиссёр: </p>
-            {
-              film.filmDirectors.map((dir, index) => (
-                <p>{dir.name + `${index == film.filmDirectors.length - 1 ? '' : ','}`}</p>
-              ))
-            }
-          </div>
-          <div className='inline-flex gap-2'>
-            <p className='text-gray-400'>Актёры: </p>
-            {
-              film.actors.map( (actor, index) => (
-                <p>{actor.name + `${index == film.actors.length - 1 ? '' : ','}`}</p>
-              ))
-            }
-          </div>
-          <div className='inline-flex gap-2'>
-            <p className='text-gray-400'>Год: </p>
-            <p>{film.releaseYear}</p>
-          </div>
-          <div className='inline-flex gap-2'>
             <p className='text-gray-400'>Продолжительность: </p>
             <p>{`${Math.floor(film.length / 60)} ч ${film.length % 60 == 0 ? '' : `${film.length % 60} мин`}`}</p>
           </div>
-          <div className='inline-flex gap-2'>
-            <p className='text-gray-400'>Кинопоиск: </p>
-            <p>{film.ratingOnKinopoisk}</p>
-            <p className='text-gray-400'>IMDB: </p>
-            <p>{film.ratingOnImdb}</p>
-            <p className='text-gray-400'>Наш рейтинг: </p>
-            <p>{film.rating}</p>
-          </div>
+          <Link to='info' state={{film : film}} className='underline text-gray-400 hover:text-black'>
+            Посмотреть полную информацию о фильме
+          </Link>
         </div>
       </div>
     </div>
-    <iframe
-      src={film.urlForTrailer}
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      title="trailer"
-    >
-    </iframe>
-    {/*<iframe width="560" height="315" src="https://www.youtube.com/embed/qEVUtrk8_B4" title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen></iframe>*/}
     <FilmSessions table={table}/>
 
   </div>: null
