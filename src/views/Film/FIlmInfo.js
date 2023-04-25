@@ -9,6 +9,8 @@ import {Carousel} from "react-responsive-carousel";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import {ReviewAPI} from "../../api/ReviewAPI";
+import {OtherUserReview, UserEmptyReview, UserReview} from "../../components/Review";
 
 export const FIlmInfo = () => {
 
@@ -16,7 +18,18 @@ export const FIlmInfo = () => {
   const {id} = useParams();
   const [film, setFilm] = useState(null);
   const [loaded, setLoaded] = useState(false);
-  const [reviews, setReviews] = useState();
+  const [reviews, setReviews] = useState([]);
+  const [userReview, setUserReview] = useState(null);
+
+  useEffect(() => {
+    (
+      async () => {
+        var resData = await ReviewAPI.GetAllReviews(id);
+        setReviews(resData.reviewWRatingArray);
+        setUserReview(resData.userReview)
+      }
+    )()
+  },[])
 
   useEffect(() => {
     console.log(location.state.film)
@@ -119,6 +132,14 @@ export const FIlmInfo = () => {
       </div>
       <hr className='my-5'/>
       <center className='text-xl font-semibold'>Отзывы</center>
+      <div className='mx-auto w-2/5'>
+        {
+          userReview ? null : <UserEmptyReview/>
+        }
+        {
+          reviews.map(r => <OtherUserReview review={r}/>)
+        }
+      </div>
     </div>
 
   return(content)
