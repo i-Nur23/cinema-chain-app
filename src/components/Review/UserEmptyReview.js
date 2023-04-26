@@ -1,11 +1,15 @@
 import {StarMark} from "./StarMark";
 import React, {useState} from "react";
+import {ReviewAPI} from "../../api/ReviewAPI";
+import {useNavigate, useParams} from "react-router-dom";
+import {useSelector} from "react-redux";
 
-export const UserEmptyReview = () => {
+export const UserEmptyReview = ({filmId, refresh, token}) => {
 
   const refs = Array.from({length: 10}, (_, i) => React.createRef())
 
-  const [mark, setMark] = useState();
+  const navigate = useNavigate()
+  const [mark, setMark] = useState(0);
   const [descr, setDescr] = useState("");
 
   const setFilled = (index) => {
@@ -20,11 +24,35 @@ export const UserEmptyReview = () => {
   }
 
   const clearStars = () => {
-    for (let j = 0; j < 10; j++){
+
+    for (let j = 0; j < mark; j++){
+      refs[j].current.setFill()
+    }
+
+    for (let j = mark; j < 10; j++){
       refs[j].current.setFill("none")
     }
   }
 
+  const SaveReview = async () => {
+    const resData = await ReviewAPI.PostUpdateReview(filmId, mark, descr, token)
+
+    if (resData.ok){
+      refresh();
+    } else if (resData.status === 401) {
+      navigate('/authorization', {
+        state : {
+          reason : 2,
+          message : 'Авторизуйтесь для оставления отзыва',
+          after : `/films/${filmId}/info`,
+          filmId : filmId,
+          value : mark,
+          description : descr
+        }
+      })
+    }
+
+  }
 
   return(
     <div className='mt-4 rounded-lg   shadow-gray-400 p-3'>
@@ -37,16 +65,23 @@ export const UserEmptyReview = () => {
               setFilled={(index) => setFilled(index)}
               clear={() => clearStars()}
               ref={refs[index]}
+              choose={(mark) => setMark(mark)}
             />
           )
         }
       </div>
       <textarea
+        value={descr}
+        onChange={e => setDescr(e.target.value)}
         placeholder="Напишите ваше мнение"
-        className='my-4 border-gray-200 resize-none rounded-lg focus:outline-none focus:ring-0 w-full focus:border-gray-400'
+        className='h-24 my-4 border-gray-200 resize-none rounded-lg focus:outline-none focus:ring-0 w-full focus:border-gray-400'
       />
       <div className='flex justify-end'>
-        <button className='p-3 bg-cyan-700 rounded-lg text-white hover:bg-cyan-800'>
+        <button
+          className='p-3 bg-cyan-700 rounded-lg text-white hover:bg-cyan-800 disabled:bg-gray-500'
+          disabled={mark == undefined}
+          onClick={() => SaveReview()}
+        >
           Оставить отзыв
         </button>
       </div>

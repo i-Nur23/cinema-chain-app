@@ -41,7 +41,7 @@ export const LoginForm = ({after, action}) => {
 
   useEffect(() => {
     if (location.state){
-      setMessage(location.state.reason);
+      setMessage(location.state.message);
     }
   },[])
 

@@ -167,7 +167,8 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
         if (err.response.status == 401){
           navigate('/authorization', {
             state : {
-              reason : 'Войдите перед тем как забронировать билеты',
+              reason : 1,
+              message : 'Войдите перед тем как забронировать билеты',
               after : '/user/bookings',
               tickets : chosenTickets,
               seanceId : id,
