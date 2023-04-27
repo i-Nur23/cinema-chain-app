@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {DateInput, DefaultInput, PasswordInput} from "../Inputs";
 import {AuthAPI} from "../../api/AuthAPI";
-import {setToken} from "../../store/slicers/AuthSlicer";
+import {autho, authorize} from "../../store/slicers/AuthSlicer";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
@@ -34,7 +34,7 @@ export  const  VisitorRegForm = ({onTypeChange, after, action}) => {
       if (!data.isSuccess){
         setMessage(data.description);
       } else {
-        dispatch(setToken({token : data.token, nickname : data.userInfo.nickName}));
+        dispatch(authorize({token : data.token, nickname : data.userInfo.nickName}));
         await action(data.token);
         navigate(after);
       }

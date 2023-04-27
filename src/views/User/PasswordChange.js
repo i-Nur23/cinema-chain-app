@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
 import {AuthAPI} from "../../api/AuthAPI";
-import {setToken} from "../../store/slicers/AuthSlicer";
+import {authorize} from "../../store/slicers/AuthSlicer";
 import {DefaultInput, PasswordInput} from "../../components/Inputs";
 
 export const PasswordChange = () => {

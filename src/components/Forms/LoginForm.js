@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {DefaultInput, PasswordInput} from "../Inputs";
 import {AuthAPI} from "../../api/AuthAPI";
 import {useDispatch} from "react-redux";
-import {setToken} from "../../store/slicers/AuthSlicer";
+import {authorize} from "../../store/slicers/AuthSlicer";
 import {useLocation, useNavigate} from "react-router-dom";
 
 export const LoginForm = ({after, action}) => {
@@ -32,7 +32,7 @@ export const LoginForm = ({after, action}) => {
       if (!data.isSuccess){
         setMessage(data.description);
       } else {
-        dispatch(setToken({token : data.token, nickname : data.userInfo.nickName}));
+        dispatch(authorize({token : data.token, nickname : data.userInfo.nickName}));
         await action(data.token);
         navigate(after);
       }

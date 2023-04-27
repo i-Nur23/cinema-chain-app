@@ -4,7 +4,7 @@ import {Link, useLocation} from "react-router-dom";
 import {OfficesAPI} from "../../api";
 import {useDispatch, useSelector} from "react-redux";
 import {setCity} from "../../store/slicers/CitySlicer";
-import {deleteToken} from "../../store/slicers/AuthSlicer";
+import {unauthorize} from "../../store/slicers/AuthSlicer";
 import {Menu, Transition} from "@headlessui/react";
 
 export const Navbar = () => {
@@ -142,7 +142,7 @@ export const Navbar = () => {
                             active ? 'bg-gray-100' : '',
                             'text-red-700 block w-full px-4 py-2 text-left text-sm'
                           )}
-                          onClick={() => dispatch(deleteToken())}
+                          onClick={() => dispatch(unauthorize())}
                         >
                           Выйти
                         </button>

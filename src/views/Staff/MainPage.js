@@ -1,9 +1,45 @@
 import './style.css'
+import  React, {useState} from "react";
+import {Drawer} from "@mui/material";
+import {StarIcon} from "@heroicons/react/24/solid";
+import {AdminMenuItems} from "./MenuLists";
 
 export const MainPage = () => {
+
+  const ANCHOR = 'left';
+  const [open ,setOpen] = useState(false);
+
+  const toggleDrawer = event => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setOpen(false);
+  }
+
   return(
     <div className='min-h-screen flex flex-col justify-center main-container'>
-      <button data-tooltip-target="tooltip-bottom" data-tooltip-placement="bottom" type="button"
+      <div className="float-left my-auto">
+        <button className="rounded-r-lg border h-14 bg-white" type="button" onClick={() => setOpen(true)}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+               stroke="currentColor" className="w-4 h-4">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+          </svg>
+        </button>
+      </div>
+
+      <React.Fragment>
+        <Drawer
+          anchor={ANCHOR}
+          open={open}
+          onClose={e => toggleDrawer(e)}
+        >
+          <AdminMenuItems/>
+        </Drawer>
+      </React.Fragment>
+
+
+      {/*<button data-tooltip-target="tooltip-bottom" data-tooltip-placement="bottom" type="button"
               className="mb-2 md:mb-0 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Tooltip
         bottom
       </button>
@@ -168,7 +204,7 @@ export const MainPage = () => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
             </svg>
           </button>
-        </div>
+        </div>*/}
     </div>
   )
 }

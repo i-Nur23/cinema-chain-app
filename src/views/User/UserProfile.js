@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
 import {AuthAPI} from "../../api/AuthAPI";
 import {DefaultInput} from "../../components/Inputs";
-import {setToken} from "../../store/slicers/AuthSlicer";
+import {authorize} from "../../store/slicers/AuthSlicer";
 
 export const UserProfile = () => {
   const [message, setMessage] = useState(' ')
@@ -62,7 +62,7 @@ export const UserProfile = () => {
           setMessage(response.data.description);
         }
       } else {
-        dispatch(setToken({token : token, nickname : nick}))
+        dispatch(authorize({token : token, nickname : nick}))
         setDisabled(true);
       }
     }
