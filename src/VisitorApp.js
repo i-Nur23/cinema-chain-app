@@ -21,7 +21,7 @@ const VisitorApp = () => {
 
 
   return (
-    <div className='flex flex-col min-h-screen justify-between bg'>
+    <div className='flex flex-col min-h-screen justify-between'>
       <div className='flex flex-col'>
         <Navbar/>
         <div className="pb-20">

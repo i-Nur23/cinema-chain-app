@@ -3,6 +3,7 @@ import  React, {useState} from "react";
 import {Drawer} from "@mui/material";
 import {StarIcon} from "@heroicons/react/24/solid";
 import {AdminMenuItems} from "./MenuLists";
+import {Outlet} from "react-router-dom";
 
 export const MainPage = () => {
 
@@ -18,14 +19,20 @@ export const MainPage = () => {
   }
 
   return(
-    <div className='min-h-screen flex flex-col justify-center main-container'>
-      <div className="float-left my-auto">
-        <button className="rounded-r-lg border h-14 bg-white" type="button" onClick={() => setOpen(true)}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-               stroke="currentColor" className="w-4 h-4">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
-          </svg>
-        </button>
+
+    <div className='flex flex-col min-h-screen main-container'>
+
+      <Outlet/>
+
+      <div className="fixed float-left top-0">
+        <div className='h-screen flex flex-col justify-center'>
+          <button className="rounded-r-lg border h-14 bg-white" type="button" onClick={() => setOpen(true)}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                 stroke="currentColor" className="w-4 h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <React.Fragment>

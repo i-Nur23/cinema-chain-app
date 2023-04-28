@@ -10,12 +10,12 @@ export const AdminMenuItems = () => {
   const navigate = useNavigate();
 
   const actions = [
-      { name : 'Добавить филиал', url : '/staff/new_branch_office'},
-      { name : 'Список филиалов', url: '/staff/branch_offices'},
-      { name : 'Добавить фильм в прокат', url : '/staff/new_film'},
-      { name : 'Фильмы в прокате', url : '/staff/films'},
-      { name : 'Добавить менеджера', url : '/staff/new_manager'},
-      { name : 'Список менеджеров', url : '/staff/managers'}
+      { name : 'Добавить филиал', url : 'new_branch_office'},
+      { name : 'Список филиалов', url: 'branch_offices'},
+      { name : 'Добавить фильм в прокат', url : 'new_film'},
+      { name : 'Фильмы в прокате', url : 'films'},
+      { name : 'Добавить менеджера', url : 'new_manager'},
+      { name : 'Список менеджеров', url : 'managers'}
   ]
 
   return(

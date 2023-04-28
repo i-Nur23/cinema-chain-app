@@ -31,7 +31,10 @@ export const Test = () => {
               var id = e.target.id;
               fetch(`https://catalog.api.2gis.com/3.0/items/byid?id=${id}&key=${process.env.REACT_APP_CATALOG_API_KEY}`)
                 .then(c => c.json())
-                .then(data => set_address(data.result.items[0].address_name));
+                .then(data => {
+                  console.log(data)
+                  set_address(data.result.items[0].address_name);
+                });
               setc(e.lngLat[0]);
               marker.destroy();
               marker = new mapgl.Marker(map, {
