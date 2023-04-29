@@ -12,8 +12,8 @@ export const AdminMenuItems = ({setClose}) => {
   const actions = [
       { name : 'Добавить филиал', url : 'new_branch_office'},
       { name : 'Список филиалов', url: 'branch_offices'},
-      { name : 'Добавить фильм в прокат', url : 'new_film'},
-      { name : 'Фильмы в прокате', url : 'films'},
+      { name : 'Добавить фильм', url : 'new_film'},
+      { name : 'Список фильмов', url : 'films'},
       { name : 'Добавить менеджера', url : 'new_manager'},
       { name : 'Список менеджеров', url : 'managers'}
   ]

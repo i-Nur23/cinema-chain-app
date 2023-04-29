@@ -1,4 +1,5 @@
 import {AddOffice} from "./AddOffice";
 import {AddManager} from "./AddManager";
+import {AddFilm} from "./AddFilm";
 
-export {AddOffice, AddManager}
+export {AddOffice, AddManager, AddFilm}
