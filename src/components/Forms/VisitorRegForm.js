@@ -30,13 +30,21 @@ export  const  VisitorRegForm = ({onTypeChange, after, action}) => {
     })
     setInvalidArray(newArray);
     if (ok){
-      var data = await AuthAPI.Register(name, surname, email, nick, password);
-      if (!data.isSuccess){
-        setMessage(data.description);
-      } else {
-        dispatch(authorize({token : data.token, nickname : data.userInfo.nickName, role : data.userInfo.role}));
-        await action(data.token);
-        navigate(after);
+      try {
+        var data = await AuthAPI.Register(name, surname, email, nick, password);
+        if (!data.isSuccess) {
+          setMessage(data.description);
+        } else {
+          dispatch(authorize({token: data.token, nickname: data.userInfo.nickName, role: data.userInfo.role}));
+          await action(data.token);
+          navigate(after);
+        }
+      } catch (err) {
+        if (err.response.status === 404) {
+          setMessage('Пользователь не найден')
+        }
+
+        setMessage('Неизвестная ошибка. Попробуйте позже')
       }
     }
   }

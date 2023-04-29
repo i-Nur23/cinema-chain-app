@@ -1,15 +1,27 @@
 import '../style.css'
 import {DefaultInput, PasswordInput} from "../../../components/Inputs";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {AuthAPI} from "../../../api/AuthAPI";
 import {authorize} from "../../../store/slicers/AuthSlicer";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 export const StaffAuthorization = () => {
 
-  const [login, setLogin] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const role = useSelector(state => state.auth.role);
+
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [invalidArray, setInvalidArray] = useState([false, false]);
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    if (! (role === "" || role ===  "User")){
+      navigate('main');
+    }
+  }, [])
 
 
   const valueChanged = (ind) => {
@@ -36,6 +48,27 @@ export const StaffAuthorization = () => {
     setInvalidArray(newArray);
     if (ok){
 
+      try {
+        const resData = await AuthAPI.LogIn(email, password);
+        if (resData?.userInfo?.role === "User") {
+          setMessage('Пользователь не найден')
+          return;
+        }
+
+        dispatch(authorize({token: resData.token, nickname: resData.userInfo.nickName, role: resData.userInfo.role}));
+        navigate('main');
+
+      } catch (err) {
+
+        console.log(err.response)
+        if (err.response.status === 404) {
+          setMessage('Пользователь не найден')
+          return;
+        }
+
+        setMessage('Неизвестная ошибка. Попробуйте позже')
+      }
+
     }
   }
 
@@ -44,8 +77,8 @@ export const StaffAuthorization = () => {
       <div className='m-auto w-4/12 flex flex-col gap-2'>
 
         <div className='w-full'>
-          <p className='px-2'>Логин</p>
-          <DefaultInput value={login} setValue={(login) => setLogin(login)} isInvalid={invalidArray[0]} onChange={() => valueChanged(0)}/>
+          <p className='px-2'>Почта</p>
+          <DefaultInput value={email} setValue={(email) => setEmail(email)} isInvalid={invalidArray[0]} onChange={() => valueChanged(0)}/>
         </div>
 
         <div>

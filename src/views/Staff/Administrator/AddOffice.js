@@ -17,7 +17,8 @@ export const AddOffice = () => {
   const [email, setEmail] = useState('');
   const [workHours, setWorkHours] = useState([5, 27])
   const [invalidArray, setInvalidArray] = useState([false, false, false, false, false]);
-  const [halls, setHalls] = useState([{rows : 5, places : 5, type : 1}])
+  const [halls, setHalls] = useState([{id : -1, rows : 5, places : 5, type : 1, isChanged : false}])
+  const [isListChanged, setListChanged] = useState(true)
   const [message, setMessage] = useState('')
 
   const minDistance = 1;
@@ -223,7 +224,7 @@ export const AddOffice = () => {
           }
           <li
             className='hover:bg-gray-100 p-4 flex justify-center cursor-pointer'
-            onClick={() => setHalls([...halls, {rows: 5, places : 5, type : 1}])}
+            onClick={() => setHalls([...halls, {id : -1, rows: 5, places : 5, type : 1, isChanged: true}])}
           >
             <PlusCircleIcon className='w-6 h-6 my-auto'/>
           </li>
