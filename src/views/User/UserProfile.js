@@ -17,6 +17,7 @@ export const UserProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector(state => state.auth.token)
+  const role = useSelector(state => state.auth.role)
 
 
   useEffect(() => {
@@ -62,7 +63,7 @@ export const UserProfile = () => {
           setMessage(response.data.description);
         }
       } else {
-        dispatch(authorize({token : token, nickname : nick}))
+        dispatch(authorize({token : token, nickname : nick, role : role}))
         setDisabled(true);
       }
     }

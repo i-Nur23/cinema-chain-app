@@ -1,9 +1,10 @@
 import {DefaultInput} from "../../../components/Inputs";
 import {useState} from "react";
-import {Slider, styled} from "@mui/material";
+import {MenuItem, Select, Slider, styled} from "@mui/material";
 import {AdminMap} from "../../../components/Maps";
 import {XMarkIcon} from "@heroicons/react/24/solid";
 import {PlusCircleIcon} from "@heroicons/react/24/outline";
+import {SelectInput} from "../../../components/MUIStyles";
 
 export const AddOffice = () => {
 
@@ -16,7 +17,7 @@ export const AddOffice = () => {
   const [email, setEmail] = useState('');
   const [workHours, setWorkHours] = useState([5, 27])
   const [invalidArray, setInvalidArray] = useState([false, false, false, false, false]);
-  const [halls, setHalls] = useState([{rows : 5, places : 5}])
+  const [halls, setHalls] = useState([{rows : 5, places : 5, type : 1}])
   const [message, setMessage] = useState('')
 
   const minDistance = 1;
@@ -81,7 +82,7 @@ export const AddOffice = () => {
   })
 
   return (
-    <div>
+    <div className='flex flex-col gap-8'>
       <center className='text-xl'>Новый филиал</center>
 
       <div className='grid grid-cols-3 gap-20'>
@@ -162,7 +163,7 @@ export const AddOffice = () => {
 
                         setHalls(new_halls)
                       }}
-                      className='border border-gray-400 focus:ring-0 focus:border-gray-400 rounded-lg'
+                      className='border border-gray-300 focus:ring-0 focus:border-gray-300 rounded-lg'
                       type="text"
                     />
                   </div>
@@ -183,9 +184,34 @@ export const AddOffice = () => {
 
                         setHalls(new_halls)
                       }}
-                      className='border border-gray-400 focus:ring-0 focus:border-gray-400 rounded-lg'
+                      className='border border-gray-300 focus:ring-0 focus:border-gray-300 rounded-lg'
                       type="text"
                     />
+                  </div>
+                  <div>
+                    <p>Тип зала</p>
+                    <Select
+                      labelId="demo-customized-select-label"
+                      id="demo-customized-select"
+                      input={<SelectInput/>}
+                      value={hall.type}
+                      onChange={(e) => {
+                        var newValue = e.target.value;
+                        let new_halls = halls.map((h, inner_index) => {
+                          if (inner_index == index){
+                            h.type = newValue;
+                            return h;
+                          }
+                          return h;
+                        })
+
+                        setHalls(new_halls)
+                      }}
+                    >
+                      <MenuItem value={1}>2D</MenuItem>
+                      <MenuItem value={2}>3D</MenuItem>
+                      <MenuItem value={3}>IMAX</MenuItem>
+                    </Select>
                   </div>
                 </div>
                 <XMarkIcon
@@ -197,7 +223,7 @@ export const AddOffice = () => {
           }
           <li
             className='hover:bg-gray-100 p-4 flex justify-center cursor-pointer'
-            onClick={() => setHalls([...halls, {rows: 5, places : 5}])}
+            onClick={() => setHalls([...halls, {rows: 5, places : 5, type : 1}])}
           >
             <PlusCircleIcon className='w-6 h-6 my-auto'/>
           </li>

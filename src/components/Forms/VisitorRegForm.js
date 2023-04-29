@@ -34,7 +34,7 @@ export  const  VisitorRegForm = ({onTypeChange, after, action}) => {
       if (!data.isSuccess){
         setMessage(data.description);
       } else {
-        dispatch(authorize({token : data.token, nickname : data.userInfo.nickName}));
+        dispatch(authorize({token : data.token, nickname : data.userInfo.nickName, role : data.userInfo.role}));
         await action(data.token);
         navigate(after);
       }

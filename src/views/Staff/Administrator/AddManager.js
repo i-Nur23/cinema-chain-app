@@ -4,7 +4,8 @@ import {useNavigate} from "react-router-dom";
 import {AuthAPI} from "../../../api/AuthAPI";
 import {authorize} from "../../../store/slicers/AuthSlicer";
 import {DefaultInput, PasswordInput} from "../../../components/Inputs";
-import {FormControl, InputBase, InputLabel, MenuItem, Select, styled} from "@mui/material";
+import {MenuItem, Select} from "@mui/material";
+import {SelectInput} from "../../../components/MUIStyles";
 
 export const AddManager = () => {
 
@@ -67,38 +68,9 @@ export const AddManager = () => {
     }))
   }
 
-  const SelectInput = styled(InputBase)(({ theme }) => ({
-    /*'label + &': {
-      marginTop: theme.spacing(3),
-    },*/
-    width : '100%',
-    '& .MuiInputBase-input': {
-      borderRadius: '0.5rem',
-      position: 'relative',
-      backgroundColor: theme.palette.background.paper,
-      border: '1px solid #ced4da',
-      fontSize: 16,
-      padding: '10px 26px 10px 12px',
-      transition: theme.transitions.create(['border-color', 'box-shadow']),
-      // Use the system font instead of the default Roboto font.
-      fontFamily: [
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
-        'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
-      ].join(','),
-    },
-  }));
-
   return(
     <div className='container mx-auto w-4/12 p-6 flex flex-col gap-6 rounded mt-10'>
-      <p className='text-2xl text-center'>Новая учетная запись</p>
+      <p className='text-2xl text-center'>Новый менеджер</p>
       <div className='w-full'>
         <p className='px-2'>Имя</p>
         <DefaultInput value={name} setValue={setName} isInvalid={invalidArray[0]} onChange={() => valueChanged(0)}/>
@@ -125,20 +97,6 @@ export const AddManager = () => {
           labelId="demo-customized-select-label"
           id="demo-customized-select"
           input={<SelectInput/>}
-          /* sx = {{
-             borderColor : '#e5e7eb',
-             borderRadius : '0.5rem',
-             width : '100%',
-             height : '3em',
-             '&:hover' : {
-               borderRadius : '0.5rem',
-               border : '1px solid #e5e7eb',
-             },
-             '& .Mui-focusVisible' : {
-               borderWidth : '0',
-               borderColor : 'red',
-             }
-           }}*/
           value={officeId}
           onChange={(e) => setOfficeId(e.target.value)}
         >
@@ -149,19 +107,8 @@ export const AddManager = () => {
               </MenuItem>
             )
           }
-        </Select></div>
-        {/*<select className='w-full rounded-lg border-gray-300 focus:border-gray-400 focus:ring-0'>
-          {
-            offices.map(office =>
-              <option
-                className='rounded'
-
-              >
-                {office.name}
-              </option>
-            )
-          }
-        </select>*/}
+        </Select>
+      </div>
       <div>
         <p className="text-red-700 font-light">
           {message}
