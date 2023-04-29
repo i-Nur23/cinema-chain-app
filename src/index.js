@@ -18,7 +18,7 @@ import {MainPage, StaffAuthorization} from "./views/Staff";
 import {Test} from "./views/Test";
 import {Chain} from "./views/Chain";
 import {UserBookings, UserProfile, PasswordChange} from "./views/User";
-import {AddOffice} from "./views/Staff/Administrator";
+import {AddManager, AddOffice} from "./views/Staff/Administrator";
 
 
 const router = createBrowserRouter(
@@ -50,7 +50,7 @@ const router = createBrowserRouter(
           <Route path='main' element={<MainPage/>}>
             {/*<Route index element={}/>*/}
             <Route path='new_branch_office' element={<AddOffice/>}/>
-
+            <Route path='new_manager' element={<AddManager/>}/>
           </Route>
         </Route>
       </Route>

@@ -4,10 +4,12 @@ import {Drawer} from "@mui/material";
 import {StarIcon} from "@heroicons/react/24/solid";
 import {AdminMenuItems} from "./MenuLists";
 import {Outlet} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 export const MainPage = () => {
 
   const ANCHOR = 'left';
+  const role = useSelector(state => state.auth.role);
   const [open ,setOpen] = useState(false);
 
   const toggleDrawer = event => {
@@ -22,7 +24,9 @@ export const MainPage = () => {
 
     <div className='flex flex-col min-h-screen main-container'>
 
-      <Outlet/>
+      <div className='flex flex-col gap-8 m-10 p-5 bg-white rounded-2xl border'>
+        <Outlet/>
+      </div>
 
       <div className="fixed float-left top-0">
         <div className='h-screen flex flex-col justify-center'>
@@ -41,7 +45,8 @@ export const MainPage = () => {
           open={open}
           onClose={e => toggleDrawer(e)}
         >
-          <AdminMenuItems/>
+          <AdminMenuItems setClose={() => setOpen(false)}/>
+
         </Drawer>
       </React.Fragment>
 

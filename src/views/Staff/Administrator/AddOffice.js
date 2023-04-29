@@ -81,7 +81,7 @@ export const AddOffice = () => {
   })
 
   return (
-    <div className='flex flex-col gap-8 m-10 p-5 bg-white rounded-2xl border'>
+    <div>
       <center className='text-xl'>Новый филиал</center>
 
       <div className='grid grid-cols-3 gap-20'>
