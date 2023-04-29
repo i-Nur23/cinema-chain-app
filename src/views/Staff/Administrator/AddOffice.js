@@ -2,6 +2,8 @@ import {DefaultInput} from "../../../components/Inputs";
 import {useState} from "react";
 import {Slider, styled} from "@mui/material";
 import {AdminMap} from "../../../components/Maps";
+import {XMarkIcon} from "@heroicons/react/24/solid";
+import {PlusCircleIcon} from "@heroicons/react/24/outline";
 
 export const AddOffice = () => {
 
@@ -14,6 +16,7 @@ export const AddOffice = () => {
   const [email, setEmail] = useState('');
   const [workHours, setWorkHours] = useState([5, 27])
   const [invalidArray, setInvalidArray] = useState([false, false, false, false, false]);
+  const [halls, setHalls] = useState([{rows : 5, places : 5}])
   const [message, setMessage] = useState('')
 
   const minDistance = 1;
@@ -133,6 +136,74 @@ export const AddOffice = () => {
           />
         </div>
       </div>
+      <hr className='my-10'/>
+
+      <div className='px-2'>
+        <center className='text-lg font-semibold'>Залы</center>
+        <ul>
+          {
+            halls.map((hall, index) =>
+              <li className='p-3 flex justify-between'>
+                <div className='flex gap-4'>
+                  <div>
+                    <p>Количество рядов</p>
+                    <input
+                      value={hall.rows}
+                      onChange={(e) => {
+                        var newValue = e.target.value;
+                        if (isNaN(newValue)) return;
+                        let new_halls = halls.map((h, inner_index) => {
+                          if (inner_index == index){
+                            h.rows = newValue;
+                            return h;
+                          }
+                          return h;
+                        })
+
+                        setHalls(new_halls)
+                      }}
+                      className='border border-gray-400 focus:ring-0 focus:border-gray-400 rounded-lg'
+                      type="text"
+                    />
+                  </div>
+                  <div>
+                    <p>Количество мест в ряду</p>
+                    <input
+                      value={hall.places}
+                      onChange={(e) => {
+                        var newValue = e.target.value;
+                        if (isNaN(newValue)) return;
+                        let new_halls = halls.map((h, inner_index) => {
+                          if (inner_index == index){
+                            h.places = newValue;
+                            return h;
+                          }
+                          return h;
+                        })
+
+                        setHalls(new_halls)
+                      }}
+                      className='border border-gray-400 focus:ring-0 focus:border-gray-400 rounded-lg'
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <XMarkIcon
+                  className='w-6 h-6 my-auto hover:text-red-600'
+                  onClick={() => setHalls (halls.filter((_, inner_index) => index !== inner_index))}
+                />
+              </li>
+            )
+          }
+          <li
+            className='hover:bg-gray-100 p-4 flex justify-center cursor-pointer'
+            onClick={() => setHalls([...halls, {rows: 5, places : 5}])}
+          >
+            <PlusCircleIcon className='w-6 h-6 my-auto'/>
+          </li>
+        </ul>
+      </div>
+      
       <hr className='my-10'/>
       <div className='px-2 text-lg font-semibold'>
         <center>Выберете местоположение кинотеатра</center>
