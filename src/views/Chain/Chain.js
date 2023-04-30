@@ -19,7 +19,7 @@ export const Chain = () => {
 
 
   return(
-    <div className='container px-20'>
+    <div className=''>
       <ul>
         {
           cities.map((city, upInd) => (

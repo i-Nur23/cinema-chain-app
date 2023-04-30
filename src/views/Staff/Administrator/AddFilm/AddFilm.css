@@ -46,3 +46,13 @@ input[type='file'] {
     padding: 6px 12px;
     cursor: pointer;
 }
+
+.multi-input {
+    width : '100%';
+    border-radius : '0.5rem';
+    border-color : '#d1d5db';
+}
+
+.multi-input:focus {
+    border-color : '#d1d5db';
+}

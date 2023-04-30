@@ -64,7 +64,7 @@ export const LoginForm = ({after, action}) => {
   }
 
   return (
-    <div className='container p-6 flex flex-col gap-6 rounded'>
+    <div className='p-6 flex flex-col gap-6 rounded'>
       <p className='text-2xl text-center'>Вход</p>
 
       <div className='w-full'>

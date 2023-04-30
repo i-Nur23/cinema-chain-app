@@ -26,7 +26,7 @@ export  const FilmShedulue = (props) => {
   },[id, city])
 
 
-  let content = loaded ?  <div className='container px-20 my-10'>
+  let content = loaded ?  <div className='my-10'>
     <div className='flex justify-start gap-10'>
       <img src={film.poster ?? placeholder} alt={film.name} className='rounded-lg h-96 object-cover'/>
       <div className='flex flex-col gap-5'>

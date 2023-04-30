@@ -1,6 +1,7 @@
 export const Footer = () => {
   return (
-    <div className='container px-20 bg-cyan-800'>
+    <div className=' bg-cyan-800'>
+      <div className='container px-20 mx-auto'>
       <div className='flex justify-between py-4'>
         <div className='flex justify-between gap-6'>
           <div className='text-white font-cressida text-5xl'>
@@ -35,6 +36,7 @@ export const Footer = () => {
             </li>
           </ul>
         </div>
+      </div>
       </div>
     </div>
   )

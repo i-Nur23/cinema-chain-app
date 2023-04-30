@@ -18,7 +18,7 @@ export const CityOffices = () => {
   },[city])
 
   let content = !offices ? null :
-    <div className='container px-20 mt-8'>
+    <div className=' mt-8'>
       <center className='text-2xl'>Кинотеатры города <em>{city}</em></center>
       <ul>
         {

@@ -40,7 +40,7 @@ export const OfficesFilms = (props) => {
   },[day])
 
   let content =
-    <div className='container px-20'>
+    <div className=''>
       <center className='text-2xl mt-6'>Распиcание кинотеатра {location.state.theater}, г. {location.state.city}</center>
       <AvailableDays day={day} setDay={setDay}/>
       <ul>

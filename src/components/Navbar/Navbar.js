@@ -43,7 +43,7 @@ export const Navbar = () => {
   }
 
   return (
-    <div className='container px-20'>
+    <div className='container mx-auto px-20'>
       <div className='flex justify-between py-4'>
         <div className='flex justify-start gap-8 w-1/4'>
           <Link to='' className=' my-auto'>

@@ -79,7 +79,7 @@ export const UserProfile = () => {
   }
 
   return (
-    <div className='container mx-auto w-4/12 p-6 flex flex-col gap-6 rounded mt-10'>
+    <div className='mx-auto w-4/12 p-6 flex flex-col gap-6 rounded mt-10'>
       <p className='text-2xl text-center'>Профиль</p>
       <div className='w-full'>
         <p className='px-2'>Имя</p>

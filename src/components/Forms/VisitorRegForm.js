@@ -59,7 +59,7 @@ export  const  VisitorRegForm = ({onTypeChange, after, action}) => {
   }
 
   return (
-    <div className='container mx-auto w-4/12 p-6 flex flex-col gap-6 rounded mt-10'>
+    <div className=' w-4/12 p-6 flex flex-col gap-6 rounded mt-10'>
       <p className='text-2xl text-center'>Новая учетная запись</p>
       <div className='w-full'>
         <p className='px-2'>Имя</p>

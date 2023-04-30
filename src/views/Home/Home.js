@@ -16,7 +16,7 @@ export const Home = () => {
   }, [])
 
   return(
-    <div className='container px-20 my-6'>
+    <div className='my-6'>
       <p className='text-2xl mb-5'><center>Сегодня в кино</center></p>
       <div className='grid grid-cols-3 gap-10'>
         {films.map(film => (

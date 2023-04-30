@@ -23,7 +23,7 @@ export const UserBookings = () => {
   },[])
 
   return(
-    <div className='container px-20'>
+    <div className=''>
       {pastBookings == [] && futureBookings == [] ?
         <p className='text-gray-600 text-xl'>Билетов пока нет</p>
       :
