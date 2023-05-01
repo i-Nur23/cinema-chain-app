@@ -88,6 +88,8 @@ export class OfficesAPI extends MainAPIBase {
       }})
     }
 
+    console.log(longitude + ' ' + latitude)
+
     var response = await axios.post(url, body, {headers : {
       "Authorization" : `Bearer ${token}`,
       "Content-Type" : "application/json"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {load} from "@2gis/mapgl";
 
 const MapWrapper = React.memo(
@@ -9,9 +9,13 @@ const MapWrapper = React.memo(
 );
 
 export const AdminMap = ({lat, lng, setLngLat, setFullAddress}) => {
+  const [longitude, setLng] = useState(0);
+  const [latitude, setLat] = useState(0);
+
   React.useEffect(() => {
     (
-      async () => {
+      () => {
+
         load().then((mapgl) => {
           const map = new mapgl.Map("map-container", {
             center: [lat, lng],
@@ -34,7 +38,7 @@ export const AdminMap = ({lat, lng, setLngLat, setFullAddress}) => {
                   setFullAddress(full_address.substr(ind + 2),
                     full_address.substring(0, ind))
                 });
-              setLngLat(e.lngLat[0], e.lngLat[1]);
+              setLngLat(e.lngLat[1], e.lngLat[0] );
               marker.destroy();
               marker = new mapgl.Marker(map, {
                 coordinates: [e.lngLat[0], e.lngLat[1]],

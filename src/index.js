@@ -4,7 +4,7 @@ import './index.css';
 import VisitorApp from './VisitorApp';
 import {Home} from "./views/Home";
 import {
-  createBrowserRouter, createRoutesFromElements, Route, Router, RouterProvider,
+  createBrowserRouter, createRoutesFromElements, Navigate, redirect, Route, Router, RouterProvider,
 } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 import {FIlmInfo, FilmShedulue} from "./views/Film";
@@ -49,6 +49,7 @@ const router = createBrowserRouter(
           <Route index element={<StaffAuthorization/>}/>
           <Route path='main' element={<StaffApp/>}>
             <Route index element={<MainPage/>}/>
+            <Route path='new_branch_office' element={<Navigate to={'-1'}/>}/>
             <Route path='new_branch_office/:id' element={<AddOffice/>}/>
             <Route path='branch_offices' element={<OfficesList/>}/>
             <Route path='new_manager' element={<AddManager/>}/>

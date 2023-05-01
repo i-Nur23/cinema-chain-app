@@ -1,17 +1,23 @@
 import {DefaultInput} from "../../../components/Inputs";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {MenuItem, Select, Slider, styled} from "@mui/material";
 import {AdminMap} from "../../../components/Maps";
 import {XMarkIcon} from "@heroicons/react/24/solid";
 import {PlusCircleIcon} from "@heroicons/react/24/outline";
 import {SelectInput} from "../../../components/MUIStyles";
 import { useSelector } from "react-redux";
+import {OfficesAPI} from "../../../api";
+import {useNavigate, useParams} from "react-router-dom";
 
 export const AddOffice = () => {
 
   const token = useSelector(state => state.auth.token);
+  const {id} = useParams();
+  const navigate = useNavigate();
 
   const [name, setName] = useState('');
+  const [method, setMethod] = useState('ADD')
+  const [title, setTitle] = useState('Новый филиал');
   const [descr, setDescr] = useState('');
   const [city, setCity] = useState('');
   const [lnglat, setLngLat] = useState([55.7520121,37.619473])
@@ -22,9 +28,44 @@ export const AddOffice = () => {
   const [invalidArray, setInvalidArray] = useState([false, false, false, false, false]);
   const [halls, setHalls] = useState([{id : -1, rows : 5, places : 5, type : 1, isChanged : false}])
   const [isListChanged, setListChanged] = useState(true)
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState('');
+  const [loaded, setLoaded] = useState(false);
 
   const minDistance = 1;
+
+  useEffect(() => {
+    if (id === -1) {
+      setLoaded(true);
+      return;
+    }
+
+    OfficesAPI.getDeatilInfoAboutBranchOffice(id, token)
+      .then(office => {
+        setLngLat([office.longitude, office.latitude])
+        setName(office.name);
+        setEmail(office.email);
+        setPhone(office.mobilePhone);
+        setDescr(office.description);
+        setWorkHours([office.startWorkTime, office.endWorkTime]);
+        setCity(office.city);
+        setAddress(office.adress);
+        setHalls(office.cinemaHallsList.map(hall => {
+          const adaptedHall = {
+            id : hall.id,
+            type : hall.type,
+            rows : hall.numOfRow,
+            places : hall.numOfPlacesInRow,
+            isChanged : false
+          }
+          return adaptedHall;
+        }))
+        setListChanged(false);
+        setTitle('Изменить филиал');
+        setMethod('UPDATE');
+        setLoaded(true);
+      })
+      .catch(err => {setLoaded(true);})
+  },[])
 
   const handleSaving = async () => {
     var inputs = document.querySelectorAll('input[required]');
@@ -56,9 +97,25 @@ export const AddOffice = () => {
         return;
       }
 
-      setMessage("");
-
-
+      if (method === 'ADD'){
+        OfficesAPI.CreateOffice(name, email, phone, descr, workHours[0], workHours[1], city, address,
+          lnglat[0], lnglat[1], halls, token)
+          .then(_ => {
+            navigate('/staff/main/branch_offices');
+          })
+          .catch(err => {
+            setMessage('Ошибка. Попробуйте позже')
+          })
+      } else {
+        OfficesAPI.UpdateOffcie(id, name, email, phone, descr, workHours[0], workHours[1], city, address,
+          lnglat[0], lnglat[1], isListChanged, halls, token)
+          .then(_ => {
+            navigate('/staff/main/branch_offices');
+          })
+          .catch(err => {
+            setMessage('Ошибка. Попробуйте позже')
+          })
+      }
 
     }
   }
@@ -106,7 +163,7 @@ export const AddOffice = () => {
 
   return (
     <div className='flex flex-col gap-8'>
-      <center className='text-xl'>Новый филиал</center>
+      <center className='text-xl'>{title}</center>
 
       <div className='grid grid-cols-3 gap-20'>
         <div>
@@ -126,7 +183,7 @@ export const AddOffice = () => {
       <div>
         <p className='px-2'>Описание</p>
         <textarea
-          className='resize-none rounded-xl w-3/5 border-gray-300 h-20 focus:border-gray-400 focus:ring focus:ring-gray-100 focus:outline-none'
+          className='resize-none rounded-xl w-3/5 border-gray-300 h-40 focus:border-gray-400 focus:ring focus:ring-gray-100 focus:outline-none'
           value={descr}
           onChange={e => setDescr(e.target.value)}
         />
@@ -169,6 +226,7 @@ export const AddOffice = () => {
             halls.map((hall, index) =>
               <li className='p-3 flex justify-between'>
                 <div className='flex gap-4'>
+                  <p className='text-gray-400 mt-8'>№ {index + 1}</p>
                   <div>
                     <p>Количество рядов</p>
                     <input
@@ -178,12 +236,12 @@ export const AddOffice = () => {
                         if (isNaN(newValue)) return;
                         let new_halls = halls.map((h, inner_index) => {
                           if (inner_index == index){
+                            h.isChanged = true;
                             h.rows = newValue;
                             return h;
                           }
                           return h;
                         })
-
                         setHalls(new_halls)
                       }}
                       className='border border-gray-300 focus:ring-0 focus:border-gray-300 rounded-lg'
@@ -199,6 +257,8 @@ export const AddOffice = () => {
                         if (isNaN(newValue)) return;
                         let new_halls = halls.map((h, inner_index) => {
                           if (inner_index == index){
+                            setListChanged(true);
+                            h.isChanged = true;
                             h.places = newValue;
                             return h;
                           }
@@ -222,6 +282,8 @@ export const AddOffice = () => {
                         var newValue = e.target.value;
                         let new_halls = halls.map((h, inner_index) => {
                           if (inner_index == index){
+                            setListChanged(true);
+                            h.isChanged = true;
                             h.type = newValue;
                             return h;
                           }
@@ -246,7 +308,10 @@ export const AddOffice = () => {
           }
           <li
             className='hover:bg-gray-100 p-4 flex justify-center cursor-pointer'
-            onClick={() => setHalls([...halls, {id : -1, rows: 5, places : 5, type : 1, isChanged: true}])}
+            onClick={() => {
+              setHalls([...halls, {id: -1, rows: 5, places: 5, type: 1, isChanged: true}]);
+              setListChanged(true);
+            }}
           >
             <PlusCircleIcon className='w-6 h-6 my-auto'/>
           </li>
@@ -257,12 +322,12 @@ export const AddOffice = () => {
       <div className='px-2 text-lg font-semibold'>
         <center>Выберете местоположение кинотеатра</center>
         <div className='h-96 mt-5'>
-          <AdminMap
+          {loaded && <AdminMap
             lng={lnglat[0]}
             lat={lnglat[1]}
-            setLngLat={(lng, lat) => setLngLat([lng, lat])}
+            setLngLat={(_lng, _lat) => setLngLat([_lng, _lat])}
             setFullAddress={(address, city) => setFullAdrress(city, address)}
-          />
+          />}
         </div>
       </div>
 
