@@ -5,8 +5,11 @@ import {AdminMap} from "../../../components/Maps";
 import {XMarkIcon} from "@heroicons/react/24/solid";
 import {PlusCircleIcon} from "@heroicons/react/24/outline";
 import {SelectInput} from "../../../components/MUIStyles";
+import { useSelector } from "react-redux";
 
 export const AddOffice = () => {
+
+  const token = useSelector(state => state.auth.token);
 
   const [name, setName] = useState('');
   const [descr, setDescr] = useState('');
@@ -37,6 +40,25 @@ export const AddOffice = () => {
     })
     setInvalidArray(newArray);
     if (ok){
+
+      if (!email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+        setMessage("Неверный email");
+        return;
+      }
+
+      if (!phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)){
+        setMessage("Неверный номер телефона");
+        return;
+      }
+
+      if (halls.some(hall => hall.rows < 1 || hall.places < 1 || hall.rows > 99 || hall.places > 99)){
+        setMessage("Некорректное число рядов или мест");
+        return;
+      }
+
+      setMessage("");
+
+
 
     }
   }
@@ -255,13 +277,17 @@ export const AddOffice = () => {
         </div>
       </div>
       <div className='flex justify-end'>
-        <button
-          className='rounded-lg p-3 w-1/6 text-white bg-cyan-800 hover:bg-cyan-700'
-          onClick={handleSaving}
-        >
-          Сохранить
-        </button>
+        <div className="w-1/6">
+          <button
+            className='rounded-lg p-3 w-full text-white bg-cyan-800 hover:bg-cyan-700'
+            onClick={handleSaving}
+          >
+            Сохранить
+          </button>
+          <p className="text-red-700 text-center mt-2">{message}</p>  
+        </div>
       </div>
+  
 
 
     </div>

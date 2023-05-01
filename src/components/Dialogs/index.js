@@ -1,3 +1,4 @@
 import {TicketChoiceDialog} from "./TicketChoiceDialog";
+import {AcceptActionDialog} from "./AcceptActionDialog";
 
-export {TicketChoiceDialog}
+export {TicketChoiceDialog, AcceptActionDialog}
