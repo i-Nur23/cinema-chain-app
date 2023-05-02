@@ -8,6 +8,7 @@ import {MenuItem, Select} from "@mui/material";
 import {SelectInput} from "../../../components/MUIStyles";
 import {ManagerAPI} from "../../../api/ManagerAPI";
 import {OfficesAPI} from "../../../api";
+import {InputsHandler} from "../../../utils/InputsHandler";
 
 export const AddManager = () => {
 
@@ -69,6 +70,11 @@ export const AddManager = () => {
     if (ok){
 
       if (method === 'ADD') {
+        if (!InputsHandler.isValidEmail(email)){
+          setMessage('Неверный формат почты');
+          return;
+        }
+
         ManagerAPI.AddManager(surName, name, nickname, email, password, officeId, token)
           .then(_ => navigate('/staff/main/managers'))
           .catch(err => {
@@ -80,6 +86,7 @@ export const AddManager = () => {
           }
         )
       } else {
+
         ManagerAPI.UpdateManager(id, surName, name, nickname, officeId, token)
           .then(_ => navigate('/staff/main/managers'))
           .catch(err => {

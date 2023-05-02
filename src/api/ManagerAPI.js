@@ -64,12 +64,12 @@ export class ManagerAPI extends MainAPIBase{
   }
 
   static RemoveManager = async (id, token) => {
-    const url = `${this.baseURL}/Manager/DeleteManagerById/${id}`;
+    const url = `${this.baseURL}/Manager/DeleteManagerById/managerId?managerId=${id}`;
 
-    /*const response = await axios.delete(url, {headers : {
+    const response = await axios.delete(url, {headers : {
         "Authorization" : `Bearer ${token}`
       }})
 
-    return response.data;*/
+    return response.data;
   }
 }

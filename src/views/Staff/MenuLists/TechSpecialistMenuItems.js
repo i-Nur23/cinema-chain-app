@@ -34,7 +34,8 @@ export const TechSpecialistMenuItems = ({setClose}) => {
       <li
         className='flex gap-3 p-3 text-red-800 cursor-pointer'
         onClick = { () => {
-          dispatch(unauthorize())
+          dispatch(unauthorize());
+          navigate('/staff');
         }}
       >
         Выход
