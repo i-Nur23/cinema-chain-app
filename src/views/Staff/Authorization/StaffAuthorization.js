@@ -55,7 +55,7 @@ export const StaffAuthorization = () => {
           return;
         }
 
-        dispatch(authorize({token: resData.token, nickname: resData.userInfo.nickName, role: resData.userInfo.role}));
+        dispatch(authorize({token: resData.token, nickname: resData.userInfo.nickName, role: resData.userInfo.role, branchOfficeId : resData.userInfo.branchOfficeId}));
         navigate('main');
 
       } catch (err) {

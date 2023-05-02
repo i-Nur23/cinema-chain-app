@@ -8,6 +8,7 @@ import {SelectInput} from "../../../components/MUIStyles";
 import { useSelector } from "react-redux";
 import {OfficesAPI} from "../../../api";
 import {useNavigate, useParams} from "react-router-dom";
+import {InputsHandler} from "../../../utils/InputsHandler";
 
 export const AddOffice = () => {
 
@@ -82,12 +83,12 @@ export const AddOffice = () => {
     setInvalidArray(newArray);
     if (ok){
 
-      if (!email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+      if (!InputsHandler.isValidEmail(email)){
         setMessage("Неверный email");
         return;
       }
 
-      if (!phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)){
+      if (!InputsHandler.isValidPhone(phone)){
         setMessage("Неверный номер телефона");
         return;
       }
