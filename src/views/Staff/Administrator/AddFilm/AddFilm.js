@@ -6,6 +6,7 @@ import {DefaultInput} from "../../../../components/Inputs";
 import {SelectInput} from "../../../../components/MUIStyles";
 import {Autocomplete, Checkbox, MenuItem, Select, TextField, styled} from "@mui/material";
 import { Combobox, Transition } from "@headlessui/react";
+import {ComboboxWithTags} from "../../../../components/Combobox";
 
 export const AddFilm = () => {
 
@@ -25,14 +26,17 @@ export const AddFilm = () => {
   const [year, setYear] = useState(new Date().getFullYear());
   const [genres, setGenres] = useState([]);
   const [actors, setActors] = useState([]);
+  const [selectedActors, setSelectedActors] = useState([]);
   const [directors, setDirectors] = useState([]);
+  const [selectedDirectors, setSelectedDirectors] = useState([]);
   const [duration, setDuration] = useState(60);
   const [kpURL, setKpURL] = useState('');
   const [trailerURL, setTrailerURL] = useState('');
   const [message, setMessage] = useState('');
+  const [title, setTitle] = useState('Добавление фильма');
 
-  const [invalidArray, setInvalidArray] = useState([false, false, false, false, false, false, false, false, false,]);
-  const [query, setQuery] = useState('');
+  const [invalidArray, setInvalidArray] = useState([false, false, false, false, false]);
+  const [invlaidComboboxes, setInvalidComboboxesArray] = useState([false, false, false]);
 
   const onPosterChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -75,6 +79,30 @@ export const AddFilm = () => {
       }
     })
     setInvalidArray(newArray);
+
+    var newComboboxesArray=[false, false, false];
+    if (genres.length === 0){
+      ok = false;
+      newComboboxesArray[0] = true;
+    }
+
+    if (selectedActors.length === 0){
+      ok = false;
+      newComboboxesArray[1] = true;
+    }
+
+    if (selectedDirectors.length === 0){
+      ok = false;
+      newComboboxesArray[2] = true;
+    }
+
+    setInvalidComboboxesArray(newComboboxesArray);
+
+    if (!poster){
+      setMessage('Вставьте постер фильма');
+      ok = false;
+    }
+
     if (ok){
 
     }
@@ -90,19 +118,19 @@ export const AddFilm = () => {
     }))
   }
 
-  const filteredGenres =
-    query === ''
-      ? genresList
-      : genresList.filter((g) =>
-          g
-            .toLowerCase()
-            .replace(/\s+/g, '')
-            .includes(query.toLowerCase().replace(/\s+/g, ''))
-        )
+  const comboboxValueChanged = (ind) => {
+    setMessage('');
+    setInvalidComboboxesArray(invlaidComboboxes.map((isVal, innerIndex) => {
+      if (innerIndex == ind) {
+        return false;
+      }
+      return isVal;
+    }))
+  }
 
   return(
     <div>
-      <center className='text-xl mb-10'>Добавление фильма</center>
+      <center className='text-xl mb-10'>{title}</center>
       <div className='flex gap-10 divide-x'>
         <div className='h-fit w-1/4 flex flex-col gap-6 divide-y'>
           <div className='flex flex-col gap-3'>
@@ -139,7 +167,7 @@ export const AddFilm = () => {
             </div>
           </div>
         </div>
-        <div className='flex flex-col gap-3 px-3 w-3/4'>
+        <div className='flex flex-col gap-6 px-3 w-3/4'>
           <center className='font-semibold mb-6'>Информация о фильме</center>
           <div className='flex gap-3'>
             <div className='w-3/4'>
@@ -175,91 +203,55 @@ export const AddFilm = () => {
           <div className='grid grid-cols-4 gap-6'>
             <div className='col-span-2'>
               <p>Жанры</p>
-              <Combobox value={genres} onChange={setGenres} multiple>
-                <div className="relative">
-                  <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left border border-gray-300 focus:outline-none">
-                    <div className={`flex px-2 min-h-[40px] flex-wrap ${genres.length !== 0 ? 'pt-2' : ''}`}>
-                      {
-                        genres.map(genre => 
-                        <div className="flex gap-2 m-1 text-sm h-4/5 p-1 rounded bg-gray-200">
-                          {genre}
-                          <XMarkIcon className="w-4 h-4 m-auto cursor-pointer" onClick={() => setGenres(genres.filter(_genre => _genre !== genre ))}/>
-                        </div>
-                        )
-                      }
-                      <Combobox.Input
-                        className="w-full border-none py-2 px-2 text-sm leading-5 text-gray-900 focus:ring-0"
-                        placeholder="введите жанр..."
-                        onChange={(event) => setQuery(event.target.value)}
-                      />
-                    </div>
-                    <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-                      <ChevronUpDownIcon
-                        className="h-5 w-5 text-gray-400"
-                        aria-hidden="true"
-                      />
-                    </Combobox.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    leave="transition ease-in duration-100"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                    afterLeave={() => setQuery('')}
-                  >
-                    <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {filteredGenres.length === 0 && query !== '' ? (
-                        <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                          Nothing found.
-                        </div>
-                      ) : (
-                        filteredGenres.map((genre, index) => (
-                          <Combobox.Option
-                            key={index}
-                            className={({ active }) =>
-                              `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                active ? 'bg-gray-200' : ''
-                              }`
-                            }
-                            value={genre}
-                          >
-                            {({ selected, active }) => (
-                              <>
-                                <span
-                                  className={`block truncate ${
-                                    selected ? 'font-medium' : 'font-normal'
-                                  }`}
-                                >
-                                  {genre}
-                                </span>
-                                {selected ? (
-                                  <span
-                                    className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                      active ? '' : 'text-gray-700'
-                                    }`}
-                                  >
-                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                  </span>
-                                ) : null}
-                              </>
-                            )}
-                          </Combobox.Option>
-                        ))
-                      )}
-                    </Combobox.Options>
-                  </Transition>
-                </div>
-              </Combobox>
+              <ComboboxWithTags values={genres} setValues={setGenres}
+                                initList={genresList} placeholder={"введите жанр..."}
+                                isInvalid={invlaidComboboxes[0]}
+                                onChange={() => comboboxValueChanged(0)}
+              />
             </div>
             <div>
               <p>Год</p>
-              <DefaultInput value={year} setValue={(y) => setYear(y)} isInvalid={invalidArray[2]}
-                            onChange={() => valueChanged(2)}/>
+              <DefaultInput value={year} setValue={(y) => setYear(y)} isInvalid={invalidArray[1]}
+                            onChange={() => valueChanged(1)}/>
             </div>
             <div>
               <p>Продолжительность (мин.)</p>
-              <DefaultInput value={duration} setValue={(d) => setDuration(d)} isInvalid={invalidArray[3]}
+              <DefaultInput value={duration} setValue={(d) => setDuration(d)} isInvalid={invalidArray[2]}
+                            onChange={() => valueChanged(2)}/>
+            </div>
+          </div>
+          <div className='grid grid-cols-2 gap-6'>
+            <div>
+              <p className='px-2'>Актеры</p>
+              <ComboboxWithTags values={selectedActors} initList={actors} setValues={setActors}
+                                placeholder={'введите имя или фамилию актёра...'}
+                                isInvalid={invlaidComboboxes[1]}
+                                onChange={() => comboboxValueChanged(1)}
+              />
+            </div>
+            <div>
+              <p className='px-2'>Режиссер(-ы)</p>
+              <ComboboxWithTags values={selectedDirectors} initList={directors} setValues={setDirectors}
+                                placeholder={'введите имя или фамилию режиссёра...'}
+                                isInvalid={invlaidComboboxes[2]}
+                                onChange={() => comboboxValueChanged(2)}
+              />
+            </div>
+          </div>
+          <div>
+            <p className='px-2'>URL страницы на Кинопоиске&trade;</p>
+            <DefaultInput value={kpURL} setValue={(url) => setKpURL(url)} isInvalid={invalidArray[3]}
                             onChange={() => valueChanged(3)}/>
+          </div>
+          <div>
+            <p className='px-2'>Ссылка на трейлер YouTube&trade;</p>
+            <DefaultInput value={trailerURL} setValue={(url) => setTrailerURL(url)} isInvalid={invalidArray[4]}
+                          onChange={() => valueChanged(4)}/>
+          </div>
+          <div className='flex justify-end w-full'>
+            <div className='w-1/6'>
+              <button className='w-full bg-cyan-700 text-white p-3 rounded-lg' onClick={handleSaving}>Сохранить</button>
+              <p className='text-red-600'>{message}</p>
             </div>
           </div>
         </div>
