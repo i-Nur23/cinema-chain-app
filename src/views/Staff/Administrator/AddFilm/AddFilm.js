@@ -1,5 +1,5 @@
 import placeholder from "../../../../assets/images/placeholder.jpg";
-import {useState, Fragment} from "react";
+import {useState, Fragment, useEffect} from "react";
 import './AddFilm.css'
 import {TrashIcon, XMarkIcon, CheckIcon, ChevronUpDownIcon} from "@heroicons/react/24/outline";
 import {DefaultInput} from "../../../../components/Inputs";
@@ -46,6 +46,23 @@ export const AddFilm = () => {
       setPoster(null)
     }
   }
+
+  /*useEffect(() => {
+    var newComboboxesArray=[false, false, false];
+    if (genres.length === 0){
+      newComboboxesArray[0] = true;
+    }
+
+    if (selectedActors.length === 0){
+      newComboboxesArray[1] = true;
+    }
+
+    if (selectedDirectors.length === 0){
+      newComboboxesArray[2] = true;
+    }
+
+    setInvalidComboboxesArray(newComboboxesArray);
+  },[genres, selectedActors, selectedDirectors])*/
 
   const addPhoto = (event) => {
     if (event.target.files && event.target.files[0]) {

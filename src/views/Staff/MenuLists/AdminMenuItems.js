@@ -14,8 +14,9 @@ export const AdminMenuItems = ({setClose}) => {
       { name : 'Список филиалов', url: 'branch_offices'},
       { name : 'Добавить фильм', url : 'new_film'},
       { name : 'Список фильмов', url : 'films'},
+      { name : 'Актеры/Режиссеры', url: 'crew'},
       { name : 'Добавить менеджера', url : 'new_manager'},
-      { name : 'Список менеджеров', url : 'managers'}
+      { name : 'Список менеджеров', url : 'managers'},
   ]
 
   return(

@@ -21,12 +21,14 @@ export const ComboboxWithTags = ({values, setValues, initList, placeholder, isIn
       <div className="relative">
         <div
           className={`relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left border ${!isInvalid ? 'border-gray-300' : 'border-red-700'} focus:outline-none`}
-          onChange={onChange}
         >
-          <div className={`flex px-2 min-h-[40px] flex-wrap ${values.length !== 0 ? 'pt-2' : ''}`}>
+          <div className={`flex px-2 min-h-[40px] flex-wrap ${values.length !== 0 ? 'pt-2' : ''}`}
+               onChange={onChange}>
             {
               values.map(value =>
-                <div className="flex gap-2 m-1 text-sm h-4/5 p-1 rounded bg-gray-200">
+                <div className="flex gap-2 m-1 text-sm h-4/5 p-1 rounded bg-gray-200"
+                     onChange={onChange}
+                >
                   {value}
                   <XMarkIcon className="w-4 h-4 m-auto cursor-pointer" onClick={() => setValues(values.filter(_value => _value !== value ))}/>
                 </div>
@@ -38,7 +40,7 @@ export const ComboboxWithTags = ({values, setValues, initList, placeholder, isIn
               onChange={(event) => setQuery(event.target.value)}
             />
           </div>
-          <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+          <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2" onClick={onChange}>
             <ChevronUpDownIcon
               className="h-5 w-5 text-gray-400"
               aria-hidden="true"

@@ -18,7 +18,15 @@ import {MainPage, StaffApp, StaffAuthorization} from "./views/Staff";
 import {Test} from "./views/Test";
 import {Chain} from "./views/Chain";
 import {UserBookings, UserProfile, PasswordChange} from "./views/User";
-import {AddFilm, AddManager, AddOffice, ManagersList, OfficesList} from "./views/Staff/Administrator";
+import {
+  ActorsDirectorsList,
+  AddFilm,
+  AddManager,
+  AddOffice,
+  FilmsList,
+  ManagersList,
+  OfficesList
+} from "./views/Staff/Administrator";
 
 
 const router = createBrowserRouter(
@@ -55,7 +63,10 @@ const router = createBrowserRouter(
             <Route path='new_manager' element={<Navigate to={'-1'}/>}/>
             <Route path='new_manager/:id' element={<AddManager/>}/>
             <Route path='managers' element={<ManagersList/>}/>
-            <Route path='new_film' element={<AddFilm/>}/>
+            <Route path='new_film' element={<Navigate to={'-1'}/>}/>
+            <Route path='new_film/:id' element={<AddFilm/>}/>
+            <Route path='films' element={<FilmsList/>}/>
+            <Route path='crew' element={<ActorsDirectorsList/>}/>
           </Route>
         </Route>
       </Route>
