@@ -1,4 +1,4 @@
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {OfficesAPI} from "../../api";
 import {DateHandler} from "../../utils/DateHandler";
@@ -10,6 +10,7 @@ import {SessionCard} from "../../components/Cards";
 export const OfficesFilms = (props) => {
   var {id} = useParams();
   var location = useLocation();
+  var navigate = useNavigate();
 
   const [fullSeances, setFullSeances] = useState([]);
   const [films, setFilms] = useState([]);
@@ -48,9 +49,17 @@ export const OfficesFilms = (props) => {
           films.map(film => (
             <li className='flex justify-between p-4 border-b'>
               <div className='flex gap-3'>
-                <img src={film.film.posterURL} className='object-fill h-44 rounded-xl'/>
+                <img
+                  src={film.film.posterURL} className='object-fill h-44 rounded-xl cursor-pointer'
+                  onClick={() => navigate(`/films/${film.film.id}/info`)}
+                />
                 <div>
-                  <p className='font-semibold text-lg'>{film.film.name}</p>
+                  <p
+                    className='font-semibold text-lg cursor-pointer'
+                    onClick={() => navigate(`/films/${film.film.id}/info`)}
+                  >
+                    {film.film.name}
+                  </p>
                   <p className='text-gray-400'>{film.film.ageRestriction}+</p>
                 </div>
               </div>

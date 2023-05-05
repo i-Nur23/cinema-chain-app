@@ -7,7 +7,6 @@ export const ActorsDirectorsList = () => {
     return classes.filter(Boolean).join(' ')
   }
 
-
   return(
     <div>
       <Tab.Group>

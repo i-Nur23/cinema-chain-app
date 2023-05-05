@@ -1,4 +1,4 @@
-import {useLocation, useParams} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper";
@@ -10,6 +10,7 @@ import {ReviewAPI} from "../../api/ReviewAPI";
 import {OtherUserReview, UserEmptyReview, UserReview} from "../../components/Review";
 import {useSelector} from "react-redux";
 import {FilmsAPI} from "../../api";
+import {ArrowLongLeftIcon} from "@heroicons/react/24/outline";
 
 export const FIlmInfo = () => {
 
@@ -107,6 +108,10 @@ export const FIlmInfo = () => {
               <p className='text-gray-400'>Наш рейтинг: </p>
               <p>{film.rating}</p>
             </div>
+            <Link to={`/films/${id}`} className='flex gap-3 border-b-2 w-fit text-gray-400 border-transparent hover:border-black hover:text-black'>
+              <ArrowLongLeftIcon className='w-5 h-5 my-auto'/>
+              <p>к бронированию билетов</p>
+            </Link>
           </div>
         </div>
       </div>

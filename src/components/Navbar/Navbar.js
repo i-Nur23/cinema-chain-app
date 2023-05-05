@@ -1,6 +1,6 @@
 import {Fragment, useEffect, useState} from "react";
 import './navbar.css'
-import {Link, useLocation} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {OfficesAPI} from "../../api";
 import {useDispatch, useSelector} from "react-redux";
 import {setCity} from "../../store/slicers/CitySlicer";
@@ -21,6 +21,9 @@ export const Navbar = () => {
 
   const token = useSelector(state => state.auth.token);
   const nickname = useSelector(state => state.auth.nickname);
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
 
 
@@ -62,9 +65,9 @@ export const Navbar = () => {
           </select>
         </div>
         <div className="flex justify-between gap-20 w-1/2">
-          <a href="#" className='my-auto text-xl p-4 hover:text-cyan-700 ease-in-out duration-150'>
+          <Link to="/" className='my-auto text-xl p-4 hover:text-cyan-700 ease-in-out duration-150'>
             Афиша
-          </a>
+          </Link>
 
           <Link to="chain" className='my-auto p-4 text-xl hover:text-cyan-700 ease-in-out duration-150'>
             Сеть
@@ -74,19 +77,19 @@ export const Navbar = () => {
             Кинотеатры
           </Link>
 
-          <a href="#" className='my-auto p-4 text-xl hover:text-cyan-700 ease-in-out duration-150'>
-            Новости
-          </a>
+          <Link to="#" className='my-auto p-4 text-xl hover:text-cyan-700 ease-in-out duration-150'>
+            Жалоба
+          </Link>
         </div>
 
-        <div className='w-1/4 flex justify-end'>
+        <div className='w-1/4 flex justify-end z-50'>
           {
             token == '' ?
               <Link to="authorization" className='my-auto text-xl p-4 rounded hover:bg-cyan-700 hover:text-white ease-in-out duration-300'>
                 <p>Вход</p>
               </Link>
             :
-              <Menu as="div" className="relative my-auto">
+              <Menu as="div" className="relative my-auto z-50">
                 <Menu.Button className="pt-2">
                   <div className="flex content-center">
                     <p className='text-xl'>{nickname}</p>
@@ -105,7 +108,9 @@ export const Navbar = () => {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <Menu.Items className="absolute right-0 z-10 mt-2 divide-y divide-gray-200 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Menu.Items
+                    className="absolute right-0 z-50 mt-2 divide-y divide-gray-200 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  >
                     <div className="py-1">
                       <Menu.Item>
                         {({ active }) => (
@@ -138,11 +143,17 @@ export const Navbar = () => {
                       {({ active }) => (
                         <button
                           type="submit"
+                          style={{zIndex : '60'}}
                           className={classNames(
-                            active ? 'bg-gray-100' : '',
+                            active ? 'relative bg-gray-100' : '',
                             'text-red-700 block w-full px-4 py-2 text-left text-sm'
                           )}
-                          onClick={() => dispatch(unauthorize())}
+                          onClick={() => {
+                            dispatch(unauthorize());
+                            if(location.pathname.indexOf('user') !== -1){
+                              navigate('/authorization')
+                            }
+                          }}
                         >
                           Выйти
                         </button>
