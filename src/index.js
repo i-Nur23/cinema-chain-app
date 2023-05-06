@@ -27,6 +27,7 @@ import {
   ManagersList,
   OfficesList
 } from "./views/Staff/Administrator";
+import {OfficeTimetable} from "./views/Staff/Manager";
 
 
 const router = createBrowserRouter(
@@ -67,6 +68,7 @@ const router = createBrowserRouter(
             <Route path='new_film/:id' element={<AddFilm/>}/>
             <Route path='films' element={<FilmsList/>}/>
             <Route path='crew' element={<ActorsDirectorsList/>}/>
+            <Route path='timetable' element={<OfficeTimetable/>}/>
           </Route>
         </Route>
       </Route>

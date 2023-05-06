@@ -4,6 +4,7 @@ import {AuthAPI} from "../../api/AuthAPI";
 import {useDispatch} from "react-redux";
 import {authorize} from "../../store/slicers/AuthSlicer";
 import {useLocation, useNavigate} from "react-router-dom";
+import {InputsHandler} from "../../utils/InputsHandler";
 
 export const LoginForm = ({after, action}) => {
   const [message, setMessage] = useState(' ')
@@ -28,6 +29,12 @@ export const LoginForm = ({after, action}) => {
     })
     setInvalidArray(newArray);
     if (ok){
+
+      if (!InputsHandler.isValidEmail(email)){
+        setMessage('Неверный email');
+        return;
+      }
+
       try {
         var data = await AuthAPI.LogIn(email, password);
         if (!data.isSuccess) {

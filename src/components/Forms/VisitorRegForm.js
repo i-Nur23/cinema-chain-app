@@ -4,6 +4,7 @@ import {AuthAPI} from "../../api/AuthAPI";
 import {autho, authorize} from "../../store/slicers/AuthSlicer";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {InputsHandler} from "../../utils/InputsHandler";
 
 export  const  VisitorRegForm = ({onTypeChange, after, action}) => {
   const [message, setMessage] = useState(' ')
@@ -30,20 +31,31 @@ export  const  VisitorRegForm = ({onTypeChange, after, action}) => {
     })
     setInvalidArray(newArray);
     if (ok){
+
+      console.log(email)
+
+      if (!InputsHandler.isValidEmail(email)){
+        setMessage('Неверный email');
+        return;
+      }
+
       try {
         var data = await AuthAPI.Register(name, surname, email, nick, password);
         if (!data.isSuccess) {
           setMessage(data.description);
         } else {
+          console.log('auth ok')
           dispatch(authorize({token: data.token, nickname: data.userInfo.nickName, role: data.userInfo.role, branchOfficeId : data.userInfo.branchOfficeId}));
           await action(data.token);
           navigate(after);
         }
       } catch (err) {
-        if (err.response.status === 404) {
-          setMessage('Пользователь не найден')
+        if (err.response.status === 400) {
+          setMessage('Email занят')
+          return;
         }
 
+        console.log(err)
         setMessage('Неизвестная ошибка. Попробуйте позже')
       }
     }

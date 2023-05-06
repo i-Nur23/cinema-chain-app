@@ -19,14 +19,14 @@ export const VisitorAuthorization = () => {
 
 
   useEffect(() => {
-    if (location.state?.reason === 1){
+    if (location.state?.reason === 1) {
       setAfter(location.state.after);
       setAction(() => async (token) => {
         await BookingAPI.bookPlaces(location.state.seanceId, location.state.tickets, token);
       })
     }
 
-    if (location.state?.reason === 2){
+    if (location.state?.reason === 2) {
       setAfter(location.state.after);
       setAction(() => async (token) => {
         await ReviewAPI.PostUpdateReview(location.state.filmId, location.state.value, location.state.description, token);

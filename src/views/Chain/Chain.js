@@ -34,7 +34,7 @@ export const Chain = () => {
                         <p>{th.description}</p>
                         <p>Телефон: {th.mobilePhone}</p>
                         <p>Электронная почта: {th.email}</p>
-                        <p>Время работы: {th.workTime}</p>
+                        <p>Время работы: {th.startWorkTime}:00-{th.endWorkTime}:00</p>
                         <Link to={`/cityoffices/${th.id}`} state={{theater : th.name, city : city.city}} className='text-gray-400 flex w-fit gap-2 hover:text-black border-b-2 border-transparent hover:border-black'>
                           Расписание
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 my-auto">

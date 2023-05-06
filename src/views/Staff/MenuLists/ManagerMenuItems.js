@@ -10,8 +10,7 @@ export const ManagerMenuItems = ({setClose}) => {
   const navigate = useNavigate();
 
   const actions = [
-    { name : 'Составить расписание', url : 'new_timetable'},
-    { name : 'Изменить расписание', url: 'change_timetable'},
+    { name : 'Расписание', url : 'timetable'},
   ]
 
   return(

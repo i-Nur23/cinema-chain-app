@@ -49,11 +49,11 @@ export const UserBookings = () => {
           <ul>
             {
               pastBookings.map(b => (
-                <li className='p-3 border-b flex justify-between text-gray-500'>
+                <li className='p-3 border-b flex justify-between text-gray-300'>
                   <div>
                     <p className='font-semibold text-lg'>{b.filmName}</p>
-                    <p className='text-gray-500'>{b.branchOfficeName}, {b.branchOfficeAdress}</p>
-                    <p className='text-gray-500'>
+                    <p>{b.branchOfficeName}, {b.branchOfficeAdress}</p>
+                    <p>
                       Зал № {b.cinemaHallName}, &nbsp;{b.seanceStartTime.substring(8,10)}.{b.seanceStartTime.substring(5,7)}.{b.seanceStartTime.substring(0,4)}, &nbsp;
                       {b.seanceStartTime.substring(11,13)}:{b.seanceStartTime.substring(14,16)}
                     </p>
