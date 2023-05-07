@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {FilmsAPI} from "../../../api";
 import {Tab} from "@headlessui/react";
-import {ActorsPanel, DirectorsPanel} from "../../../components/TabPanels";
 import {TimetableContext} from "./TimetableContext";
 
 export const OfficeTimetable = () => {
@@ -17,12 +16,25 @@ export const OfficeTimetable = () => {
     date.setDate(date.getDate() + 1);
     let datesArray = []
     Array.from({length : 7}, (_, index) => {
-      datesArray.push({date : new Date(date)});
+      datesArray.push({date : new Date(date), table : null});
       date.setDate(date.getDate() + 1)
     })
     console.log(datesArray);
     setDays(datesArray);
   },[])
+
+  const compareDates = (d1, d2) => {
+    return d1.date.getDate() - d2.date.getDate();
+  }
+
+  const save = (date, table) => {
+    let oldDay = days.find (day => day.date === date);
+    oldDay.table = table;
+    //console.log([...days.filter(day => day.date !== date), oldDay].sort(compareDates));
+
+    setDays([...days.filter(day => day.date !== date), oldDay].sort(compareDates));
+    // API Task
+  }
 
 
   return(
@@ -56,7 +68,7 @@ export const OfficeTimetable = () => {
                   'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none'
                 )}
               >
-                <TimetableContext day={day}/>
+                <TimetableContext day={day} save={(table) => save(day.date, table)}/>
               </Tab.Panel>
             )}
           </Tab.Panels>

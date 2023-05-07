@@ -77,8 +77,8 @@ export const Navbar = () => {
             Кинотеатры
           </Link>
 
-          <Link to="#" className='my-auto p-4 text-xl hover:text-cyan-700 ease-in-out duration-150'>
-            Жалоба
+          <Link to="complaints" className='my-auto p-4 text-xl hover:text-cyan-700 ease-in-out duration-150'>
+            Оставить жалобу
           </Link>
         </div>
 

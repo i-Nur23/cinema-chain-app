@@ -1,19 +1,22 @@
 import {Draggable} from "react-beautiful-dnd";
 import styled from "styled-components";
+import {useMemo, useState} from "react";
 
 const Seance = styled.div`
-    border: 2px solid hsla(${(props) => props.seance.film.color}, 100%, 70%, 0.8);
+    border: 2px solid lightgray;
     border-radius: 0.5rem;
     font-size: 0.75rem;
     line-height: 1rem;
     padding: 1rem;
-    background-color: hsla(${(props) => props.seance.film.color}, 100%, 30%, 0.8);
+    background-color: darkgray;
     text-align: center;
     color : white;
     height: 75px;
+    display: flex;
+    flex-direction: column;
   `;
 
-export const AvailableFilm = ({seance, index}) => {
+export const StoredBreak = ({seance, index}) => {
 
   const onTouchEnd = (onTransitionEnd) => {
     const { toggleIsDragging } = this.props;
@@ -35,7 +38,6 @@ export const AvailableFilm = ({seance, index}) => {
     >
       {(provided) => (
         <Seance
-          className={`border-2 text-xs rounded-lg p-4 bg-${seance.film.color}-400 border-${seance.film.color}-800`}
           {...provided.dragHandleProps}
           {...provided.draggableProps}
           ref={provided.innerRef}
@@ -44,9 +46,16 @@ export const AvailableFilm = ({seance, index}) => {
               provided.draggableProps.onTransitionEnd
             );
           }}
-          seance={seance}
         >
-          {seance.film.name}
+          Перерыв
+          {/*<input
+            className='rounded p-2 text-black'
+            key={id}
+            placeholder="Время"
+            value={interval}
+            onChange={(e) => {setInterval(e.target.value)}}
+          />*/}
+          {/*<DurationInput/>*/}
         </Seance>
       )}
     </Draggable>

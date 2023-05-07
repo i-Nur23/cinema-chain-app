@@ -28,6 +28,7 @@ import {
   OfficesList
 } from "./views/Staff/Administrator";
 import {OfficeTimetable} from "./views/Staff/Manager";
+import {ComplaintsPage} from "./views/Complaints";
 
 
 const router = createBrowserRouter(
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
           <Route index element={<Home/>}/>
           <Route path='test' element={<Test/>}/>
           <Route path='chain' element={<Chain/>}/>
+          <Route path='complaints' element={<ComplaintsPage/>}/>
           <Route path="films">
             <Route path=":id" element={<FilmShedulue/>}/>
             <Route path=":id/info" element={<FIlmInfo/>}/>

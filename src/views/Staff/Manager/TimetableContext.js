@@ -5,12 +5,16 @@ import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {HallTimeline} from "./HallTimeline";
 import {AvailableFilmsColumn} from "./AvailableFilmsColumn";
+import {DateHandler} from "../../../utils/DateHandler";
+import {TimeHandler} from "../../../utils/TimeHandler";
 
-export const TimetableContext = ({day}) => {
+export const TimetableContext = ({day, save}) => {
 
   const token = useSelector(state => state.auth.token);
   const branchOfficeId = useSelector(state => state.auth.branchOfficeId)
   const navigate = useNavigate();
+  const startTime = 8;
+  const endTime = 22;
 
   const _table = {
     seances : {},
@@ -22,31 +26,44 @@ export const TimetableContext = ({day}) => {
       '1': {
         id:'1',
         title:'Зал №1',
+        timeLeft : 840,
         seanceIds: []
       },
       '2': {
         id:'2',
         title:'Зал №2',
+        timeLeft : 840,
         seanceIds: []
       },
       '3': {
         id:'3',
         title:'Зал №3',
+        timeLeft : 840,
         seanceIds: []
       },
     },
     hallsOrder: [1, 2, 3]
   }
 
-
-  /*const colors = ['red', 'yellow', 'lime', 'sky', 'violet', 'pink', 'orange', 'green', 'teal',
-                  'cyan', 'indigo', 'purple', 'rose', 'amber', 'emerald', 'blue', 'fuchsia'];*/
   const [table, setTable] = useState(_table);
+  const [timeRow, setTimeRow] = useState([])
   //const [availableFilms, setAvailableFilms] = useState([]);
   //const [halls, setHalls] = useState(null)
   const [freeId ,setFreeId] = useState(-1);
 
   useEffect(() => {
+    var row = [];
+    for (let i = startTime; i <= endTime; i += 0.5){
+      row.push(<div className='w-0 text-xs'>|{TimeHandler.toTimeString(i)}</div>)
+    }
+    setTimeRow(row);
+
+    if (day.table !== null) {
+      setFreeId(Math.min(...Object.keys(day.table.seances).map(key => day.table.seances[key].id)) - 1);
+      setTable(day.table);
+      return;
+    }
+
     let availableId = 0;
     let seances = {};
     FilmsAPI.getFilmsToStartPage().then(resData => {
@@ -57,12 +74,19 @@ export const TimetableContext = ({day}) => {
         --availableId;
         seances = {
           ...seances,
-        [availableId.toString()] : { id : availableId.toString() , film : { id : film.id, name : film.name,
+        [availableId.toString()] : { id : availableId.toString(), cost : 0, film : { id : film.id, name : film.name,
             duration: 90 + index * 10 ,color :  currentColor}
         }}
         currentColor += step;
       })
-      console.log(seances);
+
+      --availableId;
+
+      seances = {
+        ...seances,
+        [availableId.toString()] : { id : availableId.toString(), film : { id : 0, name : 'Перерыв', duration: 100, color : 20}
+        }}
+
       setFreeId(--availableId);
       setTable({
         ...table,
@@ -80,6 +104,90 @@ export const TimetableContext = ({day}) => {
       .then(office => setHalls())
       .catch(err => { if (err.response.status === 401) navigate('/staff') })*/
   },[])
+
+  const deleteItem = (itemId, droppableId) => {
+
+    const newSeanceIds = table.halls[droppableId].seanceIds.filter(id => id != itemId);
+
+    let _table = {
+      ...table,
+      halls : {
+        ...table.halls,
+        [droppableId] : {
+          ...table.halls[droppableId],
+          seanceIds : newSeanceIds,
+          timeLeft : table.halls[droppableId].timeLeft + table.seances[itemId].film.duration + 20
+        }
+      }
+    }
+
+    delete _table.seances[itemId];
+
+    setTable(_table)
+
+  }
+
+  const changePrice = async (e, id) => {
+    const newCost = e.target.value;
+
+    if (newCost !== '' && !/^\d+$/.test(newCost) ){
+      return;
+    }
+
+    await setTable(
+      {
+        ...table,
+        seances : {
+          ...table.seances,
+          [id] : {
+            ...table.seances[id],
+            cost : newCost
+          }
+        }
+      }
+    )
+  }
+
+  const changeBreakDuration = async (newDuration, hallId, id) => {
+    if (!/^\d+$/.test(newDuration) ){
+      return;
+    }
+
+    if (newDuration < 15){
+      newDuration = 15;
+    }
+
+    let newTimeLeft;
+
+    if (newDuration - table.seances[id].film.duration > table.halls[hallId].timeLeft) {
+      return;
+    } else {
+      newTimeLeft =  table.halls[hallId].timeLeft - newDuration + table.seances[id].film.duration;
+    }
+
+    await setTable(
+      {
+        ...table,
+        seances : {
+          ...table.seances,
+          [id] : {
+            ...table.seances[id],
+            film : {
+              ...table.seances[id].film,
+              duration : newDuration
+            }
+          }
+        },
+        halls : {
+          ...table.halls,
+          [hallId] : {
+            ...table.halls[hallId],
+            timeLeft : newTimeLeft
+          }
+        }
+      }
+    )
+  }
 
   const onDragEnd = result => {
     const { destination, source, draggableId } = result;
@@ -122,28 +230,20 @@ export const TimetableContext = ({day}) => {
     // Move from one list to another
     const startSeanceIds = Array.from(start.seanceIds);
 
-      startSeanceIds.splice(source.index, 1);
-    /*{
-      setTable(
-        {
-          ...table,
-          halls: {
-            ...table.halls,
-            "0" : {
-              ...table.halls["0"],
-              [freeId] :
-            }
-          }
-        }
-      )
-    }*/
+    if (finish.timeLeft < table.seances[draggableId].film.duration + 20) {
+      return
+    }
+
+    startSeanceIds.splice(source.index, 1);
+
     let newStart;
     let newSeances = table.seances;
 
     if (start.id !== '0'){
       newStart = {
         ...start,
-        seanceIds: startSeanceIds
+        seanceIds: startSeanceIds,
+        timeLeft : start.timeLeft + table.seances[draggableId].film.duration + 20,
       };
     } else {
       const newSeance = {
@@ -170,13 +270,22 @@ export const TimetableContext = ({day}) => {
     }
 
     const finishSeanceIds = Array.from(finish.seanceIds);
+    let newFinish;
     if (finish.id !== '0'){
       finishSeanceIds.splice(destination.index, 0, draggableId);
+
+      newFinish = {
+        ...finish,
+        seanceIds: finishSeanceIds,
+        timeLeft : finish.timeLeft - table.seances[draggableId].film.duration - 20,
+
+      };
+    } else {
+      newFinish = {
+        ...finish,
+        seanceIds: finishSeanceIds
+      };
     }
-    const newFinish = {
-      ...finish,
-      seanceIds: finishSeanceIds
-    };
 
     const newState = {
       ...table,
@@ -193,6 +302,24 @@ export const TimetableContext = ({day}) => {
     setTable(newState);
   }
 
+  /*const onDragStart = start => {
+    var newCost = document.getElementById(`seance-${start.draggableId}`)?.value;
+    if (!newCost){
+      setTable(
+        {
+          ...table,
+          seances : {
+            ...table.seances,
+            [start.draggableId] : {
+              ...table.seances[start.draggableId],
+              cost : newCost
+            }
+          }
+        }
+      )
+    }
+  }*/
+
   return(
     <DragDropContext onDragEnd={onDragEnd}>
       <div className='flex divide-x'>
@@ -201,16 +328,27 @@ export const TimetableContext = ({day}) => {
         </div>
         <div className='border-collapse p-2 w-5/6 overflow-x-auto'>
           <p className='font-semibold mb-6'>Залы</p>
+          <div className='flex gap-[75px] ml-[72px]'>
+            {
+              timeRow
+            }
+          </div>
           {
             table.hallsOrder.map((hallId, index) => {
               const hall = table.halls[hallId];
               const seances = hall.seanceIds.map((seanceId) => table.seances[seanceId])
-              return <HallTimeline hall={hall} seances={seances}/>
+              return <HallTimeline hall={hall} seances={seances} width={(endTime - startTime) * 150 + 72}
+                                   deleteItem={(itemId, hallId) => deleteItem(itemId, hallId)}
+                                   changePrice={changePrice}
+                                   changeBreakDuration = {changeBreakDuration}
+              />
             })
           }
         </div>
-
       </div>
+      <button className='ml-2 p-2 bg-cyan-600 rounded-lg text-white hover:bg-cyan-800 w-32' onClick={() => save(table)}>
+        Сохранить
+      </button>
     </DragDropContext>
   )
 }
