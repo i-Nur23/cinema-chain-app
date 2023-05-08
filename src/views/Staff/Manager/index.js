@@ -1,3 +1,4 @@
 import {OfficeTimetable} from "./OfficeTimetable";
+import {BranchOfficeComplaints} from "./BranchOfficeComplaints";
 
-export {OfficeTimetable}
+export {OfficeTimetable, BranchOfficeComplaints}

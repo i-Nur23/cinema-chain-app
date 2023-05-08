@@ -11,6 +11,7 @@ export const ManagerMenuItems = ({setClose}) => {
 
   const actions = [
     { name : 'Расписание', url : 'timetable'},
+    { name : 'Жалобы', url : 'branchOfficeComplaints'},
   ]
 
   return(

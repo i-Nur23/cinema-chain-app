@@ -1,5 +1,6 @@
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
+import {ComplaintForm} from "../../components/Forms";
 
 export const ComplaintsPage = () => {
   const token = useSelector(state => state.auth.token);
@@ -26,8 +27,8 @@ export const ComplaintsPage = () => {
   return(
     token === ''
     ? <ForUnauthorized/>
-    : role === 'Client'
-      ? <div/>
+    : role === 'User'
+      ? <ComplaintForm token={token}/>
       : <ForStaff/>
   )
 }
