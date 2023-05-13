@@ -52,7 +52,7 @@ export class FilmsAPI extends MainAPIBase{
   static createNewDirector = async (name, token) => {
     var url = `${this.baseURL}/FilmsAdditionalInfo/CreateNewFilmDirector/${name}`
 
-    return await axios.post(url, {headers : {
+    return await axios.post(url, {},{headers : {
         "Authorization" : `Bearer ${token}`
       }});
   }

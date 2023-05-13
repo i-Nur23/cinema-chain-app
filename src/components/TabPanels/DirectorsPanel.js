@@ -1,27 +1,20 @@
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {ActorDirectorElement} from "../ListElements/ActorDirectorElement";
 import {AcceptActionDialog} from "../Dialogs";
+import {FilmsAPI} from "../../api";
 
 export const DirectorsPanel = () => {
   const navigate = useNavigate();
 
-  const [directors, setDirectors] = useState([
-    {
-      firstName : "Райан",
-      lastName : "Гослинг"
-    },
-    {
-      firstName : "Кристиан",
-      lastName : "Бейл"
-    }
-  ]);
+  const [directors, setDirectors] = useState([]);
+  const [filteredDirectors, setFilteredDirectors] = useState([]);
+  const [search, setSearch] = useState("");
   const [selectedDirector, setSelectedDirector] = useState(null);
   const [open, setOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [newDirectorName, setNewDirectorName] = useState('');
-  const [newDirectorSurname, setNewDirectorSurname] = useState('');
   const token = useSelector(state => state.auth.token);
 
   const close = () => setOpen(false);
@@ -30,9 +23,10 @@ export const DirectorsPanel = () => {
     (
       async () => {
         try {
-          /*const resData = await DirectorsAPI.GetAllDirectors(token);
-          setDirectors(resData.directorList);*/
-          setLoaded(true)
+          const resData = await FilmsAPI.getAllDirectors(token);
+          setDirectors(resData.filmDirectorList);
+          setFilteredDirectors(resData.filmDirectorList);
+          setLoaded(true);
         } catch (err) {
           navigate('/staff')
         }
@@ -40,30 +34,52 @@ export const DirectorsPanel = () => {
     )()
   },[])
 
-  const changeActivity = async () => {
-
+  const handleAdding = () => {
+    FilmsAPI.createNewDirector(newDirectorName, token)
+      .then(_ => FilmsAPI.getAllDirectors(token)
+        .then(resData => {
+          setNewDirectorName("");
+          setDirectors(resData.filmDirectorList);
+          setFilteredDirectors(resData.filmDirectorList.filter(director => director.name.toLowerCase().indexOf(search.toLowerCase()) != -1))
+        }))
   }
 
   return loaded && (
     <div>
+      <div className='w-full flex px-5 gap-3 text-center'>
+        <p className='font-light my-auto'>Поиск: </p>
+        <input
+          className='w-full p-3 border rounded-lg focus:outline-none'
+          placeholder={"Введите имя"}
+          value={search}
+          onChange={async e => {
+            setSearch(e.target.value);
+            setFilteredDirectors(directors.filter(director => director.name.toLowerCase().indexOf(e.target.value.toLowerCase()) != -1))
+          }}
+        />
+      </div>
       <ul>
         {
-          directors.map(director =>
+         filteredDirectors.map(director =>
             <ActorDirectorElement
-              onDelete={(id) => {
-
+              key={director.id}
+              onDelete={() => {
                 setSelectedDirector(director);
                 setOpen(true);
               }
               }
 
-              onSave={(id, firstName, lastName) => {
-                setSelectedDirector(director);
-              }
+              onSave={(name) => {
+                FilmsAPI.editDirector(director.id, name, token)
+                  .then(_ => FilmsAPI.getAllDirectors(token)
+                    .then(resData => {
+                      setDirectors(resData.filmDirectorList);
+                      setFilteredDirectors(resData.filmDirectorList.filter(director => director.name.toLowerCase().indexOf(search.toLowerCase()) != -1))
+                    }))
+                }
               }
 
-              firstName={director.firstName}
-              lastName={director.lastName}
+              name = {director.name}
             />
           )
         }
@@ -79,14 +95,10 @@ export const DirectorsPanel = () => {
                 onChange={e => setNewDirectorName(e.target.value)}
                 placeholder={'Имя'}
               />
-              <input
-                className='p-2 border rounded-lg focus:outline-none'
-                value={newDirectorSurname}
-                onChange={e => setNewDirectorSurname(e.target.value)}
-                placeholder={'Фамилия'}
-              />
             </div>
-            <button className='bg-cyan-700 rounded-lg px-3 py-2 text-white'>
+            <button
+              className='bg-cyan-700 rounded-lg px-3 py-2 text-white'
+              onClick={handleAdding}>
               Добавить
             </button>
           </div>
@@ -95,14 +107,15 @@ export const DirectorsPanel = () => {
       <AcceptActionDialog
         isOpen={open}
         close={() => close()}
-        message={`Вы уверены, что ходите удалить из системы режиссера: ${selectedDirector?.firstName}  ${selectedDirector?.lastName}?`}
+        message={`Вы уверены, что ходите удалить из системы режиссера: ${selectedDirector?.name}?`}
         action={() => {
-          /*DirectorAPI.RemoveDirector(deletingDirector.id, token)
-            .then(_ => DirectorAPI.GetAllDirectors(token)
+          FilmsAPI.deleteDirector(selectedDirector.id, token)
+            .then(_ => FilmsAPI.getAllDirectors(token)
               .then(resData => {
-                setDirectors(resData.directorList);
+                setDirectors(resData.filmDirectorList);
+                setFilteredDirectors(resData.filmDirectorList.filter(director => director.name.toLowerCase().indexOf(search.toLowerCase()) != -1))
                 close()
-              }));*/
+              }));
         }}
       />
     </div>
