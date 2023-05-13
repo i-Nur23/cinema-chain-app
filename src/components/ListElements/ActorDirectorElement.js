@@ -2,36 +2,27 @@ import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {ArrowUturnLeftIcon, PencilIcon, PencilSquareIcon, XMarkIcon} from "@heroicons/react/24/outline";
 
-export const ActorDirectorElement = ({id, firstName, lastName, onDelete, onSave }) => {
+export const ActorDirectorElement = ({name, onDelete, onSave, key }) => {
 
   const [oldName, setOldName] = useState('');
   const [oldSurname, setOldSurname] = useState('');
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
+  const [_name, setName] = useState('');
 
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
-    setOldName(firstName);
-    setOldSurname(lastName);
-    setName(firstName);
-    setSurname(lastName);
+    setOldName(name);
+    setName(name);
   },[])
 
   return(
-    <li className="p-3 border-b">
+    <li className="p-3 border-b" key={key}>
       <div className='flex justify-between'>
         <div className='flex gap-3'>
           <input
             className='p-2 border rounded-lg disabled:border-white disabled:bg-white focus:outline-none'
-            value={name}
+            value={_name}
             onChange={e => setName(e.target.value)}
-            disabled={isDisabled}
-          />
-          <input
-            className='p-2 border rounded-lg disabled:border-white disabled:bg-white focus:outline-none'
-            value={surname}
-            onChange={e => setSurname(e.target.value)}
             disabled={isDisabled}
           />
         </div>
@@ -45,7 +36,7 @@ export const ActorDirectorElement = ({id, firstName, lastName, onDelete, onSave 
               <div className='flex my-auto gap-5'>
                 <button className='flex flex-col justify-center'>
                   <span className="material-symbols-outlined w-6 h-6 my-auto hover:text-green-500" onClick={() => {
-                    onSave(id, name, surname);
+                    onSave(_name);
                     setIsDisabled(true)
                   }}>
                     save
@@ -54,7 +45,6 @@ export const ActorDirectorElement = ({id, firstName, lastName, onDelete, onSave 
                 <button>
                   <ArrowUturnLeftIcon className='w-6 h-6 my-auto hover:text-purple-500' onClick={() => {
                     setIsDisabled(true);
-                    setSurname(oldSurname);
                     setName(oldName);
                   }}/>
                 </button>
@@ -62,7 +52,7 @@ export const ActorDirectorElement = ({id, firstName, lastName, onDelete, onSave 
           }
           <XMarkIcon
             className='w-6 h-6 my-auto cursor-pointer hover:text-red-500'
-            onClick={() => onDelete(id)}
+            onClick={() => onDelete()}
           />
         </div>
       </div>
