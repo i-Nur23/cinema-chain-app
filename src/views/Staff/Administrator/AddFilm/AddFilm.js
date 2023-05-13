@@ -6,15 +6,34 @@ import {DefaultInput} from "../../../../components/Inputs";
 import {SelectInput} from "../../../../components/MUIStyles";
 import {Autocomplete, Checkbox, MenuItem, Select, TextField, styled} from "@mui/material";
 import { Combobox, Transition } from "@headlessui/react";
-import {ComboboxWithTags} from "../../../../components/Combobox";
+import {ComboboxWithTagsGenres, ComboboxWithTagsPersons} from "../../../../components/Combobox";
 
 export const AddFilm = () => {
 
 
   const ageRestrictions = [0, 6, 12, 16, 18];
-  const genresList = ["комедия", "мультфильм", "хоррор", "фантастика", "триллер", "боевик", "мелодрама", "детектив",
-    "приключения", "фэнтези", "военный", "семейный", "аниме", "исторический", "драма", "документальное",  "детское",
-    "криминал", "биография", "вестерн", "спортивное", "мюзикл","короткометражка"
+  const genresList = [
+    {
+      id : 1,
+      description : "комедия"
+    },
+    {
+      id : 2,
+      description : "драма"
+    },
+    {
+      id : 3,
+      description : "детектив"
+    },
+    {
+      id : 4,
+      description : "триллер"
+    },
+    {
+      id : 5,
+      description : "боевик"
+    },
+
   ]
 
   const [poster, setPoster] = useState(null)
@@ -128,7 +147,7 @@ export const AddFilm = () => {
   const valueChanged = (ind) => {
     setMessage('');
     setInvalidArray(invalidArray.map((isVal, innerIndex) => {
-      if (innerIndex == ind) {
+      if (innerIndex === ind) {
         return false;
       }
       return isVal;
@@ -138,7 +157,7 @@ export const AddFilm = () => {
   const comboboxValueChanged = (ind) => {
     setMessage('');
     setInvalidComboboxesArray(invlaidComboboxes.map((isVal, innerIndex) => {
-      if (innerIndex == ind) {
+      if (innerIndex === ind) {
         return false;
       }
       return isVal;
@@ -220,10 +239,10 @@ export const AddFilm = () => {
           <div className='grid grid-cols-4 gap-6'>
             <div className='col-span-2'>
               <p>Жанры</p>
-              <ComboboxWithTags values={genres} setValues={setGenres}
-                                initList={genresList} placeholder={"введите жанр..."}
-                                isInvalid={invlaidComboboxes[0]}
-                                onChange={() => comboboxValueChanged(0)}
+              <ComboboxWithTagsGenres values={genres} setValues={setGenres}
+                                      initList={genresList} placeholder={"введите жанр..."}
+                                      isInvalid={invlaidComboboxes[0]}
+                                      onChange={() => comboboxValueChanged(0)}
               />
             </div>
             <div>
@@ -240,18 +259,18 @@ export const AddFilm = () => {
           <div className='grid grid-cols-2 gap-6'>
             <div>
               <p className='px-2'>Актеры</p>
-              <ComboboxWithTags values={selectedActors} initList={actors} setValues={setActors}
-                                placeholder={'введите имя или фамилию актёра...'}
-                                isInvalid={invlaidComboboxes[1]}
-                                onChange={() => comboboxValueChanged(1)}
+              <ComboboxWithTagsPersons values={selectedActors} initList={actors} setValues={setActors}
+                                      placeholder={'введите имя или фамилию актёра...'}
+                                      isInvalid={invlaidComboboxes[1]}
+                                      onChange={() => comboboxValueChanged(1)}
               />
             </div>
             <div>
               <p className='px-2'>Режиссер(-ы)</p>
-              <ComboboxWithTags values={selectedDirectors} initList={directors} setValues={setDirectors}
-                                placeholder={'введите имя или фамилию режиссёра...'}
-                                isInvalid={invlaidComboboxes[2]}
-                                onChange={() => comboboxValueChanged(2)}
+              <ComboboxWithTagsPersons values={selectedDirectors} initList={directors} setValues={setDirectors}
+                                      placeholder={'введите имя или фамилию режиссёра...'}
+                                      isInvalid={invlaidComboboxes[2]}
+                                      onChange={() => comboboxValueChanged(2)}
               />
             </div>
           </div>

@@ -2,7 +2,7 @@ import {CheckIcon, ChevronUpDownIcon, XMarkIcon} from "@heroicons/react/24/outli
 import {Combobox, Transition} from "@headlessui/react";
 import {Fragment, useState} from "react";
 
-export const ComboboxWithTags = ({values, setValues, initList, placeholder, isInvalid, onChange}) => {
+export const ComboboxWithTagsGenres = ({values, setValues, initList, placeholder, isInvalid, onChange}) => {
 
   const [query, setQuery] = useState('');
 
@@ -10,14 +10,14 @@ export const ComboboxWithTags = ({values, setValues, initList, placeholder, isIn
     query === ''
       ? initList
       : initList.filter((g) =>
-        g
+        g.description
           .toLowerCase()
           .replace(/\s+/g, '')
           .includes(query.toLowerCase().replace(/\s+/g, ''))
       )
 
   return(
-    <Combobox value={values} onChange={setValues} multiple>
+    <Combobox value={values} onChange={setValues} by="id" multiple>
       <div className="relative">
         <div
           className={`relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left border ${!isInvalid ? 'border-gray-300' : 'border-red-700'} focus:outline-none`}
@@ -29,8 +29,8 @@ export const ComboboxWithTags = ({values, setValues, initList, placeholder, isIn
                 <div className="flex gap-2 m-1 text-sm h-4/5 p-1 rounded bg-gray-200"
                      onChange={onChange}
                 >
-                  {value}
-                  <XMarkIcon className="w-4 h-4 m-auto cursor-pointer" onClick={() => setValues(values.filter(_value => _value !== value ))}/>
+                  {value.description}
+                  <XMarkIcon className="w-4 h-4 m-auto cursor-pointer" onClick={() => setValues(values.filter(_value => _value.id !== value.id ))}/>
                 </div>
               )
             }
@@ -57,7 +57,7 @@ export const ComboboxWithTags = ({values, setValues, initList, placeholder, isIn
           <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
             {filteredValues.length === 0 && query !== '' ? (
               <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                Nothing found.
+                Ничего не найдено.
               </div>
             ) : (
               filteredValues.map((genre, index) => (
@@ -77,7 +77,7 @@ export const ComboboxWithTags = ({values, setValues, initList, placeholder, isIn
                                     selected ? 'font-medium' : 'font-normal'
                                   }`}
                                 >
-                                  {genre}
+                                  {genre.description}
                                 </span>
                       {selected ? (
                         <span
