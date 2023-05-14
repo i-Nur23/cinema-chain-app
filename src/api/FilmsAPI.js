@@ -1,7 +1,7 @@
 import axios from "axios";
 import {MainAPIBase} from "./MainAPIBase";
 
-export class FilmsAPI extends MainAPIBase{
+export class FilmsAPI extends MainAPIBase {
 
   static getFilmsToStartPage = async () => {
     var url = `${this.baseURL}/Films/GetActiveFilms`
@@ -24,9 +24,11 @@ export class FilmsAPI extends MainAPIBase{
 
     console.log(token);
 
-    var response = await axios.get(url, {headers : {
-        "Authorization" : `Bearer ${token}`
-      }});
+    var response = await axios.get(url, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
 
     return response.data;
   }
@@ -34,9 +36,23 @@ export class FilmsAPI extends MainAPIBase{
   static getAllDirectors = async (token) => {
     var url = `${this.baseURL}/FilmsAdditionalInfo/GetAllFilmDirectors`
 
-    var response = await axios.get(url, {headers : {
-      "Authorization" : `Bearer ${token}`
-    }});
+    var response = await axios.get(url, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    return response.data;
+  }
+
+  static getAllGenres = async (token) => {
+    var url = `${this.baseURL}/FilmsAdditionalInfo/GetAllGenres`
+
+    var response = await axios.get(url, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
 
     return response.data;
   }
@@ -44,60 +60,98 @@ export class FilmsAPI extends MainAPIBase{
   static createNewActor = async (name, token) => {
     var url = `${this.baseURL}/FilmsAdditionalInfo/CreateNewActor/${name}`
 
-    return await axios.post(url, {}, {headers : {
-        "Authorization" : `Bearer ${token}`,
-    }});
+    return await axios.post(url, {}, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    });
   }
 
   static createNewDirector = async (name, token) => {
     var url = `${this.baseURL}/FilmsAdditionalInfo/CreateNewFilmDirector/${name}`
 
-    return await axios.post(url, {},{headers : {
-        "Authorization" : `Bearer ${token}`
-      }});
+    return await axios.post(url, {}, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
   }
 
   static editActor = async (id, name, token) => {
     var url = `${this.baseURL}/FilmsAdditionalInfo/UpdateActor`
 
     var body = {
-      actorId : id,
-      name : name
+      actorId: id,
+      name: name
     }
 
-    return await axios.put(url,body, {headers : {
-        "Authorization" : `Bearer ${token}`,
-        "Content-Type" : "application/json"
-      }});
+    return await axios.put(url, body, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
   }
 
   static editDirector = async (id, name, token) => {
     var url = `${this.baseURL}/FilmsAdditionalInfo/UpdateFilmDirector`
 
     var body = {
-      filmDirectorId : id,
-      name : name
+      filmDirectorId: id,
+      name: name
     }
 
-    return await axios.put(url,body, {headers : {
-        "Authorization" : `Bearer ${token}`,
-        "Content-Type" : "application/json"
-      }});
+    return await axios.put(url, body, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
   }
 
   static deleteActor = async (id, token) => {
     var url = `${this.baseURL}/FilmsAdditionalInfo/DeleteActor/${id}`
 
-    return await axios.delete(url, {headers : {
-        "Authorization" : `Bearer ${token}`
-      }});
+    return await axios.delete(url, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
   }
 
   static deleteDirector = async (id, token) => {
     var url = `${this.baseURL}/FilmsAdditionalInfo/DeleteFilmDirector/${id}`
 
-    return await axios.delete(url, {headers : {
-        "Authorization" : `Bearer ${token}`
-      }});
+    return await axios.delete(url, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+  }
+
+  static createFilm = async (name, descr, year, length, ageRestriction,
+                             trailerUrl, kpUrl, genreIds, actorIds, directorIds, token) => {
+
+    var url = `${this.baseURL}/Films/CreateNewFilm`;
+
+    var body = {
+      name: name,
+      description: descr,
+      releaseYear: year,
+      length: length,
+      ageRestriction: ageRestriction,
+      urlForTrailer: trailerUrl,
+      urlForKinopoisk: kpUrl,
+      genres: genreIds,
+      actorsId: actorIds,
+      filmDirectorsId: directorIds
+    };
+
+    return await axios.post(url, body, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    })
   }
 }

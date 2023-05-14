@@ -47,7 +47,19 @@ export const AddOffice = () => {
         setEmail(office.email);
         setPhone(office.mobilePhone);
         setDescr(office.description);
-        setWorkHours([office.startWorkTime, office.endWorkTime]);
+
+        var start = office.startWorkTime;
+        var end = office.endWorkTime;
+
+        if (start < 5){
+          start += 24
+        }
+
+        if (end < 5){
+          end += 24
+        }
+
+        setWorkHours([start, end]);
         setCity(office.city);
         setAddress(office.adress);
         setHalls(office.cinemaHallsList.map(hall => {
@@ -353,9 +365,40 @@ export const AddOffice = () => {
           <p className="text-red-700 text-center mt-2">{message}</p>  
         </div>
       </div>
-  
-
 
     </div>
   )
+}
+
+
+var req = {
+  branchOfficeId : 1,
+  date : "число, для которого составляется расписание",
+  table : {
+    halls : [
+      {
+        id : 1,
+        seanceIds : [-1, -8]
+      }
+    ],
+    seances : [
+      {
+        id : -1,
+        cost: "250",
+        film : {
+          id : 1,
+          duration : 90
+        }
+      },
+      {
+        id : -8,
+        cost: "-1",
+        film : {
+          id : 0,
+          duration : 100
+        }
+      },
+    ]
+  }
+
 }

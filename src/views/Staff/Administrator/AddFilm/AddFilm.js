@@ -7,42 +7,31 @@ import {SelectInput} from "../../../../components/MUIStyles";
 import {Autocomplete, Checkbox, MenuItem, Select, TextField, styled} from "@mui/material";
 import { Combobox, Transition } from "@headlessui/react";
 import {ComboboxWithTagsGenres, ComboboxWithTagsPersons} from "../../../../components/Combobox";
+import {FilmsAPI} from "../../../../api";
+import {useSelector} from "react-redux";
+import {useNavigate, useParams} from "react-router-dom";
+import {MediaAPI} from "../../../../api/MediaAPI";
 
 export const AddFilm = () => {
 
 
   const ageRestrictions = [0, 6, 12, 16, 18];
-  const genresList = [
-    {
-      id : 1,
-      description : "комедия"
-    },
-    {
-      id : 2,
-      description : "драма"
-    },
-    {
-      id : 3,
-      description : "детектив"
-    },
-    {
-      id : 4,
-      description : "триллер"
-    },
-    {
-      id : 5,
-      description : "боевик"
-    },
 
-  ]
+  const token = useSelector(state => state.auth.token);
+  const {id} = useParams();
+  const navigate = useNavigate();
 
-  const [poster, setPoster] = useState(null)
+  const [poster, setPoster] = useState(null);
+  const [postingPoster, setPostingPoster] = useState(null);
+
   const [photos, setPhotos] = useState([]);
+  const [postingPhotos, setPostingPhotos] = useState([]);
 
   const [name, setName] = useState('');
   const [ageRestriction, setAgeResctriction] = useState(ageRestrictions[4]);
   const [description, setDescription] = useState('');
   const [year, setYear] = useState(new Date().getFullYear());
+  const [selectedGenres, setSelectedGenres] = useState([]);
   const [genres, setGenres] = useState([]);
   const [actors, setActors] = useState([]);
   const [selectedActors, setSelectedActors] = useState([]);
@@ -52,6 +41,7 @@ export const AddFilm = () => {
   const [kpURL, setKpURL] = useState('');
   const [trailerURL, setTrailerURL] = useState('');
   const [message, setMessage] = useState('');
+  const [method, setMethod] = useState('ADD');
   const [title, setTitle] = useState('Добавление фильма');
 
   const [invalidArray, setInvalidArray] = useState([false, false, false, false, false]);
@@ -60,6 +50,7 @@ export const AddFilm = () => {
   const onPosterChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       let img = event.target.files[0];
+      setPostingPoster(img);
       setPoster(URL.createObjectURL(img))
     } else {
       setPoster(null)
@@ -83,28 +74,33 @@ export const AddFilm = () => {
     setInvalidComboboxesArray(newComboboxesArray);
   },[genres, selectedActors, selectedDirectors])*/
 
+  useEffect(() => {
+    FilmsAPI.getAllActors(token)
+      .then(resData => setActors(resData.actorsList));
+
+    FilmsAPI.getAllDirectors(token)
+      .then(resData => setDirectors(resData.filmDirectorList));
+
+    FilmsAPI.getAllGenres(token)
+      .then(resData => setGenres(resData.genres))
+
+    },[])
+
   const addPhoto = (event) => {
     if (event.target.files && event.target.files[0]) {
       let img = event.target.files[0];
       setPhotos( [...photos , URL.createObjectURL(img)])
+      setPostingPhotos([...postingPhotos, img])
     }
   }
 
   const deletePhoto = (index) => {
     setPhotos(photos.filter((_, _index) => index !== _index ))
-  }
-
-  const moveGenre = (option) => {
-    if (genres.indexOf(option) === -1) {
-      setGenres([...genres, option])
-    } else {
-      setGenres(genres.filter(genre => genre != option))
-    }
+    setPostingPhotos(postingPhotos.filter((_, _index) => index !== _index ))
   }
 
   const handleSaving = async () => {
     var inputs = document.querySelectorAll('input[required]');
-    console.log(inputs);
     var newArray = invalidArray.map(x => x);
     var ok = true;
     inputs.forEach((input, index) => {
@@ -140,7 +136,27 @@ export const AddFilm = () => {
     }
 
     if (ok){
+      try{
+        /*var response = await FilmsAPI.createFilm(name, description, year, duration, ageRestriction, trailerURL, kpURL,
+                                                  selectedGenres.map(g => g.id),
+                                                  selectedActors.map(a => a.id),
+                                                  selectedDirectors.map(d => d.id), token);
 
+        console.log(response.data);
+        var createdFilmId = response.data;*/
+        var createdFilmId = 9;
+
+        //await MediaAPI.AddFilmPoster(createdFilmId, postingPoster);
+        await MediaAPI.AddFilmImages(createdFilmId, postingPhotos);
+
+        //navigate('/staff/main/films');
+
+
+      } catch (e) {
+        if (e.response.status === 401){
+          navigate('/staff')
+        }
+      }
     }
   }
 
@@ -173,13 +189,14 @@ export const AddFilm = () => {
             <center className='font-semibold'>Постер</center>
             <img src={poster ?? placeholder} className='rounded-lg h-96 object-fill'/>
             <div className='flex justify-between'>
-              <label className="text-white bg-black rounded p-2 w-5/6 text-center">
-                <input className='rounded' type='file' onChange={(e) => onPosterChange(e)}/>
-                Загрузть
+                <label className="text-white bg-black rounded p-2 w-5/6 text-center">
+                  <input className='rounded' type='file' onChange={(e) => onPosterChange(e)}/>
+                  Загрузть
               </label>
-              {
-                poster ? <TrashIcon className='w-7 h-7 m-auto cursor-pointer hover:text-red-600' onClick={() => setPoster(null)}/> : null
-              }
+                {
+                  poster ? <TrashIcon className='w-7 h-7 m-auto cursor-pointer hover:text-red-600'
+                                      onClick={() => setPoster(null)}/> : null
+                }
             </div>
           </div>
           <div className='flex flex-col gap-3 pt-4'>
@@ -239,8 +256,8 @@ export const AddFilm = () => {
           <div className='grid grid-cols-4 gap-6'>
             <div className='col-span-2'>
               <p>Жанры</p>
-              <ComboboxWithTagsGenres values={genres} setValues={setGenres}
-                                      initList={genresList} placeholder={"введите жанр..."}
+              <ComboboxWithTagsGenres values={selectedGenres} setValues={setSelectedGenres}
+                                      initList={genres} placeholder={"введите жанр..."}
                                       isInvalid={invlaidComboboxes[0]}
                                       onChange={() => comboboxValueChanged(0)}
               />
@@ -259,7 +276,7 @@ export const AddFilm = () => {
           <div className='grid grid-cols-2 gap-6'>
             <div>
               <p className='px-2'>Актеры</p>
-              <ComboboxWithTagsPersons values={selectedActors} initList={actors} setValues={setActors}
+              <ComboboxWithTagsPersons values={selectedActors} initList={actors} setValues={setSelectedActors}
                                       placeholder={'введите имя или фамилию актёра...'}
                                       isInvalid={invlaidComboboxes[1]}
                                       onChange={() => comboboxValueChanged(1)}
@@ -267,7 +284,7 @@ export const AddFilm = () => {
             </div>
             <div>
               <p className='px-2'>Режиссер(-ы)</p>
-              <ComboboxWithTagsPersons values={selectedDirectors} initList={directors} setValues={setDirectors}
+              <ComboboxWithTagsPersons values={selectedDirectors} initList={directors} setValues={setSelectedDirectors}
                                       placeholder={'введите имя или фамилию режиссёра...'}
                                       isInvalid={invlaidComboboxes[2]}
                                       onChange={() => comboboxValueChanged(2)}

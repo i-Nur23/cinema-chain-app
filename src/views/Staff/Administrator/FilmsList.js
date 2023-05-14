@@ -34,8 +34,8 @@ export const FilmsList = () => {
     (
       async () => {
         try {
-          /*const resData = await FilmsAPI.GetAllFilms(token);
-          setFilms(resData.filmList);*/
+          const resData = await FilmsAPI.GetAllFilms(token);
+          setFilms(resData.filmList);
           setLoaded(true)
         } catch (err) {
           navigate('/staff')
@@ -70,13 +70,6 @@ export const FilmsList = () => {
                   <Link to={`/staff/main/new_film/${film.id}`} className='hover:text-blue-500 my-auto'>
                     <PencilSquareIcon className='w-6 h-6 my-auto'/>
                   </Link>
-                  <XMarkIcon
-                    className='w-6 h-6 my-auto cursor-pointer hover:text-red-500'
-                    onClick={() => {
-                      setDeletingFilm(film);
-                      setOpen(true);
-                    }}
-                  />
                 </div>
               </div>
             </li>
