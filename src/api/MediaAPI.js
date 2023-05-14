@@ -7,7 +7,14 @@ export class MediaAPI {
     var url = `${this.baseURL}/SaveMedia?filmId=${id}`;
 
     var body = new FormData()
-    body.append('files', images)
+
+    var len = images.length;
+
+    for (let i = 0; i < len; i++){
+      body.append('files', images[i])
+    }
+
+    console.log(body)
 
     return await axios.post(url, body, {headers :  {
       "Content-Type" : "multipart/form-data"

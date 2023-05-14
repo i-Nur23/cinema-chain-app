@@ -20,10 +20,10 @@ import {
   ActorsDirectorsList,
   AddFilm,
   AddManager,
-  AddOffice, AllComplaints,
+  AddOffice, AddOperator, AllComplaints, ChangeFilmInfo,
   FilmsList,
   ManagersList,
-  OfficesList
+  OfficesList, OperatorsList
 } from "./views/Staff/Administrator";
 import {BranchOfficeComplaints, OfficeTimetable} from "./views/Staff/Manager";
 import {ComplaintsPage} from "./views/Complaints";
@@ -67,9 +67,12 @@ const router = createBrowserRouter(
             <Route path='new_manager' element={<Navigate to={'-1'}/>}/>
             <Route path='new_manager/:id' element={<AddManager/>}/>
             <Route path='managers' element={<ManagersList/>}/>
-            <Route path='new_film' element={<Navigate to={'-1'}/>}/>
-            <Route path='new_film/:id' element={<AddFilm/>}/>
+            <Route path='new_operator' element={<Navigate to={'-1'}/>}/>
+            <Route path='new_operator/:id' element={<AddOperator/>}/>
+            <Route path='operators' element={<OperatorsList/>}/>
+            <Route path='new_film' element={<AddFilm/>}/>
             <Route path='films' element={<FilmsList/>}/>
+            <Route path='films/:id' element={<ChangeFilmInfo/>}/>
             <Route path='crew' element={<ActorsDirectorsList/>}/>
             <Route path='timetable' element={<OfficeTimetable/>}/>
             <Route path='new_messages' element={<NewComplaints/>}/>

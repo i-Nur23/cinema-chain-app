@@ -154,4 +154,40 @@ export class FilmsAPI extends MainAPIBase {
       }
     })
   }
+
+  static getFilmInfoWithoutTable = async (id) => {
+    var url = `${this.baseURL}/Films/GetFilmById?id=${id}`
+
+    var response = await axios.get(url);
+
+    return response.data;
+  };
+
+  static changeFilmInfo = async (id, name, descr, year, length, ageRestriction, active,
+                                 trailerUrl, kpUrl, genreIds, actorIds, directorIds, token) => {
+
+    var url = `${this.baseURL}/Films/UpdateFilm`;
+
+    var body = {
+      id : id,
+      name: name,
+      description: descr,
+      releaseYear: year,
+      length: length,
+      isActive : active,
+      ageRestriction: ageRestriction,
+      urlForTrailer: trailerUrl,
+      urlForKinopoisk: kpUrl,
+      genres: genreIds,
+      actorsId: actorIds,
+      filmDirectorsId: directorIds
+    };
+
+    return await axios.put(url, body, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    })
+  }
 }

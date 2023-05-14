@@ -10,14 +10,16 @@ export const AdminMenuItems = ({setClose}) => {
   const navigate = useNavigate();
 
   const actions = [
-      { name : 'Добавить филиал', url : 'new_branch_office'},
-      { name : 'Список филиалов', url: 'branch_offices'},
-      { name : 'Добавить фильм', url : 'new_film'},
-      { name : 'Список фильмов', url : 'films'},
-      { name : 'Актеры/Режиссеры', url: 'crew'},
-      { name : 'Добавить менеджера', url : 'new_manager'},
-      { name : 'Список менеджеров', url : 'managers'},
-      { name : 'Жалобы', url : 'chainComplaints'}
+    { name : 'Добавить филиал', url : 'new_branch_office'},
+    { name : 'Список филиалов', url: 'branch_offices'},
+    { name : 'Добавить фильм', url : 'new_film'},
+    { name : 'Список фильмов', url : 'films'},
+    { name : 'Актеры/Режиссеры', url: 'crew'},
+    { name : 'Добавить менеджера', url : 'new_manager'},
+    { name : 'Список менеджеров', url : 'managers'},
+    { name : 'Новый оператор', url : 'new_operator'},
+    { name : 'Список операторов обратной связи', url : 'operators'},
+    { name : 'Жалобы', url : 'chainComplaints'}
   ]
 
   return(

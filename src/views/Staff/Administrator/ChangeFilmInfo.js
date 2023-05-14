@@ -1,32 +1,22 @@
-import placeholder from "../../../../assets/images/placeholder.jpg";
-import {useState, Fragment, useEffect} from "react";
-import './AddFilm.css'
-import {TrashIcon, XMarkIcon, CheckIcon, ChevronUpDownIcon} from "@heroicons/react/24/outline";
-import {DefaultInput} from "../../../../components/Inputs";
-import {SelectInput} from "../../../../components/MUIStyles";
-import {Autocomplete, Checkbox, MenuItem, Select, TextField, styled} from "@mui/material";
-import { Combobox, Transition } from "@headlessui/react";
-import {ComboboxWithTagsGenres, ComboboxWithTagsPersons} from "../../../../components/Combobox";
-import {FilmsAPI} from "../../../../api";
 import {useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
-import {MediaAPI} from "../../../../api/MediaAPI";
+import {useEffect, useState} from "react";
+import {FilmsAPI} from "../../../api";
+import {DefaultInput} from "../../../components/Inputs";
+import {MenuItem, Select} from "@mui/material";
+import {SelectInput} from "../../../components/MUIStyles";
+import {ComboboxWithTagsGenres, ComboboxWithTagsPersons} from "../../../components/Combobox";
+import {Switch} from "@headlessui/react";
 
-export const AddFilm = () => {
-
-
+export const ChangeFilmInfo = () => {
   const ageRestrictions = [0, 6, 12, 16, 18];
 
   const token = useSelector(state => state.auth.token);
   const navigate = useNavigate();
-
-  const [poster, setPoster] = useState(null);
-  const [postingPoster, setPostingPoster] = useState(null);
-
-  const [photos, setPhotos] = useState([]);
-  const [postingPhotos, setPostingPhotos] = useState([]);
+  const {id} = useParams();
 
   const [name, setName] = useState('');
+  const [active, setActive] = useState(true);
   const [ageRestriction, setAgeResctriction] = useState(ageRestrictions[4]);
   const [description, setDescription] = useState('');
   const [year, setYear] = useState(new Date().getFullYear());
@@ -44,16 +34,6 @@ export const AddFilm = () => {
   const [invalidArray, setInvalidArray] = useState([false, false, false]);
   const [invlaidComboboxes, setInvalidComboboxesArray] = useState([false, false, false]);
 
-  const onPosterChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0];
-      setPostingPoster(img);
-      setPoster(URL.createObjectURL(img))
-    } else {
-      setPoster(null)
-    }
-  }
-
   useEffect(() => {
     FilmsAPI.getAllActors(token)
       .then(resData => setActors(resData.actorsList));
@@ -64,20 +44,21 @@ export const AddFilm = () => {
     FilmsAPI.getAllGenres(token)
       .then(resData => setGenres(resData.genres))
 
-    },[])
+    FilmsAPI.getFilmInfoWithoutTable(id)
+      .then(film => {
+        setName(film.name);
+        setDescription(film.description);
+        setAgeResctriction(film.ageRestriction);
+        setYear(film.releaseYear);
+        setDuration(film.length);
+        setKpURL(film.urlForKinopoisk);
+        setTrailerURL(film.urlForTrailer);
+        setSelectedActors(film.actors);
+        setSelectedDirectors(film.filmDirectors);
+        setSelectedGenres(film.genres);
+      })
 
-  const addPhoto = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0];
-      setPhotos( [...photos , URL.createObjectURL(img)])
-      setPostingPhotos([...postingPhotos, img])
-    }
-  }
-
-  const deletePhoto = (index) => {
-    setPhotos(photos.filter((_, _index) => index !== _index ))
-    setPostingPhotos(postingPhotos.filter((_, _index) => index !== _index ))
-  }
+  },[])
 
   const handleSaving = async () => {
     var inputs = document.querySelectorAll('input[required]');
@@ -110,26 +91,14 @@ export const AddFilm = () => {
 
     setInvalidComboboxesArray(newComboboxesArray);
 
-    if (!poster){
-      setMessage('Вставьте постер фильма');
-      ok = false;
-    }
-
     if (ok){
       try{
-        var response = await FilmsAPI.createFilm(name, description, year, duration, ageRestriction, trailerURL, kpURL,
-                                                  selectedGenres.map(g => g.id),
-                                                  selectedActors.map(a => a.id),
-                                                  selectedDirectors.map(d => d.id), token);
-
-        console.log(response.data);
-        var createdFilmId = response.data;
-
-        await MediaAPI.AddFilmPoster(createdFilmId, postingPoster);
-        await MediaAPI.AddFilmImages(createdFilmId, postingPhotos);
+        await FilmsAPI.changeFilmInfo(id, name, description, year, duration, ageRestriction, active, trailerURL, kpURL,
+          selectedGenres.map(g => g.id),
+          selectedActors.map(a => a.id),
+          selectedDirectors.map(d => d.id), token);
 
         navigate('/staff/main/films');
-
 
       } catch (e) {
         if (e.response.status === 401){
@@ -161,46 +130,8 @@ export const AddFilm = () => {
 
   return(
     <div>
-      <center className='text-xl mb-10'>Добавление фильма</center>
-      <div className='flex gap-10 divide-x'>
-        <div className='h-fit w-1/4 flex flex-col gap-6 divide-y'>
-          <div className='flex flex-col gap-3'>
-            <center className='font-semibold'>Постер</center>
-            <img src={poster ?? placeholder} className='rounded-lg h-96 object-fill'/>
-            <div className='flex justify-between'>
-                <label className="text-white bg-black rounded p-2 w-5/6 text-center">
-                  <input className='rounded' type='file' onChange={(e) => onPosterChange(e)}/>
-                  Загрузть
-              </label>
-                {
-                  poster ? <TrashIcon className='w-7 h-7 m-auto cursor-pointer hover:text-red-600'
-                                      onClick={() => setPoster(null)}/> : null
-                }
-            </div>
-          </div>
-          <div className='flex flex-col gap-3 pt-4'>
-            <center className='font-semibold'>Кадры из фильма</center>
-            {
-              photos.map( (photo, index) =>
-                <div className='grid grid-cols-6'>
-                  <img src={photo} className='rounded-l-lg w-full object-fill col-span-5 border'/>
-                  <div className='cursor-pointer ease-in-out duration-100 hover:text-white flex flex-col justify-center border border-l-0 rounded-r-lg hover:bg-red-500'
-                       onClick={() => deletePhoto(index)}>
-                    <TrashIcon className='w-7 h-7 m-auto'/>
-                  </div>
-                </div>
-              )
-            }
-            <div className='flex justify-between'>
-              <label className="text-black bg-gray-100 rounded p-2 w-full text-center cursor-pointer">
-                <input className='rounded' type='file' onChange={(e) => addPhoto(e)}/>
-                Загрузть
-              </label>
-            </div>
-          </div>
-        </div>
-        <div className='flex flex-col gap-6 px-3 w-3/4'>
-          <center className='font-semibold mb-6'>Информация о фильме</center>
+      <center className='text-xl mb-10'>Данные о фильме</center>
+        <div className='flex flex-col gap-6 px-3'>
           <div className='flex gap-3'>
             <div className='w-3/4'>
               <p>Название фильма</p>
@@ -256,17 +187,17 @@ export const AddFilm = () => {
             <div>
               <p className='px-2'>Актеры</p>
               <ComboboxWithTagsPersons values={selectedActors} initList={actors} setValues={setSelectedActors}
-                                      placeholder={'введите имя или фамилию актёра...'}
-                                      isInvalid={invlaidComboboxes[1]}
-                                      onChange={() => comboboxValueChanged(1)}
+                                       placeholder={'введите имя или фамилию актёра...'}
+                                       isInvalid={invlaidComboboxes[1]}
+                                       onChange={() => comboboxValueChanged(1)}
               />
             </div>
             <div>
               <p className='px-2'>Режиссер(-ы)</p>
               <ComboboxWithTagsPersons values={selectedDirectors} initList={directors} setValues={setSelectedDirectors}
-                                      placeholder={'введите имя или фамилию режиссёра...'}
-                                      isInvalid={invlaidComboboxes[2]}
-                                      onChange={() => comboboxValueChanged(2)}
+                                       placeholder={'введите имя или фамилию режиссёра...'}
+                                       isInvalid={invlaidComboboxes[2]}
+                                       onChange={() => comboboxValueChanged(2)}
               />
             </div>
           </div>
@@ -278,6 +209,22 @@ export const AddFilm = () => {
             <p className='px-2'>Ссылка на трейлер YouTube&trade;</p>
             <DefaultInput value={trailerURL} setValue={(url) => setTrailerURL(url)} required={false} onChange={() => {}}/>
           </div>
+          <div className="flex gap-3">
+            <p className='my-auto'>В прокате</p>
+            <Switch
+              checked={active}
+              onChange={setActive}
+              className={`${active ? 'opacity-100' : 'opacity-50'}
+          relative inline-flex h-[30px] w-[66px] bg-cyan-900 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+            >
+              <span className="sr-only">Use setting</span>
+              <span
+                aria-hidden="true"
+                className={`${active ? 'translate-x-9' : 'translate-x-0'}
+            pointer-events-none inline-block h-[27px] w-[27px] transform bg-white rounded-full shadow-lg ring-0 transition duration-200 ease-in-out`}
+              />
+            </Switch>
+          </div>
           <div className='flex justify-end w-full'>
             <div className='w-1/6'>
               <button className='w-full bg-cyan-700 text-white p-3 rounded-lg' onClick={handleSaving}>Сохранить</button>
@@ -285,7 +232,6 @@ export const AddFilm = () => {
             </div>
           </div>
         </div>
-      </div>
     </div>
   )
 }

@@ -34,8 +34,8 @@ export const FilmsList = () => {
     (
       async () => {
         try {
-          const resData = await FilmsAPI.GetAllFilms(token);
-          setFilms(resData.filmList);
+          /*const resData = await FilmsAPI.GetAllFilms(token);
+          setFilms(resData.filmList);*/
           setLoaded(true)
         } catch (err) {
           navigate('/staff')
