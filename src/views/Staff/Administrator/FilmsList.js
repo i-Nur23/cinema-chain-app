@@ -9,18 +9,7 @@ import placeholder from "../../../assets/images/placeholder.jpg"
 export const FilmsList = () => {
   const navigate = useNavigate();
 
-  const [films, setFilms] = useState([
-    {
-      src : placeholder,
-      name : "Фильм 1",
-      isActive : true,
-    },
-    {
-      src : placeholder,
-      name : "Фильм 2",
-      isActive: false
-    }
-  ]);
+  const [films, setFilms] = useState([]);
   const [deletingFilm, setDeletingFilm] = useState(null);
   const [open, setOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -34,8 +23,8 @@ export const FilmsList = () => {
     (
       async () => {
         try {
-          /*const resData = await FilmsAPI.GetAllFilms(token);
-          setFilms(resData.filmList);*/
+          const films = await FilmsAPI.GetAllFilms(token);
+          setFilms(films);
           setLoaded(true)
         } catch (err) {
           navigate('/staff')
@@ -44,8 +33,20 @@ export const FilmsList = () => {
     )()
   },[])
 
-  const changeActivity = async () => {
-
+  const changeActivity = async (id, isActive) => {
+    FilmsAPI.changeActivity(id, isActive, token)
+      .then(_ => {
+        var newFilmsList = [];
+        films.forEach(film => {
+          if (film.id !== id){
+            newFilmsList.push(film)
+          } else {
+            newFilmsList.push({...film, isActive : !isActive})
+          }
+        })
+        setFilms(newFilmsList);
+      })
+      .catch(err => console.log(err))
   }
 
   return loaded && (
@@ -54,20 +55,20 @@ export const FilmsList = () => {
       <ul>
         {
           films.map(film =>
-            <li className="p-3 border-b">
+            <li className="p-3 border-b" key={film.id}>
               <div className='flex justify-between'>
                 <div className='flex h-32 gap-3'>
-                  <img src={film.src} scrolling='no' className='h-full w-24 object-cover rounded-xl'/>
+                  <img src={film.poster} scrolling='no' className='h-full w-24 object-cover rounded-xl'/>
                   <p className='text-lg mt-0'>{film.name}</p>
                   {
                     film.isActive ? <span className='align-bottom text-white bg-blue-700 px-1 rounded-lg h-6'>в прокате</span> : null
                   }
                 </div>
                 <div className='flex gap-5'>
-                  <button onClick={() => changeActivity()} className='hover:text-purple-700'>
+                  <button onClick={() => changeActivity(film.id, film.isActive)} className='hover:text-purple-700'>
                     {film.isActive ? 'Убрать из проката' : 'Включить в прокат'}
                   </button>
-                  <Link to={`/staff/main/new_film/${film.id}`} className='hover:text-blue-500 my-auto'>
+                  <Link to={`${film.id}`} className='hover:text-blue-500 my-auto focus:outline-none'>
                     <PencilSquareIcon className='w-6 h-6 my-auto'/>
                   </Link>
                 </div>
@@ -76,19 +77,6 @@ export const FilmsList = () => {
           )
         }
       </ul>
-      <AcceptActionDialog
-        isOpen={open}
-        close={() => close()}
-        message={`Вы уверены, что ходите удалить из системы фильм: ${deletingFilm?.name} ?`}
-        action={() => {
-          /*FilmAPI.RemoveFilm(deletingFilm.id, token)
-            .then(_ => FilmAPI.GetAllFilms(token)
-              .then(resData => {
-                setFilms(resData.filmList);
-                close()
-              }));*/
-        }}
-      />
     </div>
   )
 }

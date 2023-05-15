@@ -2,10 +2,13 @@ import {useEffect, useState} from "react";
 import {FilmsAPI} from "../../../api";
 import {Tab} from "@headlessui/react";
 import {TimetableContext} from "./TimetableContext";
+import {useSelector} from "react-redux";
+//import * as fs from "fs";
 
 export const OfficeTimetable = () => {
 
   const [days, setDays] = useState([]);
+  const officeId = useSelector(state => state.auth.branchOfficeId)
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -33,6 +36,54 @@ export const OfficeTimetable = () => {
     //console.log([...days.filter(day => day.date !== date), oldDay].sort(compareDates));
 
     setDays([...days.filter(day => day.date !== date), oldDay].sort(compareDates));
+
+    var body = {};
+
+    body.date = date;
+    body.branchOfficeId = officeId;
+
+    var halls = [];
+
+    Object.keys(table.halls).forEach(hallId => {
+
+      if (hallId === '0') return;
+
+      var hall = table.halls[hallId];
+
+      halls.push(
+        {
+          id : hall.id,
+          seances : hall.seanceIds.map(seanceId => {
+            var seanceInTable = table.seances[seanceId];
+            var seance = {
+              id : seanceInTable.id
+            }
+
+            if (seanceInTable.cost === undefined){
+              seance.cost = -1;
+            } else {
+              seance.cost = seanceInTable.cost;
+            }
+
+            seance.film = {
+              id : seanceInTable.film.id,
+              duration : seanceInTable.film.duration + 20,
+            }
+
+            return seance;
+          })
+        }
+      )
+    })
+
+    body.halls = halls;
+
+
+    console.log(JSON.stringify(body))
+
+
+
+
     // API Task
   }
 

@@ -190,4 +190,22 @@ export class FilmsAPI extends MainAPIBase {
       }
     })
   }
+
+  static GetAllFilms = async () => {
+    var url = `${this.baseURL}/Films/GetAllFilmsList`
+
+    var response = await axios.get(url);
+
+    return response.data;
+  }
+
+  static changeActivity = async (id, isActive, token) => {
+    var url = `${this.baseURL}/Films/ChangeActivity?filmId=${id}&isActive=${!isActive}`
+
+    var response = await axios.put(url, {}, {headers : {
+      "Authorization" : `Bearer ${token}`
+    }});
+
+    return response;
+  }
 }

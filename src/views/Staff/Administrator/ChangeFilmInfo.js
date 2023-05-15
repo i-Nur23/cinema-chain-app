@@ -56,6 +56,7 @@ export const ChangeFilmInfo = () => {
         setSelectedActors(film.actors);
         setSelectedDirectors(film.filmDirectors);
         setSelectedGenres(film.genres);
+        setActive(film.isActive);
       })
 
   },[])
