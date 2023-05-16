@@ -31,7 +31,7 @@ export const LoginForm = ({after, action}) => {
     if (ok){
 
       if (!InputsHandler.isValidEmail(email)){
-        setMessage('Неверный email');
+        setMessage('Неверный формат email');
         return;
       }
 
@@ -47,6 +47,7 @@ export const LoginForm = ({after, action}) => {
       } catch (err) {
         if (err.response.status === 404) {
           setMessage('Пользователь не найден')
+          return
         }
 
         setMessage('Неизвестная ошибка. Попробуйте позже')

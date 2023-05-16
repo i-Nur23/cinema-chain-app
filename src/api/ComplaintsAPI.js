@@ -19,4 +19,76 @@ export class ComplaintsAPI extends MainAPIBase {
     }
     })
   }
+
+  static getAllComplaints = async (token) => {
+    var url = `${this.baseURL}/Complaint/GetAllComplaints`
+
+    var response = await axios.get(url, {
+      headers : {
+        "Authorization" : `Bearer ${token}`
+      }
+    });
+
+    return response.data
+  }
+
+  static getAllComplaints = async (token) => {
+    var url = `${this.baseURL}/Complaint/GetAllComplaints`
+
+    var response = await axios.get(url, {
+      headers : {
+        "Authorization" : `Bearer ${token}`
+      }
+    });
+
+    return response.data
+  }
+
+  static getBranchOfficeComplaints = async (token) => {
+    var url = `${this.baseURL}/Complaint/GetAllComplaintsByBranchOffice`
+
+    var response = await axios.get(url, {
+      headers : {
+        "Authorization" : `Bearer ${token}`
+      }
+    });
+
+    return response.data
+  }
+
+  static getUserComplaints = async (token) => {
+    var url = `${this.baseURL}/Complaint/GetAllComplaintsByUser`
+
+    var response = await axios.get(url, {
+      headers : {
+        "Authorization" : `Bearer ${token}`
+      }
+    });
+
+    return response.data
+  }
+
+  static getActiveComplaints = async (token) => {
+    var url = `${this.baseURL}/Complaint/GetComplaintsListWithoutAnswer`
+
+    var response = await axios.get(url, {
+      headers : {
+        "Authorization" : `Bearer ${token}`
+      }
+    });
+
+    return response.data
+  }
+
+  static getArchiveComplaints = async (token) => {
+    var url = `${this.baseURL}/Complaint/GetComplaintsListWithAnswer`
+
+    var response = await axios.get(url, {
+      headers : {
+        "Authorization" : `Bearer ${token}`
+      }
+    });
+
+    return response.data
+  }
 }

@@ -29,13 +29,13 @@ export const AddOperator = () => {
 
     if (id === -1) return;
 
-    ManagerAPI.GetManager(id, token)
-      .then(manager => {
-        setName(manager.firstName);
-        setSurName(manager.lastName);
-        setNickname(manager.nickName);
+    OperatorAPI.getOperatorById(id, token)
+      .then(oper => {
+        setName(oper.firstName);
+        setSurName(oper.lastName);
+        setNickname(oper.nickName);
         setMethod('UPDATE');
-        setTitle('Данные менеджера');
+        setTitle('Данные оператора');
       })
       .catch(err => {
         if (err.response.status === 401) {
@@ -76,8 +76,8 @@ export const AddOperator = () => {
           )
       } else {
 
-        /*ManagerAPI.UpdateManager(id, surName, name, nickname, officeId, token)
-          .then(_ => navigate('/staff/main/managers'))
+        OperatorAPI.updateOperator(id, surName, name, nickname, token)
+          .then(_ => navigate('/staff/main/operators'))
           .catch(err => {
               if (err.response.status === 401){
                 navigate('/staff')
@@ -85,7 +85,7 @@ export const AddOperator = () => {
                 setMessage('Ошибка. Попробуйте позже')
               }
             }
-          )*/
+          )
       }
     }
   }

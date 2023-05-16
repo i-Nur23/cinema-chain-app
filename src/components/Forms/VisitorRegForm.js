@@ -35,7 +35,7 @@ export  const  VisitorRegForm = ({onTypeChange, after, action}) => {
       console.log(email)
 
       if (!InputsHandler.isValidEmail(email)){
-        setMessage('Неверный email');
+        setMessage('Неверный формат email');
         return;
       }
 

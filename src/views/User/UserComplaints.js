@@ -1,28 +1,24 @@
 import {useSelector} from "react-redux";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {DateHandler} from "../../utils/DateHandler";
+import {ComplaintsAPI} from "../../api/ComplaintsAPI";
 
 export const UserComplaints = () => {
 
-  const comps = [
-    {
-      id : 1,
-      date : new Date(),
-      office : 'Кинема, г.Казань',
-      message : 'Меня не пустили на сеанс',
-      answer : null
-    },
-    {
-      id : 2,
-      date : new Date(),
-      office : 'Кинема, г.Казань',
-      message : 'У вас грязно',
-      answer : 'Просим прощеняи за неудобства'
-    },
-  ]
-
   const token = useSelector(state => state.auth.token);
-  const [complaints, setCompliants] = useState(comps);
+  const [complaints, setCompliants] = useState([]);
+
+  useEffect(() => {
+    ComplaintsAPI.getUserComplaints(token)
+      .then(complaints => setCompliants(complaints))
+      .catch(err => {
+        if (err.response.status === 401){
+          console.log(err);
+        }
+      })
+  },[])
+
+
 
 
   return (
@@ -38,9 +34,9 @@ export const UserComplaints = () => {
         {
           complaints.map(comp => (
             <li key={comp.id} className='flex flex-col p-3 border-b'>
-              <p className='flex'><p className='font-semibold'>Дата</p> : {comp.date.getDate()}.{('0' + (1 + comp.date.getMonth() )).slice(-2)}.{comp.date.getFullYear()}</p>
-              <p className='flex'><p className='font-semibold'>Филиал</p> : {comp.office}</p>
-              <p className='flex'><p className='font-semibold'>Текст жалобы</p> : {comp.message}</p>
+              <p className='flex'><p className='font-semibold'>Дата</p> : { new Date(comp.createDate).getDate()}.{('0' + (1 + new Date(comp.createDate).getMonth() )).slice(-2)}.{new Date(comp.createDate).getFullYear()}</p>
+              <p className='flex'><p className='font-semibold'>Филиал</p> : {comp.branchOfficeName != null ? `${comp.branchOfficeName}, г. ${comp.branchOfficeCity}` : 'Вся сеть'}</p>
+              <p className='flex'><p className='font-semibold'>Текст жалобы</p> : {comp.description}</p>
               <p className='flex'><p className='font-semibold'>Ответ</p> : {comp.answer ??  ''}</p>
             </li>
           ))

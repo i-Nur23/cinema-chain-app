@@ -15,23 +15,23 @@ export const Footer = () => {
         <div>
           <ul style={{direction: 'rtl'}}>
             <li className='my-2'>
-              <a href="#" className='text-white hover:text-gray-300 ease-in-out duration-200'>
+              <a href="/" className='text-white hover:text-gray-300 ease-in-out duration-200'>
                 Афиша
               </a>
             </li>
             <li className='my-2'>
-              <a href="#" className='text-white hover:text-gray-300 ease-in-out duration-200'>
+              <a href="/chain" className='text-white hover:text-gray-300 ease-in-out duration-200'>
+                Сеть
+              </a>
+            </li>
+            <li className='my-2'>
+              <a href="/cityoffices" className='text-white hover:text-gray-300 ease-in-out duration-200'>
                 Кинотеатры
               </a>
             </li>
             <li className='my-2'>
-              <a href="#" className='text-white hover:text-gray-300 ease-in-out duration-200'>
-                Акции
-              </a>
-            </li>
-            <li className='my-2'>
-              <a href="#" className='text-white hover:text-gray-300 ease-in-out duration-200' style={{direction: 'rtl'}}>
-                Новости
+              <a href="/complaints" className='text-white hover:text-gray-300 ease-in-out duration-200' style={{direction: 'rtl'}}>
+                Оставить жалобу
               </a>
             </li>
           </ul>
