@@ -148,13 +148,15 @@ export const TimetableContext = ({day, save}) => {
     )
   }
 
-  const changeBreakDuration = async (newDuration, hallId, id) => {
-    if (!/^\d+$/.test(newDuration) ){
+  const changeBreakDuration = async (textNewDuration, hallId, id) => {
+    if (!/^\d+$/.test(textNewDuration) ){
       return;
     }
 
-    if (newDuration < 15){
-      newDuration = 15;
+    var newDuration = parseInt(textNewDuration);
+
+    if (newDuration <= 0){
+      newDuration = 1;
     }
 
     let newTimeLeft;
@@ -162,7 +164,8 @@ export const TimetableContext = ({day, save}) => {
     if (newDuration - table.seances[id].film.duration > table.halls[hallId].timeLeft) {
       return;
     } else {
-      newTimeLeft =  table.halls[hallId].timeLeft - newDuration + table.seances[id].film.duration;
+        newTimeLeft =  table.halls[hallId].timeLeft - ( newDuration - table.seances[id].film.duration);
+
     }
 
     await setTable(
@@ -243,7 +246,7 @@ export const TimetableContext = ({day, save}) => {
       newStart = {
         ...start,
         seanceIds: startSeanceIds,
-        timeLeft : start.timeLeft + table.seances[draggableId].film.duration + 20,
+        timeLeft : start.timeLeft + table.seances[draggableId].film.duration + (table.seances[draggableId].film.id === 0 ? 0 : 20),
       };
     } else {
       const newSeance = {
@@ -277,7 +280,7 @@ export const TimetableContext = ({day, save}) => {
       newFinish = {
         ...finish,
         seanceIds: finishSeanceIds,
-        timeLeft : finish.timeLeft - table.seances[draggableId].film.duration - 20,
+        timeLeft : finish.timeLeft - table.seances[draggableId].film.duration - (table.seances[draggableId].film.id === 0 ? 0 : 20),
 
       };
     } else {

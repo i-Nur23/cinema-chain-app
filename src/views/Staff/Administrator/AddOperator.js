@@ -7,6 +7,7 @@ import {InputsHandler} from "../../../utils/InputsHandler";
 import {DefaultInput, PasswordInput} from "../../../components/Inputs";
 import {MenuItem, Select} from "@mui/material";
 import {SelectInput} from "../../../components/MUIStyles";
+import {OperatorAPI} from "../../../api/OperatorAPI";
 
 export const AddOperator = () => {
   const {id} = useParams();
@@ -63,8 +64,8 @@ export const AddOperator = () => {
           return;
         }
 
-        /*ManagerAPI.AddManager(surName, name, nickname, email, password, officeId, token)
-          .then(_ => navigate('/staff/main/managers'))
+        OperatorAPI.createOperator(name, surName, nickname, email, password, token)
+          .then(_ => navigate('/staff/main/operators'))
           .catch(err => {
               if (err.response.status === 401){
                 navigate('/staff')
@@ -72,7 +73,7 @@ export const AddOperator = () => {
                 setMessage('Ошибка. Попробуйте позже')
               }
             }
-          )*/
+          )
       } else {
 
         /*ManagerAPI.UpdateManager(id, surName, name, nickname, officeId, token)

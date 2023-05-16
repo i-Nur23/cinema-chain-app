@@ -3,6 +3,7 @@ import {OfficesAPI} from "../../api";
 import {SelectInput, SelectOfficeForComplaintStyle} from "../../components/MUIStyles";
 import {MenuItem, Select} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {ComplaintsAPI} from "../../api/ComplaintsAPI";
 
 export const ComplaintForm = ({token}) => {
 
@@ -41,7 +42,9 @@ export const ComplaintForm = ({token}) => {
   },[])
 
   const saveComplaint = () => {
-    navigate('/user/complaints')
+    ComplaintsAPI.createComplaint(message, officeId, token)
+      .then(_ => navigate('/user/complaints'))
+      .catch(err => console.log(err))
   }
 
   return(

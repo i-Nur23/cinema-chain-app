@@ -17,7 +17,7 @@ export const AdminMenuItems = ({setClose}) => {
     { name : 'Актеры/Режиссеры', url: 'crew'},
     { name : 'Добавить менеджера', url : 'new_manager'},
     { name : 'Список менеджеров', url : 'managers'},
-    { name : 'Новый оператор', url : 'new_operator'},
+    { name : 'Добавить оператора', url : 'new_operator'},
     { name : 'Список операторов обратной связи', url : 'operators'},
     { name : 'Жалобы', url : 'chainComplaints'}
   ]
