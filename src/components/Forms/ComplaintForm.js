@@ -19,26 +19,11 @@ export const ComplaintForm = ({token}) => {
       name : 'Вся сеть',
       city : ''
     },
-    {
-      id : 1,
-      name : 'Синема',
-      city : 'Казань'
-    },
-    {
-      id : 2,
-      name : 'Кинема',
-      city : 'Казань'
-    },{
-      id : 3,
-      name : 'Синема-с',
-      city : 'Москва'
-    },
   ]
 
   useEffect(() => {
-    /*OfficesAPI.getAllOfficesLite(token)
-      .then();*/
-    setOffices(theatres)
+    OfficesAPI.getAllOfficesLite(token)
+      .then(resData => setOffices(theatres.concat(resData.officeList)));
   },[])
 
   const saveComplaint = () => {

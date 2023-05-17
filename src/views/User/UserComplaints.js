@@ -25,7 +25,7 @@ export const UserComplaints = () => {
     complaints.length === 0
       ?
       <div className='flex justify-center w-full'>
-        <p className='flex gap-1 font-light text-xl mt-20'>
+        <p className='flex gap-1 font-light text-lg mt-10'>
           Жалоб пока нет. Мы рады, что Вы остаетесь довольными нашим обслуживанием.
         </p>
       </div>

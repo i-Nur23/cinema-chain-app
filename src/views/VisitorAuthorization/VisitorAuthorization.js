@@ -48,7 +48,7 @@ export const VisitorAuthorization = () => {
               Ещё нет учетной записи?
             </p>
             <button className="underline" onClick={changeType}>
-              Зарегестрироваться
+              Зарегистрироваться
             </button>
           </div>
         </div>

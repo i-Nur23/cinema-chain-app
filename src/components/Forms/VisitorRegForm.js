@@ -86,7 +86,7 @@ export  const  VisitorRegForm = ({onTypeChange, after, action}) => {
         <DefaultInput value={email} setValue={setEmail} isInvalid={invalidArray[2]} onChange={() => valueChanged(2)}/>
       </div>
       <div>
-        <p className='px-2'>Логин</p>
+        <p className='px-2'>Никнейм</p>
         <DefaultInput value={nick} setValue={setNick} isInvalid={invalidArray[3]} onChange={() => valueChanged(3)}/>
       </div>
       <div>

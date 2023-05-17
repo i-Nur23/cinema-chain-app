@@ -96,12 +96,12 @@ export const AddOffice = () => {
     if (ok){
 
       if (!InputsHandler.isValidEmail(email)){
-        setMessage("Неверный email");
+        setMessage("Неверный формат email");
         return;
       }
 
       if (!InputsHandler.isValidPhone(phone)){
-        setMessage("Неверный номер телефона");
+        setMessage("Неверный формат номера телефона");
         return;
       }
 

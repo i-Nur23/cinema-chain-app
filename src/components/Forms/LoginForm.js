@@ -45,12 +45,16 @@ export const LoginForm = ({after, action}) => {
           navigate(after);
         }
       } catch (err) {
-        if (err.response.status === 404) {
-          setMessage('Пользователь не найден')
-          return
-        }
+        try {
+          if (err.response.status === 404) {
+            setMessage('Пользователь не найден')
+            return
+          }
 
-        setMessage('Неизвестная ошибка. Попробуйте позже')
+          setMessage('Неизвестная ошибка. Попробуйте позже')
+        } catch (e)  {
+          setMessage('Неизвестная ошибка. Попробуйте позже')
+        }
       }
     }
   }

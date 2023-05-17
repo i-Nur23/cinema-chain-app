@@ -40,8 +40,10 @@ export const PasswordChange = () => {
       if (!response.ok){
         if (response.status == 401){
           navigate('/authorization')
+        } else if (response.status == 400) {
+          setMessage('Неверный старый пароль')
         } else {
-          setMessage(response.data.description);
+          setMessage('Неизвестная ошибка. Попробуйте позже');
         }
       } else {
         navigate('/user/profile')

@@ -50,7 +50,7 @@ export const OfficesFilms = (props) => {
             <li className='flex justify-between p-4 border-b'>
               <div className='flex gap-3'>
                 <img
-                  src={film.film.posterURL} className='object-fill h-44 rounded-xl cursor-pointer'
+                  src={film.film.poster} className='object-fill h-44 rounded-xl cursor-pointer'
                   onClick={() => navigate(`/films/${film.film.id}/info`)}
                 />
                 <div>

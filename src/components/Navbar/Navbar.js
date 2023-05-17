@@ -5,7 +5,9 @@ import {OfficesAPI} from "../../api";
 import {useDispatch, useSelector} from "react-redux";
 import {setCity} from "../../store/slicers/CitySlicer";
 import {unauthorize} from "../../store/slicers/AuthSlicer";
-import {Menu, Transition} from "@headlessui/react";
+import {Listbox, Menu, Transition} from "@headlessui/react";
+import {CheckIcon, ChevronUpDownIcon} from "@heroicons/react/24/outline";
+import {ChevronDownIcon} from "@heroicons/react/24/solid";
 
 export const Navbar = () => {
   function classNames(...classes) {
@@ -38,33 +40,75 @@ export const Navbar = () => {
     )()
   }, [token])
 
-  const changeCity = e => {
-    var city = e.target.value;
+  const changeCity = city => {
+    //var city = e.target.value;
     /*selectCity(city)*/
-    console.log(city)
+    //console.log(city)
     dispatch(setCity(city))
   }
 
   return (
     <div className='container mx-auto px-20'>
       <div className='flex justify-between py-4'>
-        <div className='flex justify-start gap-8 w-1/4'>
+        <div className='flex justify-start gap-4 w-1/4'>
           <Link to='' className=' my-auto'>
             <p className="font-cressida text-5xl">Драйв</p>
           </Link>
-          <select
-            className='focus:outline-none focus:ring-0 border-0'
-            onChange={e =>{
-              changeCity(e);
-              window.location.reload();
-            }}
-            value={city}>
-            {cities.map(city => (
-              <option value={city}>{city}</option>
-            ))}
-          </select>
+          <Listbox value={city} onChange={city =>{
+            //window.location.reload()
+            changeCity(city);
+          }}>
+            <div className="relative my-auto">
+              <Listbox.Button className="relative w-full cursor-default  py-2 pl-3 pr-10 text-left focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300">
+                <span className="block truncate">{city}</span>
+                <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+              <ChevronDownIcon
+                className="h-5 w-5 text-gray-400"
+                aria-hidden="true"
+              />
+            </span>
+              </Listbox.Button>
+              <Transition
+                as={Fragment}
+                leave="transition ease-in duration-100"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <Listbox.Options className="absolute mt-1 max-h-60 w-48 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ">
+                  {cities.map((city, index) => (
+                    <Listbox.Option
+                      key={index}
+                      className={({ active }) =>
+                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                          active ? 'bg-blue-200 text-black' : 'text-gray-900'
+                        }`
+                      }
+                      value={city}
+                    >
+                      {({ selected }) => (
+                        <>
+                      <span
+                        className={`block truncate ${
+                          selected ? 'font-medium' : 'font-normal'
+                        }`}
+                      >
+                        {city}
+                      </span>
+                          {selected ? (
+                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600">
+                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                          ) : null}
+                        </>
+                      )}
+                    </Listbox.Option>
+                  ))}
+                </Listbox.Options>
+              </Transition>
+            </div>
+          </Listbox>
         </div>
-        <div className="flex justify-between gap-20 w-1/2">
+        <div className="flex justify-center gap-10 w-7/12">
           <Link to="/" className='my-auto text-xl p-4 hover:text-cyan-700 ease-in-out duration-150'>
             Афиша
           </Link>
@@ -82,7 +126,7 @@ export const Navbar = () => {
           </Link>
         </div>
 
-        <div className='w-1/4 flex justify-end z-50'>
+        <div className='w-2/12 flex justify-end z-50'>
           {
             token == '' ?
               <Link to="authorization" className='my-auto text-xl p-4 rounded hover:bg-cyan-700 hover:text-white ease-in-out duration-300'>

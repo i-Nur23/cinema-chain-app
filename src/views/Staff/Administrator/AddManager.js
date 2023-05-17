@@ -128,7 +128,7 @@ export const AddManager = () => {
         </div>
       }
       <div>
-        <p className='px-2'>Логин</p>
+        <p className='px-2'>Никнейм</p>
         <DefaultInput value={nickname} setValue={setNickname} isInvalid={invalidArray[3]} onChange={() => valueChanged(3)}/>
       </div>
       { method === 'ADD' &&
