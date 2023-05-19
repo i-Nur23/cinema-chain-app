@@ -9,4 +9,12 @@ export class SeanceAPI extends MainAPIBase{
 
     return response.data;
   }
+
+  static getTimetableForWeek = async (branchOffcieId) => {
+    var url = `${this.baseURL}/Seans/GetTimeTableForWeek?branchOffcieId=${branchOffcieId}`;
+
+    var response = await axios.get(url);
+
+    return response.data;
+  }
 }

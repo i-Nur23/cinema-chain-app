@@ -24,7 +24,7 @@ export const HallTimeline = ({hall, seances, width, deleteItem, changePrice, cha
       <HallConatiner width={width}>
         <p className='my-auto min-w-[60px]'>{hall.title}</p>
         <Droppable
-          droppableId={hall.id}
+          droppableId={hall.id.toString()}
           direction="horizontal"
         >
           {(provided, snapshot) => (

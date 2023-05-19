@@ -40,7 +40,7 @@ export const Seance = ({seance, index, deleteItem, changePrice}) => {
 
   return(
     <Draggable
-      draggableId={seance.id}
+      draggableId={seance.id.toString()}
       index={index}
     >
       {(provided) => (

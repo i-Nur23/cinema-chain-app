@@ -30,7 +30,7 @@ export const AvailableFilm = ({seance, index}) => {
 
   return(
     <Draggable
-      draggableId={seance.id}
+      draggableId={seance.id.toString()}
       index={index}
     >
       {(provided) => (

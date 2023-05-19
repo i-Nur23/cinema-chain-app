@@ -8,13 +8,18 @@ import {AvailableFilmsColumn} from "./AvailableFilmsColumn";
 import {DateHandler} from "../../../utils/DateHandler";
 import {TimeHandler} from "../../../utils/TimeHandler";
 
-export const TimetableContext = ({day, save}) => {
+export const TimetableContext = ({day, save, start, end}) => {
 
   const token = useSelector(state => state.auth.token);
   const branchOfficeId = useSelector(state => state.auth.branchOfficeId)
   const navigate = useNavigate();
-  const startTime = 8;
-  const endTime = 22;
+  const [startTime, setStartTime] = useState(start);
+  const [endTime, setEndTime] = useState(end);
+  const [table, setTable] = useState(day.table);
+  const [timeRow, setTimeRow] = useState([])
+  //const [availableFilms, setAvailableFilms] = useState([]);
+  //const [halls, setHalls] = useState(null)
+  const [freeId ,setFreeId] = useState(day.freeId);
 
   const _table = {
     seances : {},
@@ -45,16 +50,25 @@ export const TimetableContext = ({day, save}) => {
     hallsOrder: [1, 2, 3]
   }
 
-  const [table, setTable] = useState(_table);
-  const [timeRow, setTimeRow] = useState([])
-  //const [availableFilms, setAvailableFilms] = useState([]);
-  //const [halls, setHalls] = useState(null)
-  const [freeId ,setFreeId] = useState(-1);
-
   useEffect(() => {
     var row = [];
     for (let i = startTime; i <= endTime; i += 0.5){
-      row.push(<div className='w-0 text-xs'>|{TimeHandler.toTimeString(i)}</div>)
+      row.push(<div className='w-0 text-xs'>|{TimeHandler.toTimeString(i % 24)}</div>)
+    }
+    console.log('dsa')
+    setTimeRow(row);
+
+    /*setStartTime(start)
+    setEndTime(end)
+    setTable(day.table)
+    setFreeId(day.freeId)*/
+
+  },[])
+
+  /*useEffect(() => {
+    var row = [];
+    for (let i = startTime; i <= endTime; i += 0.5){
+      row.push(<div className='w-0 text-xs'>|{TimeHandler.toTimeString(i % 24)}</div>)
     }
     setTimeRow(row);
 
@@ -100,10 +114,7 @@ export const TimetableContext = ({day, save}) => {
         }
       })
     });
-    /*OfficesAPI.getDeatilInfoAboutBranchOffice(branchOfficeId, token)
-      .then(office => setHalls())
-      .catch(err => { if (err.response.status === 401) navigate('/staff') })*/
-  },[])
+  },[])*/
 
   const deleteItem = (itemId, droppableId) => {
 
@@ -156,7 +167,9 @@ export const TimetableContext = ({day, save}) => {
     var newDuration = parseInt(textNewDuration);
 
     if (newDuration <= 0){
-      newDuration = 1;
+      newDuration = 5;
+    } else {
+      newDuration = Math.ceil(newDuration / 5) * 5
     }
 
     let newTimeLeft;

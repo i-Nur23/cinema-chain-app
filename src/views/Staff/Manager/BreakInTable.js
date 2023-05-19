@@ -27,15 +27,6 @@ const Seance = styled.div`
 export const BreakInTable = ({seance, index, deleteItem, changeBreakDuration}) => {
 
   const [isOpen, setIsOpen] = useState(false);
-  const [tooltipOpen, setTooltipOpen] = useState(false)
-
-  const handleClose = () => {
-    setTooltipOpen(false);
-  };
-
-  const handleOpen = () => {
-    setTooltipOpen(true);
-  };
 
   const onTouchEnd = (onTransitionEnd) => {
     const { toggleIsDragging } = this.props;
@@ -153,7 +144,7 @@ export const BreakInTable = ({seance, index, deleteItem, changeBreakDuration}) =
 
   return (
     <Draggable
-      draggableId={seance.id}
+      draggableId={seance.id.toString()}
       index={index}
     >
       {(provided) => (
