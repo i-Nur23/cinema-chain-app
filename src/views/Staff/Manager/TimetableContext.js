@@ -11,8 +11,6 @@ import {TimeHandler} from "../../../utils/TimeHandler";
 export const TimetableContext = ({day, save, start, end}) => {
 
   const token = useSelector(state => state.auth.token);
-  const branchOfficeId = useSelector(state => state.auth.branchOfficeId)
-  const navigate = useNavigate();
   const [startTime, setStartTime] = useState(start);
   const [endTime, setEndTime] = useState(end);
   const [table, setTable] = useState(day.table);
@@ -218,9 +216,12 @@ export const TimetableContext = ({day, save, start, end}) => {
     const start = table.halls[source.droppableId];
     const finish = table.halls[destination.droppableId];
 
+    console.log(start)
+    console.log(finish)
+
     if (start === finish) {
 
-      if (start.id === '0') return;
+      if (start.id === 0) return;
 
       const newSeanceIds = Array.from(start.seanceIds);
 
@@ -255,7 +256,7 @@ export const TimetableContext = ({day, save, start, end}) => {
     let newStart;
     let newSeances = table.seances;
 
-    if (start.id !== '0'){
+    if (start.id !== 0){
       newStart = {
         ...start,
         seanceIds: startSeanceIds,
@@ -287,7 +288,7 @@ export const TimetableContext = ({day, save, start, end}) => {
 
     const finishSeanceIds = Array.from(finish.seanceIds);
     let newFinish;
-    if (finish.id !== '0'){
+    if (finish.id !== 0){
       finishSeanceIds.splice(destination.index, 0, draggableId);
 
       newFinish = {
@@ -313,7 +314,6 @@ export const TimetableContext = ({day, save, start, end}) => {
       }
     };
 
-    console.log(newState)
 
     setTable(newState);
   }

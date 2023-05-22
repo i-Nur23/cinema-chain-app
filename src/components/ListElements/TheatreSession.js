@@ -9,6 +9,7 @@ export const TheatreSession = ({theater, table}) => {
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
+    console.log(table)
     console.log('Here')
     setSeances(table)
     setTheaterName(theater)

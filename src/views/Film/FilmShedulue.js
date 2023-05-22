@@ -20,7 +20,6 @@ export  const FilmShedulue = (props) => {
         setFilm(data.info);
         setTable(data.sessionSchedule);
         setLoaded(true);
-        console.log(data.info.imagesUrls.map(url => {return {src : url, width : 320, height : 200}}))
       }
     )()
   },[id, city])
@@ -28,7 +27,7 @@ export  const FilmShedulue = (props) => {
 
   let content = loaded ?  <div className='my-10'>
     <div className='flex justify-start gap-10'>
-      <img src={film.poster ?? placeholder} alt={film.name} className='rounded-lg h-96 object-cover'/>
+      {/*<img src={film.poster ?? placeholder} alt={film.name} className='rounded-lg h-96 object-cover'/>*/}
       <div className='flex flex-col gap-5'>
         <p className='text-2xl'><strong>{film.name}</strong>, {film.ageRestriction}+</p>
         <div className='flex flex-col gap-3'>

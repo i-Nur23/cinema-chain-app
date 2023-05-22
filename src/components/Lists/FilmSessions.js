@@ -4,70 +4,6 @@ import {AvailableDays} from "./AvailableDays";
 import {useEffect, useState} from "react";
 import {DateHandler} from "../../utils/DateHandler";
 
-
-const theatres = [
-  {
-    'kinotheatre' : {
-      'name' : 'ТЦ \"Авиапарк\", проспект Мира, 138Б',
-      'city' : 'Москва'
-    },
-    'sessions' :[
-      {
-        'id'  : 1,
-        'time' : new Date('2023-03-22T10:20:00.511Z'),
-        'type' : '2D',
-        'initPrice' : 200
-      },
-      {
-        'id' : 2,
-        'time' : new Date('2023-03-22T11:50:00.511Z'),
-        'type' : '3D',
-        'initPrice' : 270
-      },
-      {
-        'id' : 3,
-        'time' : new Date('2023-03-22T10:20:00.511Z'),
-        'type' : '2D',
-        'initPrice' : 200
-      },
-      {
-        'id' : 4,
-        'time' : new Date('2023-03-22T10:20:00.511Z'),
-        'type' : '2D',
-        'initPrice' : 200
-      },
-
-    ]
-  },
-  {
-    'kinotheatre' : {
-      'name' : 'Кинотеатр \"Колокольчик\", ул. Дзержинского, 23',
-      'city' : 'Москва'
-    },
-    'sessions' :[
-      {
-        'id'  : 5,
-        'time' : new Date('2023-03-22T10:20:00.511Z'),
-        'type' : '2D',
-        'initPrice' : 200
-      },
-      {
-        'id' : 6,
-        'time' : new Date('2023-03-22T11:50:00.511Z'),
-        'type' : '3D',
-        'initPrice' : 270
-      },
-      {
-        'id' : 7,
-        'time' : new Date('2023-03-22T10:20:00.511Z'),
-        'type' : '2D',
-        'initPrice' : 200
-      },
-    ]
-  }
-]
-
-
 export const FilmSessions = (props) => {
 
   const {id} = useParams();
@@ -78,8 +14,8 @@ export const FilmSessions = (props) => {
 
   useEffect(() => {
     setFullTable(props.table);
-    var todayFilms = fullTable.find(x => x.date == day[1]);
-    console.log(todayFilms)
+    console.log(props.table)
+    var todayFilms = props.table.find(x => x.date == day[1]);
     if (todayFilms != null){
       setTable(todayFilms.theaters)
     } else {setTable(null)}

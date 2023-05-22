@@ -44,7 +44,7 @@ export const OfficeTimetable = () => {
               initTable.forEach(table => {
                 var day = {}
                 day.date = new Date(table.date);
-                day.freeId = table.maxFreeId
+                //day.freeId = table.maxFreeId
                 day.table = {
                   hallsOrder : [],
                   seances : {},
@@ -114,13 +114,14 @@ export const OfficeTimetable = () => {
                   day.table.seances = seances;
                 })
 
+                day.freeId = availableId - 1;
+
                 finishTable.push(day)
 
               })
 
             });
 
-            console.log(1)
             setDays(finishTable)
             setLoaded(true);
             })
@@ -181,15 +182,11 @@ export const OfficeTimetable = () => {
     body.halls = halls;
 
 
-    console.log(JSON.stringify(body))
-
-
     // API Task
   }
 
   return !loaded ? <h2>Загрузка</h2> : (
     <div>
-      <center>sdffdgfd</center>
       <div>
         <Tab.Group>
           <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
@@ -212,8 +209,6 @@ export const OfficeTimetable = () => {
           </Tab.List>
           <Tab.Panels className="mt-2 focus:ring-0">
             {days.map((day, index) => {
-
-              console.log(day)
 
                 return (<Tab.Panel
                   key={index}
