@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import 'flowbite'
 
 export const HallPlace = ({index, checked, setChoice, color, row, place}) => {
 
