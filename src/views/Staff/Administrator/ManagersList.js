@@ -40,7 +40,6 @@ export const ManagersList = () => {
             <div className='flex justify-between'>
               <div>
                 <p className='text-lg'>{manager.lastName} {manager.firstName}</p>
-                {/*<p className='text-gray-400'>{manager.city}</p>*/}
               </div>
               <div className='flex gap-5'>
                 <Link to={`/staff/main/new_manager/${manager.id}`} className='hover:text-blue-500 my-auto'>

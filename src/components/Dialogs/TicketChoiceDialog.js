@@ -158,7 +158,6 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
     var res = BookingAPI.bookPlaces(id, chosenTickets, token)
       .then(res => {
         if (res.status){
-          console.log('status is ok')
           navigate('/user/bookings')
         }
       })
@@ -178,17 +177,6 @@ export const TicketChoiceDialog = ({isOpen, close, basePrice, id}) => {
           console.log(err)
         }
       })
-
-
-    /*if (res.status == 401){
-      navigate('/authorization', {
-        state : {
-          reason : 'Войдите перед тем как забронировать билеты',
-          after : '/'
-        }
-      });
-      return;
-    }*/
   }
 
 

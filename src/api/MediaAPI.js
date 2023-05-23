@@ -14,8 +14,6 @@ export class MediaAPI {
       body.append('files', images[i])
     }
 
-    console.log(body)
-
     return await axios.post(url, body, {headers :  {
       "Content-Type" : "multipart/form-data"
     }});

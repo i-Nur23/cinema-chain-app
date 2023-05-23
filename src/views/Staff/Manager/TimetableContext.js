@@ -54,66 +54,9 @@ export const TimetableContext = ({day, save, start, end}) => {
     for (let i = startTime; i <= endTime; i += 0.5){
       row.push(<div className='w-0 text-xs'>|{TimeHandler.toTimeString(i % 24)}</div>)
     }
-    console.log('dsa')
     setTimeRow(row);
-
-    /*setStartTime(start)
-    setEndTime(end)
-    setTable(day.table)
-    setFreeId(day.freeId)*/
 
   },[])
-
-  /*useEffect(() => {
-    var row = [];
-    for (let i = startTime; i <= endTime; i += 0.5){
-      row.push(<div className='w-0 text-xs'>|{TimeHandler.toTimeString(i % 24)}</div>)
-    }
-    setTimeRow(row);
-
-    if (day.table !== null) {
-      setFreeId(Math.min(...Object.keys(day.table.seances).map(key => day.table.seances[key].id)) - 1);
-      setTable(day.table);
-      return;
-    }
-
-    let availableId = 0;
-    let seances = {};
-    FilmsAPI.getFilmsToStartPage().then(resData => {
-      const films = resData.filmList;
-      const step = 340 / films.length;
-      let currentColor = 0;
-      films.forEach((film, index) => {
-        --availableId;
-        seances = {
-          ...seances,
-        [availableId.toString()] : { id : availableId.toString(), cost : 0, film : { id : film.id, name : film.name,
-            duration: 90 + index * 10 ,color :  currentColor}
-        }}
-        currentColor += step;
-      })
-
-      --availableId;
-
-      seances = {
-        ...seances,
-        [availableId.toString()] : { id : availableId.toString(), film : { id : 0, name : 'Перерыв', duration: 100, color : 20}
-        }}
-
-      setFreeId(--availableId);
-      setTable({
-        ...table,
-        seances: seances,
-        halls : {
-          ...table.halls,
-          0 : {
-            ...table.halls[0],
-            seanceIds: Array.from(Object.keys(seances))
-          }
-        }
-      })
-    });
-  },[])*/
 
   const deleteItem = (itemId, droppableId) => {
 
@@ -217,9 +160,6 @@ export const TimetableContext = ({day, save, start, end}) => {
     const start = table.halls[source.droppableId];
     const finish = table.halls[destination.droppableId];
 
-    console.log(start)
-    console.log(finish)
-
     if (start === finish) {
 
       if (start.id === 0) return;
@@ -274,7 +214,6 @@ export const TimetableContext = ({day, save, start, end}) => {
         ...newSeances,
         [freeId.toString()] : newSeance
       }
-      console.log(table.seances)
       //const newSeanceIds = [...startSeanceIds, freeId.toString()]
       startSeanceIds.splice(source.index, 0, freeId.toString())
 
@@ -318,24 +257,6 @@ export const TimetableContext = ({day, save, start, end}) => {
 
     setTable(newState);
   }
-
-  /*const onDragStart = start => {
-    var newCost = document.getElementById(`seance-${start.draggableId}`)?.value;
-    if (!newCost){
-      setTable(
-        {
-          ...table,
-          seances : {
-            ...table.seances,
-            [start.draggableId] : {
-              ...table.seances[start.draggableId],
-              cost : newCost
-            }
-          }
-        }
-      )
-    }
-  }*/
 
   return(
     <DragDropContext onDragEnd={onDragEnd}>

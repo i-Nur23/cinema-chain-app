@@ -21,9 +21,6 @@ export class FilmsAPI extends MainAPIBase {
 
   static getAllActors = async (token) => {
     var url = `${this.baseURL}/FilmsAdditionalInfo/GetAllActors`
-
-    console.log(token);
-
     var response = await axios.get(url, {
       headers: {
         "Authorization": `Bearer ${token}`

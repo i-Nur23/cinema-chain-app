@@ -47,7 +47,6 @@ export const FIlmInfo = () => {
     (
       async () => {
         if (token.length != 0) return;
-        console.log('sdfs')
         var resData = await ReviewAPI.GetAllReviews(id, token);
         setReviews(resData.reviewWRatingArray);
         setUserReview(resData.userReview);

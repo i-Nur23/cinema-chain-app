@@ -17,8 +17,6 @@ const persistedReducer = persistReducer(persistConfig, combineReducers(
   }
 ))
 
-/*const persistedReducer = persistReducer(persistConfig, CityReducer)*/
-
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: [thunk]

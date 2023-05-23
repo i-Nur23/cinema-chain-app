@@ -59,8 +59,7 @@ export const StaffAuthorization = () => {
         navigate('main');
 
       } catch (err) {
-
-        console.log(err.response)
+        console.log(err)
         if (err.response.status === 404) {
           setMessage('Пользователь не найден')
           return;

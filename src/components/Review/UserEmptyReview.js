@@ -13,7 +13,6 @@ export const UserEmptyReview = ({filmId, refresh, token}) => {
   const [descr, setDescr] = useState("");
 
   const setFilled = (index) => {
-    console.log(index)
     for (let i = 0; i <= index; i++){
       refs[i].current.setFill();
     }

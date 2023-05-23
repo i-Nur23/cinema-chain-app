@@ -13,7 +13,6 @@ import {persistor, store} from "./store/store";
 import {PersistGate} from "redux-persist/integration/react";
 import {CityOffices, OfficesFilms} from "./views/Office";
 import {MainPage, StaffApp, StaffAuthorization} from "./views/Staff";
-import {Test} from "./views/Test";
 import {Chain} from "./views/Chain";
 import {UserBookings, UserProfile, PasswordChange, UserComplaints} from "./views/User";
 import {
@@ -35,7 +34,6 @@ const router = createBrowserRouter(
       <Route>
         <Route path="/" element={<VisitorApp/>}>
           <Route index element={<Home/>}/>
-          <Route path='test' element={<Test/>}/>
           <Route path='chain' element={<Chain/>}/>
           <Route path='complaints' element={<ComplaintsPage/>}/>
           <Route path="films">

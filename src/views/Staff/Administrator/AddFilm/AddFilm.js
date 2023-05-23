@@ -122,7 +122,6 @@ export const AddFilm = () => {
                                                   selectedActors.map(a => a.id),
                                                   selectedDirectors.map(d => d.id), token);
 
-        console.log(response.data);
         var createdFilmId = response.data;
 
         await MediaAPI.AddFilmPoster(createdFilmId, postingPoster);

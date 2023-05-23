@@ -5,7 +5,6 @@ import {TimetableContext} from "./TimetableContext";
 import {useSelector} from "react-redux";
 import {SeanceAPI} from "../../../api/SeanceAPI";
 import {Alert, Snackbar} from "@mui/material";
-//import * as fs from "fs";
 
 export const OfficeTimetable = () => {
 
@@ -38,7 +37,6 @@ export const OfficeTimetable = () => {
           initTable.forEach(table => {
             var day = {}
             day.date = new Date(table.date);
-            //day.freeId = table.maxFreeId
             day.table = {
               hallsOrder : [],
               seances : {},
@@ -123,15 +121,6 @@ export const OfficeTimetable = () => {
   }
 
   useEffect(() => {
-    /*let date = new Date();
-    date.setDate(date.getDate() + 1);
-    let datesArray = []
-    Array.from({length : 7}, (_, index) => {
-      datesArray.push({date : new Date(date), table : null});
-      date.setDate(date.getDate() + 1)
-    })
-
-    setDays(datesArray);*/
     (
       async () => {
         await getDaysAndFormatThem();
@@ -146,7 +135,6 @@ export const OfficeTimetable = () => {
   const save = (date, table, deletedIds) => {
     let oldDay = days.find (day => day.date === date);
     oldDay.table = table;
-    //console.log([...days.filter(day => day.date !== date), oldDay].sort(compareDates));
     setDays([...days.filter(day => day.date !== date), oldDay].sort(compareDates));
 
     var body = {};
@@ -197,9 +185,6 @@ export const OfficeTimetable = () => {
     })
 
     body.halls = halls;
-
-    console.log(body);
-    console.log(body.halls.some(hall => hall.seances.some(seance => seance.cost === 0)));
 
     if (body.halls.some(hall => hall.seances.some(seance => seance.cost === 0))){
       setSeverety("error")

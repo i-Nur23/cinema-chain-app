@@ -48,14 +48,6 @@ export const StoredBreak = ({seance, index}) => {
           }}
         >
           Перерыв
-          {/*<input
-            className='rounded p-2 text-black'
-            key={id}
-            placeholder="Время"
-            value={interval}
-            onChange={(e) => {setInterval(e.target.value)}}
-          />*/}
-          {/*<DurationInput/>*/}
         </Seance>
       )}
     </Draggable>

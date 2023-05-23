@@ -14,7 +14,6 @@ export const FilmSessions = (props) => {
 
   useEffect(() => {
     setFullTable(props.table);
-    console.log(props.table)
     var todayFilms = props.table.find(x => x.date == day[1]);
     if (todayFilms != null){
       setTable(todayFilms.theaters)
@@ -23,7 +22,6 @@ export const FilmSessions = (props) => {
 
   useEffect(() => {
     var todayFilms = fullTable.find(x => x.date == day[1]);
-    console.log('Day change')
     if (todayFilms != null){
       setTable(todayFilms.theaters)
     } else {setTable(null)}

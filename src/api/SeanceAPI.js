@@ -21,7 +21,6 @@ export class SeanceAPI extends MainAPIBase{
   static saveTimeTable = async (body, basket, token) => {
     var url = `${this.baseURL}/Seans/MakeShedule`;
     const data = {shedule : body, basket : basket}
-    console.log(data);
 
     var response = await axios.post(url, data, {
       headers : {

@@ -7,8 +7,6 @@ export class BookingAPI extends MainAPIBase{
     var obj = {};
     var url = `${this.baseURL}/Booking/BookingTickets`
 
-    console.log(token);
-
     obj.seanceId = seanceId;
     body.append('seanceId', seanceId);
 

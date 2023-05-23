@@ -32,8 +32,6 @@ export  const  VisitorRegForm = ({onTypeChange, after, action}) => {
     setInvalidArray(newArray);
     if (ok){
 
-      console.log(email)
-
       if (!InputsHandler.isValidEmail(email)){
         setMessage('Неверный формат email');
         return;
@@ -44,7 +42,6 @@ export  const  VisitorRegForm = ({onTypeChange, after, action}) => {
         if (!data.isSuccess) {
           setMessage(data.description);
         } else {
-          console.log('auth ok')
           dispatch(authorize({token: data.token, nickname: data.userInfo.nickName, role: data.userInfo.role, branchOfficeId : data.userInfo.branchOfficeId}));
           await action(data.token);
           navigate(after);
@@ -55,7 +52,6 @@ export  const  VisitorRegForm = ({onTypeChange, after, action}) => {
           return;
         }
 
-        console.log(err)
         setMessage('Неизвестная ошибка. Попробуйте позже')
       }
     }

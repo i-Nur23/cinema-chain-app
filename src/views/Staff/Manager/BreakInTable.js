@@ -41,26 +41,6 @@ export const BreakInTable = ({seance, index, deleteItem, changeBreakDuration}) =
     }
   }
 
-  /*const DurationField = () => {
-    const [duration, setDuration] = useState(seance.film.duration);
-
-    return(
-      <div className='flex justify-center gap-1 mx-auto flex-wrap'>
-        <input
-          id={`seance-${seance.id}`}
-          className='text-xs text-black w-10 rounded p-1 focus:ring-0 focus:border-black'
-          type='text'
-          value={duration}
-          placeholder={'длительность'}
-          onChange = { e => setDuration(e.target.value)}
-        />
-        <CheckIcon className='w-5 h-5 my-auto text-white cursor-pointer'
-                   onClick={() => changeBreakDuration(duration, seance.id)}
-        />
-      </div>
-    )
-  }*/
-
   const UpdateDialog = ({currentDuration}) => {
     const [newDuration, setNewDuration] = useState();
 

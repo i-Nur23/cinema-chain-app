@@ -82,7 +82,6 @@ export const AddOffice = () => {
 
   const handleSaving = async () => {
     var inputs = document.querySelectorAll('input[required]');
-    console.log(inputs);
     var newArray = invalidArray.map(x => x);
     var ok = true;
     inputs.forEach((input, index) => {

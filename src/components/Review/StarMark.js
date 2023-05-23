@@ -9,7 +9,6 @@ export const StarMark = forwardRef(({index, setFilled, setChosen, clear, choose}
 
   return(
     <div>
-      {/*<StarIcon className='w-4 h-4 text-cyan-900' fill="none"/>*/}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill={fill}

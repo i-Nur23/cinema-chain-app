@@ -16,8 +16,6 @@ export const Navbar = () => {
 
 
   const city = useSelector(state => state.city.name)
-
-  /*onst [selectedCity, selectCity] = useState(city)*/
   const [cities, setCities] = useState([]);
   const dispatch = useDispatch();
 
@@ -32,18 +30,13 @@ export const Navbar = () => {
   useEffect(() => {
     (
       async () => {
-        console.log(city);
         var response = await OfficesAPI.getCities();
-        console.log(response.cities);
         setCities(response.cities);
       }
     )()
   }, [token])
 
   const changeCity = city => {
-    //var city = e.target.value;
-    /*selectCity(city)*/
-    //console.log(city)
     dispatch(setCity(city))
   }
 
