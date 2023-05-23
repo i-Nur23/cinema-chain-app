@@ -151,7 +151,8 @@ export const OfficeTimetable = () => {
 
     var body = {};
 
-    body.date = date;
+    body.date = new Date(date);
+    body.date.setDate(body.date.getDate() + 1)
     body.branchOfficeId = officeId;
 
     var halls = [];
@@ -161,6 +162,8 @@ export const OfficeTimetable = () => {
       if (hallId === '0') return;
 
       var hall = table.halls[hallId];
+
+
 
       halls.push(
         {
