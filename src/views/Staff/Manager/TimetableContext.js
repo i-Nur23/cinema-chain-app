@@ -18,6 +18,7 @@ export const TimetableContext = ({day, save, start, end}) => {
   //const [availableFilms, setAvailableFilms] = useState([]);
   //const [halls, setHalls] = useState(null)
   const [freeId ,setFreeId] = useState(day.freeId);
+  const [deletedIds, setDeletedIds] = useState([]);
 
   const _table = {
     seances : {},
@@ -117,6 +118,9 @@ export const TimetableContext = ({day, save, start, end}) => {
   const deleteItem = (itemId, droppableId) => {
 
     const newSeanceIds = table.halls[droppableId].seanceIds.filter(id => id != itemId);
+    if (itemId > 0){
+      setDeletedIds([...deletedIds, itemId])
+    }
 
     let _table = {
       ...table,
@@ -130,10 +134,7 @@ export const TimetableContext = ({day, save, start, end}) => {
       }
     }
 
-    delete _table.seances[itemId];
-
     setTable(_table)
-
   }
 
   const changePrice = async (e, id) => {
@@ -362,7 +363,7 @@ export const TimetableContext = ({day, save, start, end}) => {
           }
         </div>
       </div>
-      <button className='ml-2 p-2 bg-cyan-600 rounded-lg text-white hover:bg-cyan-800 w-32' onClick={() => save(table)}>
+      <button className='ml-2 p-2 bg-cyan-600 rounded-lg text-white hover:bg-cyan-800 w-32' onClick={() => save(table, deletedIds)}>
         Сохранить
       </button>
     </DragDropContext>

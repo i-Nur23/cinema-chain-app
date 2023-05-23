@@ -44,7 +44,7 @@ export const Seance = ({seance, index, deleteItem, changePrice}) => {
       index={index}
     >
       {(provided) => (
-        <Tooltip placement="top" title={`${seance.film.duration}+20 мин.`}>
+        <Tooltip placement="top" title={`${seance.film.duration + 20} мин.`}>
           <SeanceInTable
             {...provided.dragHandleProps}
             {...provided.draggableProps}
